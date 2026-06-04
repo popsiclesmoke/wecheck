@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360, initial-scale=1.0">
+  <title>배너 상세 — 이벤트</title>
+  <link rel="stylesheet" href="../../../design/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 360px; height: 800px; overflow: hidden; }
+    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--color-bg); color: var(--color-text-heading); }
+
+    /* ── Status Bar ── */
+    .status-bar {
+      width: 360px; height: 24px;
+      background: var(--color-bg);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px;
+    }
+    .status-bar-time { font-size: var(--text-body-xs-size); font-weight: 600; color: var(--color-text-heading); }
+
+    /* ── TopBar ── */
+    .topbar {
+      position: fixed; top: 24px; left: 0;
+      width: 360px; height: 56px;
+      background: var(--color-bg);
+      display: flex; align-items: center;
+      padding: 0 16px;
+      z-index: 100;
+      border-bottom: 1px solid var(--color-border-card);
+      gap: 8px;
+    }
+    .topbar-back {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      border: none; background: none; cursor: pointer;
+      border-radius: 50%; flex-shrink: 0;
+    }
+    .topbar-title {
+      font-size: var(--text-title-sm-size);
+      font-weight: var(--text-title-sm-weight);
+      color: var(--color-text-heading);
+      flex: 1; text-align: center;
+      margin-right: 36px; /* balance back button */
+    }
+
+    /* ── Scrollable Body ── */
+    .scroll-body {
+      position: absolute; top: 80px; bottom: 0; left: 0;
+      width: 360px;
+      overflow-y: auto; overflow-x: hidden;
+    }
+    .scroll-body::-webkit-scrollbar { display: none; }
+
+    /* ── Hero Banner ── */
+    .hero-banner {
+      width: 360px; height: 200px;
+      background: var(--gradient-blue);
+      position: relative; overflow: hidden;
+      display: flex; align-items: flex-end;
+      padding: 24px;
+    }
+    .hero-circle-lg {
+      position: absolute; right: -30px; top: -40px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: color-mix(in srgb, var(--color-white) 10%, transparent);
+    }
+    .hero-circle-sm {
+      position: absolute; right: 60px; top: 20px;
+      width: 80px; height: 80px; border-radius: 50%;
+      background: color-mix(in srgb, var(--color-white) 12%, transparent);
+    }
+    .hero-circle-xs {
+      position: absolute; left: -20px; bottom: -20px;
+      width: 100px; height: 100px; border-radius: 50%;
+      background: color-mix(in srgb, var(--color-white) 8%, transparent);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--color-yellow-200);
+      color: var(--color-gray-900);
+      font-size: var(--text-body-xs-size);
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      padding: 3px 10px;
+      margin-bottom: 10px;
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-tag {
+      font-size: var(--text-body-xs-size);
+      color: var(--color-blue-200);
+      font-weight: 600;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .hero-title {
+      font-size: var(--text-title-xl-size);
+      font-weight: var(--text-title-xl-weight);
+      color: var(--color-white);
+      line-height: 1.3;
+    }
+
+    /* ── Content Area ── */
+    .content-area { padding: 20px; }
+    .content-title {
+      font-size: var(--text-title-lg-size);
+      font-weight: var(--text-title-lg-weight);
+      color: var(--color-text-heading);
+      margin-bottom: 6px;
+    }
+    .content-date-row {
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 16px;
+    }
+    .content-date {
+      font-size: var(--text-body-xs-size);
+      color: var(--color-text-description);
+    }
+    .content-date-badge {
+      display: inline-flex; align-items: center;
+      background: var(--color-blue-100);
+      color: var(--color-primary);
+      font-size: var(--text-body-xs-size);
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      padding: 2px 8px;
+    }
+    .content-divider {
+      height: 1px;
+      background: var(--color-border-card);
+      margin-bottom: 16px;
+    }
+    .content-body {
+      font-size: var(--text-body-sm-size);
+      font-weight: var(--text-body-sm-weight);
+      color: var(--color-text-body);
+      line-height: 1.7;
+    }
+    .content-body p { margin-bottom: 12px; }
+    .content-body p:last-child { margin-bottom: 0; }
+
+    .highlight-box {
+      background: var(--color-blue-50);
+      border-left: 3px solid var(--color-primary);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 12px 16px;
+      margin: 16px 0;
+    }
+    .highlight-box .highlight-title {
+      font-size: var(--text-title-xs-size);
+      font-weight: var(--text-title-xs-weight);
+      color: var(--color-primary);
+      margin-bottom: 6px;
+    }
+    .highlight-box ul {
+      list-style: none; padding: 0;
+    }
+    .highlight-box ul li {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-body);
+      padding: 3px 0;
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .highlight-box ul li::before {
+      content: "\2022";
+      color: var(--color-primary);
+      flex-shrink: 0;
+    }
+
+    /* ── Bottom CTA ── */
+    .bottom-cta {
+      padding: 12px 20px 24px;
+      background: var(--color-bg);
+      border-top: 1px solid var(--color-border-card);
+    }
+    .btn-primary {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%;
+      height: var(--btn-xl-height);
+      background: var(--color-primary);
+      color: var(--color-white);
+      border: none; cursor: pointer;
+      border-radius: var(--radius-xl);
+      font-size: var(--btn-xl-font-size);
+      font-weight: var(--btn-xl-font-weight);
+      font-family: inherit;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="status-bar-time">9:41</span>
+    <div style="display:flex;align-items:center;gap:4px;">
+      <span data-icon="wifi" style="width:14px;height:14px;display:inline-flex;color:var(--color-text-heading)"></span>
+    </div>
+  </div>
+
+  <!-- TopBar -->
+  <div class="topbar">
+    <button class="topbar-back" aria-label="뒤로가기">
+      <span data-icon="arrowBack" style="width:22px;height:22px;display:inline-flex;color:var(--color-text-heading)"></span>
+    </button>
+    <span class="topbar-title">이벤트</span>
+  </div>
+
+  <!-- Scrollable Body -->
+  <div class="scroll-body">
+
+    <!-- Hero Banner Image Area -->
+    <div class="hero-banner">
+      <div class="hero-circle-lg"></div>
+      <div class="hero-circle-sm"></div>
+      <div class="hero-circle-xs"></div>
+      <div class="hero-content">
+        <div class="hero-tag">LIMITED EVENT</div>
+        <div class="hero-title">첫 충전<br>보너스 +5%</div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content-area">
+      <div class="content-title">Beple Money 첫 충전 보너스</div>
+      <div class="content-date-row">
+        <span data-icon="calendar" style="width:13px;height:13px;display:inline-flex;color:var(--color-text-description)"></span>
+        <span class="content-date">2026.04.01 ~ 2026.04.30</span>
+        <span class="content-date-badge">진행 중</span>
+      </div>
+      <div class="content-divider"></div>
+
+      <div class="content-body">
+        <p>
+          비플월렛에 처음 오신 것을 환영합니다! 이 특별한 이벤트는 신규 가입 후 첫 Beple Money 충전 시 충전 금액의 5%를 추가로 적립해 드리는 프로모션입니다.
+        </p>
+        <p>
+          지금 충전하면 더 많은 혜택을 누릴 수 있어요. 예를 들어 10만 원을 충전하면 5,000 Beple Money를 보너스로 받으실 수 있습니다.
+        </p>
+      </div>
+
+      <div class="highlight-box">
+        <div class="highlight-title">이벤트 혜택 안내</div>
+        <ul>
+          <li>첫 충전 금액의 5% 추가 적립 (최대 10,000 Beple Money)</li>
+          <li>적립된 보너스는 충전 후 24시간 이내 지급</li>
+          <li>신규 가입 회원 1인 1회 한정 적용</li>
+        </ul>
+      </div>
+
+      <div class="content-body">
+        <p>
+          이벤트 기간 중 충전한 경우에만 해당하며, 이벤트 종료 후 충전 건은 보너스 지급 대상에서 제외됩니다. 자세한 내용은 고객센터를 통해 문의해 주세요.
+        </p>
+      </div>
+    </div>
+
+    <!-- Spacer for bottom CTA -->
+    <div style="height:90px;"></div>
+  </div>
+
+  <!-- Bottom CTA -->
+  <div class="bottom-cta" style="position:fixed;bottom:0;left:0;width:360px;">
+    <button class="btn-primary">이벤트 참여하기</button>
+  </div>
+
+  <script src="../../../icons.js"></script>
+</body>
+</html>

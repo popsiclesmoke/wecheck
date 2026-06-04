@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360, initial-scale=1.0">
+  <title>출금 확인</title>
+  <link rel="stylesheet" href="../../../design/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 360px; height: 800px; overflow: hidden; }
+    body {
+      font-family: var(--text-font-family);
+      background: var(--color-bg);
+      color: var(--color-text-heading);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TopBar */
+    .topbar {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 8px;
+      border-bottom: 1px solid var(--color-border-card);
+      flex-shrink: 0;
+    }
+    .back-btn {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-heading);
+    }
+    .topbar-title {
+      font-size: var(--text-title-md-size);
+      font-weight: var(--text-title-md-weight);
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 16px 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Confirm card */
+    .confirm-card {
+      background: var(--color-bg-content-2);
+      border-radius: var(--radius-md);
+      padding: 20px 16px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: var(--text-title-xs-size);
+      font-weight: var(--text-title-xs-weight);
+      color: var(--color-text-description);
+      margin-bottom: 16px;
+    }
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--color-border-card);
+    }
+    .card-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .row-label {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-description);
+    }
+    .row-value {
+      font-size: var(--text-title-xs-size);
+      font-weight: var(--text-title-xs-weight);
+      color: var(--color-text-title);
+    }
+    .row-value.highlight {
+      font-size: var(--text-title-sm-size);
+      color: var(--color-primary);
+    }
+    .row-value.free {
+      color: var(--color-text-description);
+    }
+
+    /* ATM icon row */
+    .atm-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-border-card);
+    }
+    .atm-icon-wrap {
+      width: 36px;
+      height: 36px;
+      background: var(--color-bg-content-1);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-body);
+    }
+    .atm-info { flex: 1; }
+    .atm-name {
+      font-size: var(--text-title-xs-size);
+      font-weight: var(--text-title-xs-weight);
+      color: var(--color-text-title);
+    }
+    .atm-location {
+      font-size: var(--text-body-xs-size);
+      color: var(--color-text-description);
+      margin-top: 2px;
+    }
+
+    /* PIN section */
+    .pin-section {
+      margin-top: 4px;
+    }
+    .pin-label {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-description);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .pin-dots {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .pin-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--color-border-divider);
+      background: transparent;
+    }
+    .pin-dot.filled {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    /* Numpad */
+    .numpad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--color-border-card);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .numpad-key {
+      background: var(--color-bg);
+      border: none;
+      height: 64px;
+      font-size: var(--text-title-lg-size);
+      font-weight: var(--text-title-sm-weight);
+      color: var(--color-text-heading);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .numpad-key:active { background: var(--color-bg-content-1); }
+    .numpad-key.empty  { background: var(--color-bg-content-2); cursor: default; }
+    .numpad-key.del    { background: var(--color-bg-content-2); color: var(--color-text-body); }
+  </style>
+</head>
+<body>
+  <!-- TopBar -->
+  <div class="topbar">
+    <button class="back-btn" aria-label="뒤로가기">
+      <span data-icon="arrowBack" style="width:24px;height:24px;display:inline-flex"></span>
+    </button>
+    <span class="topbar-title">출금 확인</span>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- Confirm card -->
+    <div class="confirm-card">
+      <div class="card-title">출금 정보 확인</div>
+
+      <!-- ATM row -->
+      <div class="atm-row">
+        <div class="atm-icon-wrap">
+          <span data-icon="creditCard" style="width:20px;height:20px;display:inline-flex"></span>
+        </div>
+        <div class="atm-info">
+          <div class="atm-name">KB국민은행 ATM</div>
+          <div class="atm-location">강남역 2번 출구</div>
+        </div>
+      </div>
+
+      <!-- Detail rows -->
+      <div class="card-row">
+        <span class="row-label">출금 금액</span>
+        <span class="row-value highlight">₩50,000</span>
+      </div>
+      <div class="card-row">
+        <span class="row-label">수수료</span>
+        <span class="row-value free">없음</span>
+      </div>
+      <div class="card-row">
+        <span class="row-label">실수령액</span>
+        <span class="row-value">₩50,000</span>
+      </div>
+    </div>
+
+    <!-- PIN section -->
+    <div class="pin-section">
+      <div class="pin-label">출금 PIN 6자리를 입력해주세요</div>
+      <div class="pin-dots">
+        <div class="pin-dot filled"></div>
+        <div class="pin-dot filled"></div>
+        <div class="pin-dot filled"></div>
+        <div class="pin-dot filled"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Numpad -->
+  <div class="numpad">
+    <button class="numpad-key">1</button>
+    <button class="numpad-key">2</button>
+    <button class="numpad-key">3</button>
+    <button class="numpad-key">4</button>
+    <button class="numpad-key">5</button>
+    <button class="numpad-key">6</button>
+    <button class="numpad-key">7</button>
+    <button class="numpad-key">8</button>
+    <button class="numpad-key">9</button>
+    <button class="numpad-key empty"></button>
+    <button class="numpad-key">0</button>
+    <button class="numpad-key del" aria-label="지우기">
+      <span data-icon="backspace" style="width:22px;height:22px;display:inline-flex"></span>
+    </button>
+  </div>
+
+  <script src="../../../icons.js"></script>
+</body>
+</html>

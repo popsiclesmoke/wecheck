@@ -1,0 +1,60 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+
+/**********************************************************************
+
+<○○○○> 업체 시그니처 컬러링
+
+**********************************************************************/
+
+.header .header_inn .center h1 img{height:15px;}
+
+/* (start)20250623 */
+.brandName,
+.productName,
+.progressStepSum,
+.waitingSum,
+.progressStepStrong{color:#22d379 !important;}
+/* //(end)20250623 */
+
+/* 인증수단(바) */
+.methodOpt_list ul li a::after{background-color:#22d379 !important;}
+
+/* 인증수단(박스) */
+.cardOpt_list ul li a.on{border-color:#22d379 !important;}
+
+/* 주소검색(박스) */
+.address_row_item a.on{border-color:#22d379 !important;}
+.address_row_item a div dl dt .aMark{color:#22d379 !important;background-color:rgba(34,211,121,0.12);}
+
+/* 버튼색상 */
+.bt_b50{background-color:#22d379 !important;}
+.bt_b50 span{color:#fff !important;}
+.bt_b100{background-color:#22d379 !important;}
+.bt_b100 span{color:#fff !important;}
+
+/* 로딩색상(loading.css) */
+.loading1 p{background-color:#22d379 !important;}
+
+/* (start)20240903 */
+.loader_prgress_bar .progress{background-color:#22d379;}
+
+.stats-container .stat .odometer,
+.stats-container .stat .type{color:#22d379;}
+/* //(end)20240903 */
+
+/* (start)20250120 */
+/* 필수입력 */
+.frm_group.sgType label .point{background-color:#22d379 !important;}
+
+/* rd_control */
+.frm2_control .rd_control input[type=radio]:checked + i{border-color:#22d379 !important;background-color:#22d379 !important;}
+
+/* cb_control */
+.frm2_control .cb_control input[type=checkbox]:checked + i{border-color:#22d379 !important;background-color:#22d379 !important;}
+
+/* frm_group */
+.frm_group label input[type=checkbox]:checked + i{border-color:#22d379 !important;background-color:#22d379 !important;}
+/* //(end)20250120 */
+

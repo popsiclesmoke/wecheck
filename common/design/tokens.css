@@ -1,0 +1,236 @@
+/* ==========================================================================
+   Design Tokens
+   Source: Figma — 0413 디자인 가이드 (Color/Typography + Components)
+   ========================================================================== */
+
+:root {
+
+  /* ==========================================================================
+     COLOR — Primitive
+     ========================================================================== */
+
+  /* Primary / Blue */
+  --color-blue-500: #0D84FF;
+  --color-blue-400: #4AA9FF;
+  --color-blue-300: #87D5FF;
+  --color-blue-200: #B2E5FC;
+  --color-blue-100: #EEF6FF;
+  --color-blue-50:  #F5F8FF;
+
+  /* Secondary / Mint */
+  --color-mint-500: #01BCD5;
+  --color-mint-200: #80DEEA;
+
+  /* Secondary / Red */
+  --color-red-700: #E70000;
+  --color-red-500: #FF3D01;
+  --color-red-200: #FF8A65;
+
+  /* Secondary / Yellow */
+  --color-yellow-500: #FFA210;
+  --color-yellow-200: #FFD73F;
+
+  /* Grayscale */
+  --color-gray-900: #111111; /* Page Title Text */
+  --color-gray-800: #333333; /* Contents Title Text */
+  --color-gray-700: #666666; /* Body Text */
+  --color-gray-600: #999999; /* Description Text / Text Field Default Line */
+  --color-gray-500: #CCCCCC; /* Disabled Text / Text Field Disabled Line */
+  --color-gray-400: #DBDBDB; /* Text Field Line / Table·List Div2 / Checkbox·Radio BTN Line */
+  --color-gray-300: #EDEDED; /* Table·List Div1 / Card Box Line */
+  --color-gray-200: #F7F7F7; /* Contents BG1 */
+  --color-gray-100: #FAFAFA; /* Contents BG2 */
+  --color-white:    #FFFFFF; /* BG / Text (on dark) */
+
+  /* ==========================================================================
+     COLOR — Semantic
+     ========================================================================== */
+
+  --color-primary:               var(--color-blue-500);
+
+  /* Text */
+  --color-text-heading:          var(--color-gray-900);
+  --color-text-title:            var(--color-gray-800);
+  --color-text-body:             var(--color-gray-700);
+  --color-text-description:      var(--color-gray-600);
+  --color-text-disabled:         var(--color-gray-500);
+
+  /* Border */
+  --color-border-input:          var(--color-gray-600);
+  --color-border-input-disabled: var(--color-gray-500);
+  --color-border-divider:        var(--color-gray-400);
+  --color-border-card:           var(--color-gray-300);
+
+  /* Background */
+  --color-bg-content-1:          var(--color-gray-200);
+  --color-bg-content-2:          var(--color-gray-100);
+  --color-bg:                    var(--color-white);
+  --color-bg-page:               var(--color-blue-50);
+
+  /* State */
+  --color-error:                 var(--color-red-700);
+  --color-warning:               var(--color-yellow-500);
+
+  /* ==========================================================================
+     GRADIENT
+     ========================================================================== */
+
+  --gradient-gray: linear-gradient(136.76deg, #DAE0E5 4.17%, #C5CCD3 97.22%);
+  --gradient-blue: linear-gradient(136.76deg, #2A9DFF 4.17%, #0D84FF 97.22%);
+
+  /* ==========================================================================
+     TYPOGRAPHY
+     Font-family: Pretendard
+     Line-height: 100%
+     Letter-spacing: 0
+     Paragraph-spacing: 6px
+     ========================================================================== */
+
+  /* Title — SemiBold (weight: 600) */
+  --text-title-2xl-size:   28px; /* 결제 금액 대형 표시 */
+  --text-title-2xl-weight: 700;
+
+  --text-title-xl-size:   24px;
+  --text-title-xl-weight: 600;
+
+  --text-title-lg-size:   20px;
+  --text-title-lg-weight: 600;
+
+  --text-title-md-size:   18px;
+  --text-title-md-weight: 600;
+
+  --text-title-sm-size:   16px;
+  --text-title-sm-weight: 600;
+
+  --text-title-xs-size:   14px;
+  --text-title-xs-weight: 600;
+
+  /* Body — Regular (weight: 400) */
+  --text-body-lg-size:   16px;
+  --text-body-lg-weight: 400;
+
+  --text-body-sm-size:   14px;
+  --text-body-sm-weight: 400;
+
+  --text-body-xs-size:   12px; /* body/body_small_12 — 보조 텍스트 최소 */
+  --text-body-xs-weight: 400;
+
+  /* Headline — Bold (weight: 700) */
+  --text-headline-size:   22px; /* 완료/경고 상태 메시지 제목 */
+  --text-headline-weight: 700;
+
+  /* Shared */
+  --text-font-family:        'Pretendard', sans-serif;
+  --text-line-height:        1;
+  --text-letter-spacing:     0;
+  --text-paragraph-spacing:  6px;
+
+  /* ==========================================================================
+     BORDER RADIUS
+     ========================================================================== */
+
+  --radius-2xl: 16px; /* 팝업 카드 */
+  --radius-xl:  12px; /* 버튼 XLarge */
+  --radius-lg:  10px; /* 버튼 Large, Medium */
+  --radius-md:   8px; /* 버튼 Small, 텍스트필드 박스 */
+  --radius-sm:   6px; /* 버튼 XSmall */
+
+  /* ==========================================================================
+     BUTTON — Size
+     ========================================================================== */
+
+  /* XLarge (52px) */
+  --btn-xl-height:       52px;
+  --btn-xl-padding-x:    24px;
+  --btn-xl-padding-y:    19px;
+  --btn-xl-font-size:    18px;
+  --btn-xl-font-weight:  600;
+  --btn-xl-radius:       var(--radius-xl);
+
+  /* Large (48px) */
+  --btn-lg-height:    48px;
+  --btn-lg-padding:   16px;
+  --btn-lg-font-size: 16px;
+  --btn-lg-radius:    var(--radius-lg);
+
+  /* Medium (40px) */
+  --btn-md-height:    40px;
+  --btn-md-padding-x: 16px;
+  --btn-md-padding-y: 12px;
+  --btn-md-font-size: 16px;
+  --btn-md-radius:    var(--radius-lg);
+
+  /* Small (32px) */
+  --btn-sm-height:    32px;
+  --btn-sm-padding-x: 12px;
+  --btn-sm-padding-y:  9px;
+  --btn-sm-font-size: 14px;
+  --btn-sm-radius:    var(--radius-md);
+
+  /* XSmall (24px) */
+  --btn-xs-height:    24px;
+  --btn-xs-padding-x:  8px;
+  --btn-xs-padding-y:  6px;
+  --btn-xs-font-size: 12px;
+  --btn-xs-radius:    var(--radius-sm);
+
+  /* ==========================================================================
+     INPUT / TEXTFIELD — Size
+     ========================================================================== */
+
+  --input-height:                48px; /* textfield_box 내부 input 높이 */
+  --input-border-line:            2px; /* textfield_line 하단 테두리 */
+  --input-border-box:             1px; /* textfield_box 테두리 */
+  --input-radius:          var(--radius-md);
+  --input-label-font-size:       14px; /* 모든 textfield label */
+  --input-placeholder-size-line: 20px; /* textfield_line placeholder */
+  --input-placeholder-size-box:  16px; /* textfield_box placeholder */
+
+  /* ==========================================================================
+     SHADOW
+     ========================================================================== */
+
+  --shadow-popup: 0px 8px 12px 0px rgba(0, 0, 0, 0.08);
+  --shadow-card:  0px 6px 8px 0px rgba(0, 0, 0, 0.02);
+
+  /* ==========================================================================
+     POPUP / LAYER POPUP
+     ========================================================================== */
+
+  --popup-width:            312px;
+  --popup-height-min:       280px;
+  --popup-height-max:       480px;
+  --popup-radius:           var(--radius-2xl);
+  --popup-shadow:           var(--shadow-popup);
+  --popup-padding-top:       32px; /* 상단 여백 */
+  --popup-padding-x:         20px; /* 좌우 콘텐츠 여백 */
+  --popup-gap-content-btn:   24px; /* 콘텐츠 ↔ 버튼 간격 */
+  --popup-padding-bottom:    20px; /* 하단 버튼 여백 */
+
+  /* ==========================================================================
+     DIMMED OVERLAY
+     ========================================================================== */
+
+  --dimmed-bg:      var(--color-gray-900);
+  --dimmed-opacity: 0.7;
+
+  /* ==========================================================================
+     ALERT / CONFIRM
+     공유값(padding-top, gap-content-btn, padding-bottom, radius, shadow)은
+     --popup-* 토큰을 재사용
+     ========================================================================== */
+
+  --alert-width:     280px; /* Fixed (Layer Popup은 312px) */
+  --alert-padding-x:  24px; /* 좌우 콘텐츠 여백 (Layer Popup은 20px) */
+  --alert-btn-gap:     8px; /* 아니요/네 듀얼 버튼 사이 간격 */
+
+  /* ==========================================================================
+     STATE SCREEN — Complete / Warning
+     ========================================================================== */
+
+  --state-icon-size:    64px; /* 완료/경고 상태 아이콘 크기 */
+  --state-gap-icon-msg: 20px; /* 아이콘 ↔ 메시지 간격 */
+  --state-gap-msg-desc: 12px; /* 메시지 ↔ 디스크립션 간격 */
+  --state-gap-desc-btn: 24px; /* 디스크립션 ↔ 버튼 간격 */
+
+}

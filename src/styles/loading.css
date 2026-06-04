@@ -1,0 +1,149 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+.progress_box{position:absolute;width:100%;height:24px;/*top:0;left:0;*/top:50%;left:50%;transform:translate(-50%, -60%);display:flex;align-items:center;justify-content:center;margin:0;padding:0;}
+.progress_box,
+.progress_box .progress_txt{font-size:10px;font-weight:700;color:#222;line-height:26px;text-align:center;letter-spacing:-1px;}
+.progress_box .progress_txt.completed{}
+.progress_box .progress_txt.completed.js_completed{font-size:0}
+.progress_box .progress_txt.completed::after{content:'';position:absolute;top:50%;left:50%;margin-left:-8px;margin-top:-5px;width:15px;height:11px;display:block;background-image:url("/img/ic_check.png");background-repeat:no-repeat;background-position:center;background-size:14px auto;transition:opacity 1.5s;-webkit-transition:opacity 1.5s;opacity:0;}
+.progress_box .progress_txt.completed.js_completed::after{opacity:1}
+.progress_box .progress_txt{display:block;}
+
+/* loading */
+.loading1{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;flex-flow:row wrap;justify-content:center;align-items:flex-start;/*margin:0 0 30px;*/}
+.loading1 p{width:11px;height:11px;margin:0 4px;border-radius:50%;transform: scale(.5);background-color:#2b5afe;}
+.loading1 p:nth-child(1){animation:loader1 1s linear infinite;}
+.loading1 p:nth-child(2){animation:loader1 1s linear infinite .125s;}
+.loading1 p:nth-child(3){animation: loader1 1s linear infinite .25s;}
+
+@keyframes loader1{
+	0%{
+		transform: scale(.5);
+		background-color:#2b5afe;
+		opacity:.5;
+	}
+	20%{
+		transform: scale(1);
+		opacity:1;
+	}
+	50%{
+		transform: scale(.5);
+		opacity:1;
+	}
+}
+
+/* (start)20240903 */
+/************************************************************
+car loading
+************************************************************/
+.loading_animate{position:relative;width:100%;padding-top:50px;overflow:hidden;}
+.car{position:relative;display:flex;width:76px;height:59px;margin:5px auto 0;justify-content:space-between;}
+.car::before{position:absolute;display:block;content:'';width:76px;height:59px;left:0;top:0;animation:bodyRun 0.6s linear infinite;background:url('/img/loading_carBody.png') no-repeat 0 0;background-size:76px 59px;z-index:1;}
+.back_wheels,
+.front_wheels{position:relative;display:flex;justify-content:center;align-items:center;width:15px;height:15px;top:44px;border-radius:50%;background-color:#383f4c;animation:run 0.6s linear infinite;z-index:2;}
+.back_wheels{left:11px;}
+.front_wheels{right:11px}
+.back_wheels::after,
+.front_wheels::after{content:'';position:relative;box-sizing:border-box;width:7px;height:7px;background-color:#fff;border-radius:50%;background:#dcdcea;}
+
+@keyframes bodyRun{
+	from{
+		top:0;
+	}
+	50%{
+		top:2px;
+	}
+	to{
+		top:0;
+	}
+}
+@keyframes run{
+	from{
+		height:15px;
+	}
+	50%{
+		height:13px;
+	}
+	to{
+		height:15px;
+	}
+}
+
+.clouds{position:absolute;display:flex;top:-7px;right:0;width:100%;height:130px;}
+.clouds img{height:100%;animation:moveClouds 6s linear infinite;}
+.loading_animate.stop .clouds{background:url('/img/loading_complete.png') no-repeat 50% 100%;background-size:auto 130px;}
+
+@keyframes moveClouds{
+	from{
+		transform:translate(0);
+	}
+	to{
+		transform:translate(-720px);
+	}
+}
+
+.strikes{position:absolute;width:18px;height:inherit;left:-10px;display:flex;flex-direction:column;justify-content:center;gap:4px;top:10px;z-index:2;}
+.strikes span{height:2px;border-radius:2px;background-color:#9da5ad;animation:drift 0.6s linear infinite;animation-delay:calc(var(--n) * -.9s);}
+
+@keyframes drift{
+	from{
+		transform:translate(0);
+	}
+	to{
+		transform:translate(-1.5em);
+		filter:opacity(0);
+	}
+}
+.strikes span:nth-child(1){--n:2;}
+.strikes span:nth-child(2){--n:1;}
+.stop .car::before,
+.stop .strikes span,
+.stop .clouds img,
+.stop .back_wheels,
+.stop .front_wheels{animation:none;}
+.stop .strikes{display:none;}
+
+.loader_prgress_bar{position:relative;display:block;width:100%;height:8px;margin-top:20px;border-radius:8px;background-color:#dfe4eb;overflow:hidden;}
+.loader_prgress_bar .progress{content:'';position:absolute;left:0;width:0%;height:8px;/*background:;*/border-radius:8px;transition:width 0.3s ease-in-out;}
+
+.stats-container{position:relative;}
+.stats-container::after{position:absolute;content:'';top:0;right:0;bottom:0;left:0;background:rgb(255,255,255);background:linear-gradient(0deg, rgba(255,255,255,1) 0, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 75%, rgba(255,255,255,1) 100%);}
+
+.stats-container .stat{display:flex;justify-content:center;align-items:center;margin-top:17px;}
+.stats-container .stat .odometer,
+.stats-container .stat .type{font-style:normal;font-size:24px;font-weight:500;/*color:;*/text-align:center;}
+.stats-container .stat .type{margin-left:4px;}
+
+.odometer.odometer-auto-theme,
+.odometer.odometer-theme-default{display:-moz-inline-box;-moz-box-orient:vertical;display:inline-block;vertical-align:middle;*vertical-align:auto;position:relative;}
+.odometer.odometer-auto-theme,
+.odometer.odometer-theme-default{*display:inline;}
+.odometer.odometer-auto-theme .odometer-digit,
+.odometer.odometer-theme-default .odometer-digit{display:-moz-inline-box;-moz-box-orient:vertical;display:inline-block;/*vertical-align:middle;*vertical-align:auto;*/position:relative;}
+.odometer.odometer-auto-theme .odometer-digit,
+.odometer.odometer-theme-default .odometer-digit{*display:inline;}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-spacer,
+.odometer.odometer-theme-default .odometer-digit .odometer-digit-spacer{display:-moz-inline-box;-moz-box-orient:vertical;display:inline-block;/*vertical-align:middle;*vertical-align:auto;*/visibility:hidden;}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-spacer,
+.odometer.odometer-theme-default .odometer-digit .odometer-digit-spacer{*display:inline;}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-inner,
+.odometer.odometer-theme-default .odometer-digit .odometer-digit-inner{text-align:left;display:block;position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden;}
+.odometer.odometer-auto-theme .odometer-digit .odometer-ribbon,
+.odometer.odometer-theme-default .odometer-digit .odometer-ribbon{display:block;}
+.odometer.odometer-auto-theme .odometer-digit .odometer-ribbon-inner,
+.odometer.odometer-theme-default .odometer-digit .odometer-ribbon-inner{display:block;-webkit-backface-visibility:hidden;}
+.odometer.odometer-auto-theme .odometer-digit .odometer-value,
+.odometer.odometer-theme-default .odometer-digit .odometer-value{display:block;-webkit-transform:translateZ(0);}
+.odometer.odometer-auto-theme .odometer-digit .odometer-value.odometer-last-value,
+.odometer.odometer-theme-default .odometer-digit .odometer-value.odometer-last-value{position:absolute;}
+.odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner,
+.odometer.odometer-theme-default.odometer-animating-up .odometer-ribbon-inner{-webkit-transition:-webkit-transform 2s;-moz-transition:-moz-transform 2s;-ms-transition:-ms-transform 2s;-o-transition:-o-transform 2s;transition:transform 2s;}
+.odometer.odometer-auto-theme.odometer-animating-up.odometer-animating .odometer-ribbon-inner,
+.odometer.odometer-theme-default.odometer-animating-up.odometer-animating .odometer-ribbon-inner{-webkit-transform:translateY(-100%);-moz-transform:translateY(-100%);-ms-transform:translateY(-100%);-o-transform:translateY(-100%);transform:translateY(-100%);}
+.odometer.odometer-auto-theme.odometer-animating-down .odometer-ribbon-inner,
+.odometer.odometer-theme-default.odometer-animating-down .odometer-ribbon-inner{-webkit-transform:translateY(-100%);-moz-transform:translateY(-100%);-ms-transform:translateY(-100%);-o-transform:translateY(-100%);transform:translateY(-100%);}
+.odometer.odometer-auto-theme.odometer-animating-down.odometer-animating .odometer-ribbon-inner,
+.odometer.odometer-theme-default.odometer-animating-down.odometer-animating .odometer-ribbon-inner{-webkit-transition:-webkit-transform 2s;-moz-transition:-moz-transform 2s;-ms-transition:-ms-transform 2s;-o-transition:-o-transform 2s;transition:transform 2s;-webkit-transform:translateY(0);-moz-transform:translateY(0);-ms-transform:translateY(0);-o-transform:translateY(0);transform:translateY(0);}
+/* //(end)20240903 */
+

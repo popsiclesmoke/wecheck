@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360, initial-scale=1.0">
+  <title>공동인증 선택</title>
+  <link rel="stylesheet" href="../../../design/tokens.css">
+  <style>
+    :root {
+      --color-shinhan-from: #0066CC;
+      --color-shinhan-to: #004EA8;
+      --color-naver-from: #2DB400;
+      --color-naver-to: #1D9200;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 360px; height: 800px; overflow: hidden; }
+    body {
+      font-family: 'Pretendard', -apple-system, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text-heading);
+      display: flex; flex-direction: column;
+    }
+    .topbar {
+      height: 56px; display: flex; align-items: center;
+      padding: 0 16px; gap: 8px;
+      border-bottom: 1px solid var(--color-border-card);
+      flex-shrink: 0; background: var(--color-bg);
+    }
+    .back-btn {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer;
+      color: var(--color-text-heading);
+    }
+    .topbar-title { font-size: var(--text-title-md-size); font-weight: var(--text-title-md-weight); }
+    .content { flex: 1; overflow-y: auto; padding: 28px 16px 24px; }
+
+    .page-title {
+      font-size: var(--text-title-xl-size);
+      font-weight: var(--text-title-xl-weight);
+      color: var(--color-text-heading);
+      margin-bottom: 8px;
+    }
+    .page-sub {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-description);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .cert-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .cert-card {
+      border: 2px solid var(--color-border-card);
+      border-radius: var(--radius-2xl);
+      padding: 24px 16px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 12px;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      background: var(--color-bg);
+      position: relative;
+    }
+    .cert-card:hover { border-color: var(--color-primary); }
+    .cert-card.selected {
+      border-color: var(--color-primary);
+      background: var(--color-blue-50);
+    }
+    .cert-check {
+      position: absolute; top: 12px; right: 12px;
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 2px solid var(--color-border-divider);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .cert-card.selected .cert-check {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+    .cert-check-inner {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--color-bg); opacity: 0;
+    }
+    .cert-card.selected .cert-check-inner { opacity: 1; }
+
+    .cert-logo {
+      width: 60px; height: 60px; border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: var(--text-title-2xl-size); font-weight: 800; color: var(--color-bg);
+    }
+    .cert-logo-shinhan { background: linear-gradient(135deg, var(--color-shinhan-from), var(--color-shinhan-to)); }
+    .cert-logo-naver   { background: linear-gradient(135deg, var(--color-naver-from), var(--color-naver-to)); }
+
+    .cert-name {
+      font-size: var(--text-title-xs-size);
+      font-weight: var(--text-title-xs-weight);
+      color: var(--color-text-heading);
+      text-align: center;
+      line-height: 1.4;
+    }
+    .cert-sub {
+      font-size: var(--text-body-xs-size);
+      color: var(--color-text-description);
+      text-align: center;
+    }
+
+    .info-banner {
+      background: var(--color-bg-content-2);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .info-icon { font-size: 16px; flex-shrink: 0; line-height: 1.5; }
+    .info-text {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-body);
+      line-height: 1.6;
+    }
+
+    .footer { padding: 16px; flex-shrink: 0; }
+    .btn-primary {
+      width: 100%; height: var(--btn-xl-height);
+      background: var(--color-primary); color: var(--color-bg);
+      border: none; border-radius: var(--radius-xl);
+      font-size: var(--btn-xl-font-size); font-weight: var(--btn-xl-font-weight);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <button class="back-btn" aria-label="뒤로가기">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <span class="topbar-title">공동인증</span>
+  </div>
+
+  <div class="content">
+    <p class="page-title">공동인증을<br>선택해주세요</p>
+    <p class="page-sub">인증서를 선택하면 해당 앱으로 연결됩니다</p>
+
+    <div class="cert-grid">
+      <div class="cert-card selected" onclick="selectCert(this)">
+        <div class="cert-check"><div class="cert-check-inner"></div></div>
+        <div class="cert-logo cert-logo-shinhan">신</div>
+        <div>
+          <div class="cert-name">신한은행<br>공동인증서</div>
+          <div class="cert-sub" style="margin-top:4px">신한 SOL</div>
+        </div>
+      </div>
+
+      <div class="cert-card" onclick="selectCert(this)">
+        <div class="cert-check"><div class="cert-check-inner"></div></div>
+        <div class="cert-logo cert-logo-naver">N</div>
+        <div>
+          <div class="cert-name">Naver<br>공동인증서</div>
+          <div class="cert-sub" style="margin-top:4px">네이버 앱</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-banner">
+      <span class="info-icon">ℹ️</span>
+      <div class="info-text">
+        선택한 인증서 앱이 설치되어 있어야 합니다.<br>
+        앱 실행 후 인증을 완료하면 자동으로 복귀됩니다.
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <button class="btn-primary">인증하기</button>
+  </div>
+
+  <script src="../../../icons.js"></script>
+  <script>
+    function selectCert(el) {
+      document.querySelectorAll('.cert-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+  </script>
+</body>
+</html>

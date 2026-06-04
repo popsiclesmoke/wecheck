@@ -1,0 +1,9 @@
+# 캡처 출력물
+capture-output/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 에디터
+*.log

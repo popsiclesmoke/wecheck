@@ -1,0 +1,8 @@
+{
+    "name": "Pretendard Font Converter",
+    "id": "pretendard-font-fixer-001",
+    "api": "1.0.0",
+    "main": "dist/code.js",
+    "ui": "src/ui.html",
+    "editorType": ["figma"]
+}

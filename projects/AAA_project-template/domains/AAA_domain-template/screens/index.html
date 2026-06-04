@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[PROJECT_CODE] [DOMAIN_CODE] 화면 미리보기</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+      background: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Top Bar ── */
+    .topbar {
+      width: 100%;
+      background: #111;
+      border-bottom: 1px solid #333;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      opacity: 0.6;
+    }
+
+    .select-wrap {
+      position: relative;
+      flex: 1;
+      max-width: 360px;
+    }
+
+    .screen-select {
+      width: 100%;
+      height: 38px;
+      padding: 0 36px 0 14px;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .screen-select:hover { border-color: #666; }
+    .screen-select:focus { border-color: #4D84FF; }
+
+    .select-wrap::after {
+      content: '';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid #aaa;
+      pointer-events: none;
+    }
+
+    .nav-btns { display: flex; gap: 6px; }
+
+    .nav-btn {
+      width: 32px;
+      height: 32px;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 6px;
+      color: #aaa;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .nav-btn:hover { background: #333; color: #fff; border-color: #666; }
+    .nav-btn:active { background: #444; }
+
+    .screen-counter {
+      font-size: 12px;
+      color: #666;
+      white-space: nowrap;
+      min-width: 48px;
+      text-align: center;
+    }
+
+    /* ── Phone Frame ── */
+    .phone-wrap {
+      margin: 32px 0 48px;
+      position: relative;
+    }
+
+    .phone-shell {
+      width: 392px;
+      background: #2a2a2a;
+      border-radius: 44px;
+      padding: 16px;
+      box-shadow:
+        0 0 0 1px #3a3a3a,
+        0 24px 80px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .phone-notch {
+      width: 100px;
+      height: 24px;
+      background: #1a1a1a;
+      border-radius: 0 0 16px 16px;
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    .screen-frame {
+      width: 360px;
+      height: 800px;
+      border-radius: 30px;
+      overflow: hidden;
+      background: #fff;
+      position: relative;
+    }
+
+    .screen-frame iframe {
+      width: 360px;
+      height: 800px;
+      border: none;
+      display: block;
+    }
+
+    /* ── Empty State ── */
+    .empty-state {
+      width: 360px;
+      height: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #555;
+      font-size: 14px;
+    }
+    .empty-state .icon { font-size: 32px; opacity: 0.4; }
+
+    /* ── Screen Label ── */
+    .screen-label {
+      text-align: center;
+      margin-top: 16px;
+      color: #666;
+      font-size: 12px;
+      letter-spacing: 0.3px;
+    }
+    .screen-label strong { color: #aaa; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <span class="logo" id="projectLabel">[PROJECT_CODE] [DOMAIN_CODE]</span>
+
+    <div class="select-wrap">
+      <select class="screen-select" id="screenSelect" onchange="navigate()">
+        <!-- Designer 에이전트가 screen-list.md 기반으로 <optgroup> + <option> 채워 넣음 -->
+      </select>
+    </div>
+
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="prev()" title="이전 (←)">‹</button>
+      <button class="nav-btn" onclick="next()" title="다음 (→)">›</button>
+    </div>
+    <span class="screen-counter" id="counter">— / —</span>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone-shell">
+      <div class="phone-notch"></div>
+      <div class="screen-frame" id="screenFrame">
+        <div class="empty-state">
+          <span class="icon">🎨</span>
+          <span>아직 제작된 화면이 없습니다</span>
+          <span style="font-size:12px; color:#444;">@designer-agent 실행 후 화면이 표시됩니다</span>
+        </div>
+      </div>
+    </div>
+    <p class="screen-label" id="screenLabel">화면을 선택하세요</p>
+  </div>
+
+  <script>
+    const select  = document.getElementById('screenSelect');
+    const frame   = document.getElementById('screenFrame');
+    const label   = document.getElementById('screenLabel');
+    const counter = document.getElementById('counter');
+
+    function getOptions() { return Array.from(select.options); }
+
+    function updateUI() {
+      const options = getOptions();
+      if (!options.length) return;
+      const opt = options[select.selectedIndex];
+      const num = String(select.selectedIndex + 1).padStart(2, '0');
+
+      // iframe이 없으면 생성
+      let iframe = frame.querySelector('iframe');
+      if (!iframe) {
+        frame.innerHTML = '';
+        iframe = document.createElement('iframe');
+        frame.appendChild(iframe);
+      }
+      iframe.src = opt.value;
+      label.innerHTML = `<strong>${num}.</strong> ${opt.dataset.label || opt.text.replace(/^\d+\.\s*/, '')}`;
+      counter.textContent = `${select.selectedIndex + 1} / ${options.length}`;
+    }
+
+    function navigate() { updateUI(); }
+
+    function prev() {
+      if (select.selectedIndex > 0) { select.selectedIndex--; updateUI(); }
+    }
+    function next() {
+      const options = getOptions();
+      if (select.selectedIndex < options.length - 1) { select.selectedIndex++; updateUI(); }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  prev();
+      if (e.key === 'ArrowRight') next();
+    });
+
+    // 초기 로드
+    if (getOptions().length > 0) updateUI();
+  </script>
+
+</body>
+</html>

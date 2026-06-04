@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360, initial-scale=1.0">
+  <title>PIN 변경</title>
+  <link rel="stylesheet" href="../../../design/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 360px; height: 800px; overflow: hidden; }
+    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--color-bg); color: var(--color-text-heading); }
+
+    /* ── Status Bar ── */
+    .status-bar {
+      width: 360px; height: 24px;
+      background: var(--color-bg);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px;
+    }
+    .status-bar-time { font-size: var(--text-body-xs-size); font-weight: 600; color: var(--color-text-heading); }
+
+    /* ── TopBar ── */
+    .topbar {
+      width: 360px; height: 56px;
+      background: var(--color-bg);
+      display: flex; align-items: center;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--color-border-card);
+      gap: 8px;
+    }
+    .topbar-back {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      border: none; background: none; cursor: pointer;
+      border-radius: 50%; flex-shrink: 0;
+    }
+    .topbar-title {
+      font-size: var(--text-title-sm-size);
+      font-weight: var(--text-title-sm-weight);
+      color: var(--color-text-heading);
+      flex: 1; text-align: center;
+      margin-right: 36px;
+    }
+
+    /* ── Main Layout ── */
+    .main-layout {
+      width: 360px;
+      height: calc(800px - 24px - 56px);
+      display: flex; flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Step Indicator ── */
+    .steps {
+      display: flex; align-items: center;
+      padding: 24px 20px 0;
+      gap: 0;
+      width: 100%;
+    }
+    .step-item {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      flex: 1;
+    }
+    .step-circle {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: var(--text-body-xs-size);
+      font-weight: 700;
+    }
+    .step-circle.active {
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+    .step-circle.inactive {
+      background: var(--color-gray-200);
+      color: var(--color-text-disabled);
+    }
+    .step-circle.done {
+      background: var(--color-blue-200);
+      color: var(--color-primary);
+    }
+    .step-name {
+      font-size: var(--text-body-xs-size);
+      font-weight: 500;
+      color: var(--color-text-description);
+      white-space: nowrap;
+    }
+    .step-name.active { color: var(--color-primary); font-weight: 600; }
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--color-gray-300);
+      margin-bottom: 22px;
+    }
+    .step-line.done { background: var(--color-blue-200); }
+
+    /* ── PIN Title ── */
+    .pin-title-area {
+      padding: 32px 20px 8px;
+      width: 100%;
+      text-align: center;
+    }
+    .pin-title {
+      font-size: var(--text-title-lg-size);
+      font-weight: var(--text-title-lg-weight);
+      color: var(--color-text-heading);
+      margin-bottom: 8px;
+    }
+    .pin-desc {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-description);
+    }
+
+    /* ── PIN Dots ── */
+    .pin-dots {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px;
+      padding: 28px 0 32px;
+    }
+    .pin-dot {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--color-gray-400);
+      background: var(--color-white);
+    }
+    .pin-dot.filled {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+    .pin-dot.active-pulse {
+      border-color: var(--color-primary);
+      background: var(--color-blue-100);
+    }
+
+    /* ── Keypad ── */
+    .keypad {
+      width: 100%;
+      padding: 0 20px;
+      flex: 1;
+    }
+    .keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .key-btn {
+      height: 64px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border-card);
+      background: var(--color-bg);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer;
+      gap: 2px;
+    }
+    .key-btn:active { background: var(--color-blue-50); }
+    .key-number {
+      font-size: var(--text-title-md-size);
+      font-weight: var(--text-title-md-weight);
+      color: var(--color-text-heading);
+      line-height: 1;
+    }
+    .key-letters {
+      font-size: var(--text-body-xs-size);
+      color: var(--color-text-description);
+      letter-spacing: 1px;
+    }
+    .key-btn.empty { border: none; background: none; cursor: default; }
+    .key-btn.action {
+      border: none;
+      background: var(--color-bg-content-1);
+    }
+    .key-btn.action .key-number {
+      font-size: var(--text-body-sm-size);
+      font-weight: 600;
+      color: var(--color-text-body);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="status-bar-time">9:41</span>
+    <div style="display:flex;align-items:center;gap:4px;">
+      <span data-icon="wifi" style="width:14px;height:14px;display:inline-flex;color:var(--color-text-heading)"></span>
+    </div>
+  </div>
+
+  <!-- TopBar -->
+  <div class="topbar">
+    <button class="topbar-back" aria-label="뒤로가기">
+      <span data-icon="arrowBack" style="width:22px;height:22px;display:inline-flex;color:var(--color-text-heading)"></span>
+    </button>
+    <span class="topbar-title">PIN 변경</span>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="main-layout">
+
+    <!-- Step Indicator -->
+    <div class="steps">
+      <div class="step-item">
+        <div class="step-circle active">1</div>
+        <span class="step-name active">현재 PIN</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-item">
+        <div class="step-circle inactive">2</div>
+        <span class="step-name">새 PIN</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-item">
+        <div class="step-circle inactive">3</div>
+        <span class="step-name">확인</span>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="pin-title-area">
+      <div class="pin-title">현재 PIN을 입력해주세요</div>
+      <div class="pin-desc">보안을 위해 현재 사용 중인 PIN을<br>먼저 확인합니다</div>
+    </div>
+
+    <!-- PIN Dots (2 filled, 1 active, 3 empty) -->
+    <div class="pin-dots">
+      <div class="pin-dot filled"></div>
+      <div class="pin-dot filled"></div>
+      <div class="pin-dot active-pulse"></div>
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+    </div>
+
+    <!-- Keypad -->
+    <div class="keypad">
+      <div class="keypad-grid">
+        <!-- Row 1: 1 2 3 -->
+        <button class="key-btn">
+          <span class="key-number">1</span>
+        </button>
+        <button class="key-btn">
+          <span class="key-number">2</span>
+          <span class="key-letters">ABC</span>
+        </button>
+        <button class="key-btn">
+          <span class="key-number">3</span>
+          <span class="key-letters">DEF</span>
+        </button>
+
+        <!-- Row 2: 4 5 6 -->
+        <button class="key-btn">
+          <span class="key-number">4</span>
+          <span class="key-letters">GHI</span>
+        </button>
+        <button class="key-btn">
+          <span class="key-number">5</span>
+          <span class="key-letters">JKL</span>
+        </button>
+        <button class="key-btn">
+          <span class="key-number">6</span>
+          <span class="key-letters">MNO</span>
+        </button>
+
+        <!-- Row 3: 7 8 9 -->
+        <button class="key-btn">
+          <span class="key-number">7</span>
+          <span class="key-letters">PQRS</span>
+        </button>
+        <button class="key-btn">
+          <span class="key-number">8</span>
+          <span class="key-letters">TUV</span>
+        </button>
+        <button class="key-btn">
+          <span class="key-number">9</span>
+          <span class="key-letters">WXYZ</span>
+        </button>
+
+        <!-- Row 4: empty 0 backspace -->
+        <button class="key-btn empty"></button>
+        <button class="key-btn">
+          <span class="key-number">0</span>
+        </button>
+        <button class="key-btn action" aria-label="지우기">
+          <span data-icon="backspace" style="width:22px;height:22px;display:inline-flex;color:var(--color-text-body)"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../icons.js"></script>
+</body>
+</html>

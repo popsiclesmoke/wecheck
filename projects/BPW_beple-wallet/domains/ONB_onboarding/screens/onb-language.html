@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360, initial-scale=1.0">
+  <title>ONB-001 언어 선택</title>
+  <link rel="stylesheet" href="../../../design/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 360px; height: 800px; overflow: hidden; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text-heading);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Status bar */
+    .status-bar {
+      height: 24px;
+      background: var(--color-bg);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 16px;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .status-bar span {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-heading);
+    }
+
+    /* Logo area */
+    .logo-area {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 56px;
+      padding-bottom: 40px;
+    }
+    .logo-mark {
+      width: 56px;
+      height: 56px;
+      background: var(--color-primary);
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .logo-mark svg {
+      color: var(--color-bg);
+    }
+    .logo-name {
+      font-size: var(--text-title-xl-size);
+      font-weight: var(--text-title-xl-weight);
+      color: var(--color-primary);
+      letter-spacing: -0.5px;
+    }
+    .logo-sub {
+      margin-top: 4px;
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-description);
+    }
+
+    /* Language list */
+    .lang-list {
+      flex: 1;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+    }
+    .lang-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      height: 64px;
+      border-radius: var(--radius-xl);
+      border: 1.5px solid var(--color-border-card);
+      background: var(--color-bg);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .lang-item:hover {
+      border-color: var(--color-primary);
+      background: var(--color-blue-50);
+    }
+    .lang-item.selected {
+      border-color: var(--color-primary);
+      background: var(--color-blue-50);
+    }
+    .lang-item-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .lang-flag {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--color-bg-content-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .lang-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .lang-name {
+      font-size: var(--text-body-lg-size);
+      font-weight: 500;
+      color: var(--color-text-title);
+    }
+    .lang-native {
+      font-size: var(--text-body-xs-size);
+      color: var(--color-text-description);
+    }
+    .radio-circle {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--color-border-divider);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.15s;
+    }
+    .lang-item.selected .radio-circle {
+      border-color: var(--color-primary);
+      background: var(--color-primary);
+    }
+    .radio-inner {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-bg);
+      display: none;
+    }
+    .lang-item.selected .radio-inner {
+      display: block;
+    }
+
+    /* Bottom button */
+    .btn-area {
+      padding: 16px 20px 32px;
+      flex-shrink: 0;
+    }
+    .btn-primary {
+      display: block;
+      width: 100%;
+      height: var(--btn-xl-height);
+      background: var(--color-primary);
+      color: var(--color-bg);
+      border: none;
+      border-radius: var(--btn-xl-radius);
+      font-size: var(--btn-xl-font-size);
+      font-weight: var(--btn-xl-font-weight);
+      font-family: inherit;
+      cursor: pointer;
+      letter-spacing: -0.2px;
+    }
+    .btn-primary:disabled {
+      background: var(--color-gray-400);
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span>9:41</span>
+  </div>
+
+  <!-- Logo area -->
+  <div class="logo-area">
+    <div class="logo-mark">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+        <path d="M8 8h6a4 4 0 0 1 0 8H8V8z" fill="white"/>
+        <path d="M8 16h7a5 5 0 0 1 0 10H8V16z" fill="white" opacity="0.7"/>
+      </svg>
+    </div>
+    <div class="logo-name">비플월렛</div>
+    <div class="logo-sub">언어를 선택해주세요</div>
+  </div>
+
+  <!-- Language list -->
+  <div class="lang-list">
+    <div class="lang-item selected" onclick="selectLang(this)">
+      <div class="lang-item-left">
+        <div class="lang-flag">🇰🇷</div>
+        <div class="lang-label">
+          <span class="lang-name">한국어</span>
+          <span class="lang-native">Korean</span>
+        </div>
+      </div>
+      <div class="radio-circle"><div class="radio-inner"></div></div>
+    </div>
+
+    <div class="lang-item" onclick="selectLang(this)">
+      <div class="lang-item-left">
+        <div class="lang-flag">🇺🇸</div>
+        <div class="lang-label">
+          <span class="lang-name">English</span>
+          <span class="lang-native">English</span>
+        </div>
+      </div>
+      <div class="radio-circle"><div class="radio-inner"></div></div>
+    </div>
+
+    <div class="lang-item" onclick="selectLang(this)">
+      <div class="lang-item-left">
+        <div class="lang-flag">🇨🇳</div>
+        <div class="lang-label">
+          <span class="lang-name">中文</span>
+          <span class="lang-native">Chinese</span>
+        </div>
+      </div>
+      <div class="radio-circle"><div class="radio-inner"></div></div>
+    </div>
+
+    <div class="lang-item" onclick="selectLang(this)">
+      <div class="lang-item-left">
+        <div class="lang-flag">🇯🇵</div>
+        <div class="lang-label">
+          <span class="lang-name">日本語</span>
+          <span class="lang-native">Japanese</span>
+        </div>
+      </div>
+      <div class="radio-circle"><div class="radio-inner"></div></div>
+    </div>
+
+    <div class="lang-item" onclick="selectLang(this)">
+      <div class="lang-item-left">
+        <div class="lang-flag">🇪🇸</div>
+        <div class="lang-label">
+          <span class="lang-name">Español</span>
+          <span class="lang-native">Spanish</span>
+        </div>
+      </div>
+      <div class="radio-circle"><div class="radio-inner"></div></div>
+    </div>
+  </div>
+
+  <!-- Button -->
+  <div class="btn-area">
+    <button class="btn-primary" id="nextBtn" onclick="location.href='onb-user-type.html'">다음</button>
+  </div>
+
+  <script src="../../../icons.js"></script>
+  <script>
+    function selectLang(el) {
+      document.querySelectorAll('.lang-item').forEach(i => i.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('nextBtn').disabled = false;
+    }
+  </script>
+</body>
+</html>

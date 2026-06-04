@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360, initial-scale=1.0">
+  <title>계좌 선택 · 금액 입력</title>
+  <link rel="stylesheet" href="../../../design/tokens.css">
+  <style>
+    :root {
+      --color-shinhan-from: #0066CC;
+      --color-shinhan-to: #004EA8;
+      --amount-display-font-size: 36px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 360px; height: 800px; overflow: hidden; }
+    body {
+      font-family: 'Pretendard', -apple-system, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text-heading);
+      display: flex; flex-direction: column;
+    }
+    .topbar {
+      height: 56px; display: flex; align-items: center;
+      padding: 0 16px; gap: 8px;
+      border-bottom: 1px solid var(--color-border-card);
+      flex-shrink: 0; background: var(--color-bg);
+    }
+    .back-btn {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer;
+      color: var(--color-text-heading);
+    }
+    .topbar-title { font-size: var(--text-title-md-size); font-weight: var(--text-title-md-weight); }
+    .content { flex: 1; overflow-y: auto; padding: 24px 16px 16px; }
+
+    /* Account Card */
+    .section-label {
+      font-size: var(--text-title-xs-size);
+      font-weight: var(--text-title-xs-weight);
+      color: var(--color-text-description);
+      margin-bottom: 10px;
+    }
+
+    .account-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--color-border-card);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      margin-bottom: 24px;
+      background: var(--color-bg);
+      transition: border-color 0.15s;
+    }
+    .account-card:hover { border-color: var(--color-primary); }
+
+    .bank-logo {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-shinhan-from), var(--color-shinhan-to));
+      display: flex; align-items: center; justify-content: center;
+      font-size: var(--text-title-md-size); font-weight: 800; color: var(--color-bg);
+      flex-shrink: 0;
+    }
+    .account-info { flex: 1; }
+    .account-bank { font-size: var(--text-title-xs-size); font-weight: var(--text-title-xs-weight); color: var(--color-text-heading); }
+    .account-num  { font-size: var(--text-body-xs-size); color: var(--color-text-description); margin-top: 2px; }
+    .account-balance { font-size: var(--text-body-xs-size); font-weight: 600; color: var(--color-text-title); margin-top: 3px; }
+    .account-arrow { color: var(--color-text-disabled); }
+
+    /* Amount input */
+    .amount-input-wrap {
+      background: var(--color-bg-content-2);
+      border-radius: var(--radius-lg);
+      padding: 20px 16px;
+      margin-bottom: 14px;
+    }
+    .amount-display-row {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .amount-input-field {
+      font-size: var(--amount-display-font-size); font-weight: 700;
+      color: var(--color-text-heading);
+      background: none; border: none; outline: none;
+      width: calc(100% - 40px);
+      font-family: 'Pretendard', -apple-system, sans-serif;
+      letter-spacing: -0.02em;
+    }
+    .amount-input-field::placeholder { color: var(--color-text-disabled); }
+    .amount-currency {
+      font-size: var(--text-title-md-size);
+      font-weight: 600;
+      color: var(--color-text-description);
+      padding-bottom: 4px;
+      flex-shrink: 0;
+    }
+    .amount-divider { height: 2px; background: var(--color-primary); border-radius: 1px; }
+
+    /* Quick amount buttons */
+    .quick-buttons { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .quick-btn {
+      height: var(--btn-sm-height);
+      padding: 0 var(--btn-sm-padding-x);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border-divider);
+      border-radius: var(--radius-md);
+      font-size: var(--btn-sm-font-size);
+      font-weight: 500;
+      color: var(--color-text-title);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .quick-btn:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+      background: var(--color-blue-50);
+    }
+    .quick-btn.all {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    /* Limit info */
+    .limit-card {
+      background: var(--color-bg-content-2);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+    }
+    .limit-title {
+      font-size: var(--text-title-xs-size);
+      font-weight: var(--text-title-xs-weight);
+      color: var(--color-text-title);
+      margin-bottom: 10px;
+    }
+    .limit-rows { display: flex; flex-direction: column; gap: 8px; }
+    .limit-row { display: flex; justify-content: space-between; align-items: center; }
+    .limit-label { font-size: var(--text-body-xs-size); color: var(--color-text-description); }
+    .limit-value { font-size: var(--text-body-xs-size); font-weight: 600; color: var(--color-text-title); }
+    .limit-bar-track {
+      height: 4px; background: var(--color-border-card); border-radius: 99px;
+      overflow: hidden; margin-top: 8px;
+    }
+    .limit-bar-fill {
+      height: 100%; width: 35%; border-radius: 99px;
+      background: var(--color-primary);
+    }
+
+    .footer { padding: 16px; flex-shrink: 0; }
+    .btn-primary {
+      width: 100%; height: var(--btn-xl-height);
+      background: var(--color-primary); color: var(--color-bg);
+      border: none; border-radius: var(--radius-xl);
+      font-size: var(--btn-xl-font-size); font-weight: var(--btn-xl-font-weight);
+      cursor: pointer;
+    }
+
+    /* =============================================
+       PIN Overlay
+       ============================================= */
+    .pin-dimmed {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 360px; height: 800px;
+      background: var(--dimmed-bg);
+      opacity: var(--dimmed-opacity);
+      z-index: 100;
+    }
+    .pin-dimmed.show { display: block; }
+
+    .pin-panel {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 360px; height: 800px;
+      z-index: 101;
+      flex-direction: column;
+      background: var(--color-bg);
+    }
+    .pin-panel.show { display: flex; }
+
+    /* PIN Header */
+    .pin-header {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      flex-shrink: 0;
+    }
+    .pin-header-spacer { width: 40px; }
+    .pin-header-title {
+      font-size: var(--text-title-md-size);
+      font-weight: var(--text-title-md-weight);
+      color: var(--color-text-heading);
+    }
+    .pin-close-btn {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer;
+      color: var(--color-text-heading);
+    }
+
+    /* PIN Content */
+    .pin-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 16px 0;
+    }
+    .pin-title {
+      font-size: var(--text-title-lg-size);
+      font-weight: var(--text-title-lg-weight);
+      color: var(--color-text-heading);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    /* PIN Dots */
+    .pin-dots {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .pin-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--color-border-divider);
+      background: transparent;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .pin-dot.filled {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+    .pin-dot.error {
+      background: var(--color-error);
+      border-color: var(--color-error);
+    }
+
+    /* Error message */
+    .pin-error-msg {
+      font-size: var(--text-body-xs-size);
+      font-weight: var(--text-body-xs-weight);
+      color: var(--color-error);
+      text-align: center;
+      height: 16px;
+      line-height: 16px;
+      margin-bottom: 8px;
+    }
+
+    /* Shake animation */
+    @keyframes pinShake {
+      0%, 100% { transform: translateX(0); }
+      10%, 50%, 90% { transform: translateX(-6px); }
+      30%, 70% { transform: translateX(6px); }
+    }
+    .pin-dots.shake {
+      animation: pinShake 0.4s ease-in-out;
+    }
+
+    /* Numpad */
+    .pin-numpad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--color-border-card);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      flex-shrink: 0;
+      width: 100%;
+      --numpad-key-height: 64px;
+    }
+    .pin-numpad-key {
+      background: var(--color-bg);
+      border: none;
+      height: var(--numpad-key-height);
+      font-family: 'Pretendard', -apple-system, sans-serif;
+      font-size: var(--text-title-lg-size);
+      font-weight: var(--text-title-sm-weight);
+      color: var(--color-text-heading);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pin-numpad-key:active {
+      background: var(--color-bg-content-1);
+    }
+    .pin-numpad-key.empty {
+      background: var(--color-bg-content-2);
+      cursor: default;
+    }
+    .pin-numpad-key.del {
+      background: var(--color-bg-content-2);
+      color: var(--color-text-body);
+    }
+
+    /* Lock overlay */
+    .pin-lock-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 360px; height: 800px;
+      background: var(--color-bg);
+      z-index: 102;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .pin-lock-overlay.show { display: flex; }
+    .pin-lock-icon {
+      width: 64px; height: 64px;
+      color: var(--color-error);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pin-lock-title {
+      font-size: var(--text-headline-size);
+      font-weight: var(--text-headline-weight);
+      color: var(--color-text-heading);
+      text-align: center;
+    }
+    .pin-lock-desc {
+      font-size: var(--text-body-sm-size);
+      font-weight: var(--text-body-sm-weight);
+      color: var(--color-text-description);
+      text-align: center;
+      padding: 0 32px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <button class="back-btn" aria-label="뒤로가기">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <span class="topbar-title">계좌 충전</span>
+  </div>
+
+  <div class="content">
+    <div class="section-label">출금 계좌</div>
+    <div class="account-card">
+      <div class="bank-logo">신</div>
+      <div class="account-info">
+        <div class="account-bank">신한은행</div>
+        <div class="account-num">110-***-****52</div>
+        <div class="account-balance">잔액 &#8361;1,230,500</div>
+      </div>
+      <span class="account-arrow">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M7 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </div>
+
+    <div class="section-label">충전 금액</div>
+    <div class="amount-input-wrap">
+      <div class="amount-display-row">
+        <input
+          class="amount-input-field"
+          type="number"
+          placeholder="0"
+          id="amountInput"
+          oninput="formatAmount(this)"
+        />
+        <span class="amount-currency">원</span>
+      </div>
+      <div class="amount-divider"></div>
+    </div>
+
+    <div class="quick-buttons">
+      <button class="quick-btn" onclick="addAmount(10000)">+1만</button>
+      <button class="quick-btn" onclick="addAmount(50000)">+5만</button>
+      <button class="quick-btn" onclick="addAmount(100000)">+10만</button>
+      <button class="quick-btn" onclick="addAmount(500000)">+50만</button>
+      <button class="quick-btn all" onclick="setFull()">전액</button>
+    </div>
+
+    <div class="limit-card">
+      <div class="limit-title">충전 한도 안내 (일반 회원)</div>
+      <div class="limit-rows">
+        <div class="limit-row">
+          <span class="limit-label">1회 최대</span>
+          <span class="limit-value">&#8361;300만</span>
+        </div>
+        <div class="limit-row">
+          <span class="limit-label">오늘 충전</span>
+          <span class="limit-value">&#8361;350,000 / &#8361;1,000,000</span>
+        </div>
+      </div>
+      <div class="limit-bar-track">
+        <div class="limit-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <button class="btn-primary" id="chargeBtn">충전하기</button>
+  </div>
+
+  <!-- =============================================
+       PIN Overlay
+       ============================================= -->
+  <div class="pin-dimmed" id="pinDimmed"></div>
+
+  <div class="pin-panel" id="pinPanel">
+    <div class="pin-header">
+      <div class="pin-header-spacer"></div>
+      <span class="pin-header-title">PIN 입력</span>
+      <button class="pin-close-btn" id="pinCloseBtn" aria-label="닫기">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="pin-content">
+      <div class="pin-title">PIN을 입력해주세요</div>
+
+      <div class="pin-dots" id="pinDots">
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <div class="pin-error-msg" id="pinErrorMsg"></div>
+    </div>
+
+    <div class="pin-numpad" id="pinNumpad">
+      <button class="pin-numpad-key" data-key="1">1</button>
+      <button class="pin-numpad-key" data-key="2">2</button>
+      <button class="pin-numpad-key" data-key="3">3</button>
+      <button class="pin-numpad-key" data-key="4">4</button>
+      <button class="pin-numpad-key" data-key="5">5</button>
+      <button class="pin-numpad-key" data-key="6">6</button>
+      <button class="pin-numpad-key" data-key="7">7</button>
+      <button class="pin-numpad-key" data-key="8">8</button>
+      <button class="pin-numpad-key" data-key="9">9</button>
+      <button class="pin-numpad-key empty"></button>
+      <button class="pin-numpad-key" data-key="0">0</button>
+      <button class="pin-numpad-key del" data-key="del" aria-label="지우기">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M9 3H21V21H9L2 12L9 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M13 9L17 15M17 9L13 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Lock Overlay -->
+  <div class="pin-lock-overlay" id="pinLockOverlay">
+    <div class="pin-lock-icon">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <rect x="12" y="28" width="40" height="28" rx="4" stroke="currentColor" stroke-width="3"/>
+        <path d="M22 28V20C22 14.48 26.48 10 32 10C37.52 10 42 14.48 42 20V28" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="32" cy="42" r="4" fill="currentColor"/>
+      </svg>
+    </div>
+    <div class="pin-lock-title">PIN 입력 횟수를 초과했습니다</div>
+    <div class="pin-lock-desc">5회 연속 오류로 PIN이 잠겼습니다. 고객센터에 문의해주세요.</div>
+  </div>
+
+  <script src="../../../icons.js"></script>
+  <script>
+    /* Amount logic */
+    var currentAmount = 0;
+    function updateDisplay() {
+      var input = document.getElementById('amountInput');
+      input.value = currentAmount > 0 ? currentAmount.toLocaleString('ko-KR') : '';
+    }
+    function addAmount(n) {
+      currentAmount += n;
+      updateDisplay();
+    }
+    function setFull() {
+      currentAmount = 1230500;
+      updateDisplay();
+    }
+    function formatAmount(el) {
+      var raw = el.value.replace(/,/g, '').replace(/[^0-9]/g, '');
+      currentAmount = parseInt(raw, 10) || 0;
+    }
+
+    /* PIN Overlay logic */
+    (function() {
+      var CORRECT_PIN = '123456';
+      var MAX_ATTEMPTS = 5;
+
+      var pin = '';
+      var failCount = 0;
+      var locked = false;
+      var processing = false;
+
+      var chargeBtn = document.getElementById('chargeBtn');
+      var pinDimmed = document.getElementById('pinDimmed');
+      var pinPanel = document.getElementById('pinPanel');
+      var pinCloseBtn = document.getElementById('pinCloseBtn');
+      var pinDots = document.querySelectorAll('#pinDots .pin-dot');
+      var pinDotsEl = document.getElementById('pinDots');
+      var pinErrorMsg = document.getElementById('pinErrorMsg');
+      var pinNumpad = document.getElementById('pinNumpad');
+      var pinLockOverlay = document.getElementById('pinLockOverlay');
+
+      function openPin() {
+        pin = '';
+        pinErrorMsg.textContent = '';
+        updatePinDots();
+        pinDimmed.classList.add('show');
+        pinPanel.classList.add('show');
+      }
+
+      function closePin() {
+        pinDimmed.classList.remove('show');
+        pinPanel.classList.remove('show');
+      }
+
+      function updatePinDots() {
+        for (var i = 0; i < pinDots.length; i++) {
+          pinDots[i].classList.toggle('filled', i < pin.length);
+          pinDots[i].classList.remove('error');
+        }
+      }
+
+      function showPinError(msg) {
+        pinErrorMsg.textContent = msg;
+        for (var i = 0; i < pinDots.length; i++) {
+          pinDots[i].classList.add('error');
+          pinDots[i].classList.remove('filled');
+        }
+        pinDotsEl.classList.add('shake');
+        setTimeout(function() {
+          pinDotsEl.classList.remove('shake');
+        }, 400);
+      }
+
+      function showLock() {
+        locked = true;
+        closePin();
+        pinLockOverlay.classList.add('show');
+      }
+
+      function handlePinKey(key) {
+        if (locked || processing) return;
+
+        if (key === 'del') {
+          if (pin.length > 0) {
+            pin = pin.slice(0, -1);
+            pinErrorMsg.textContent = '';
+            updatePinDots();
+          }
+          return;
+        }
+
+        if (pin.length >= 6) return;
+
+        pin += key;
+        updatePinDots();
+
+        if (pin.length === 6) {
+          processing = true;
+          setTimeout(function() {
+            if (pin === CORRECT_PIN) {
+              closePin();
+              location.href = 'chg-bnk-complete.html';
+            } else {
+              failCount++;
+              if (failCount >= MAX_ATTEMPTS) {
+                showLock();
+              } else {
+                showPinError('PIN이 일치하지 않습니다 (' + failCount + '/' + MAX_ATTEMPTS + ')');
+                pin = '';
+                setTimeout(function() {
+                  updatePinDots();
+                  processing = false;
+                }, 500);
+              }
+            }
+          }, 300);
+        }
+      }
+
+      chargeBtn.addEventListener('click', function() {
+        openPin();
+      });
+
+      pinCloseBtn.addEventListener('click', function() {
+        closePin();
+      });
+
+      pinDimmed.addEventListener('click', function() {
+        closePin();
+      });
+
+      pinNumpad.addEventListener('click', function(e) {
+        var btn = e.target.closest('.pin-numpad-key');
+        if (!btn || btn.classList.contains('empty')) return;
+        var key = btn.dataset.key;
+        if (key) handlePinKey(key);
+      });
+    })();
+  </script>
+</body>
+</html>

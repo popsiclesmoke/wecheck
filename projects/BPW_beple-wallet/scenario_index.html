@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BPW 시나리오 뷰어</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif; background: #1a1a1a; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+    /* Top bar */
+    .topbar { width: 100%; background: #111; border-bottom: 1px solid #333; padding: 12px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+    .logo { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.5px; white-space: nowrap; opacity: 0.6; }
+    .select-wrap { position: relative; }
+    .select-wrap.scenario { flex: 1; max-width: 340px; }
+    select { width: 100%; height: 38px; padding: 0 36px 0 14px; background: #222; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 14px; font-family: inherit; cursor: pointer; appearance: none; -webkit-appearance: none; outline: none; transition: border-color 0.15s; }
+    select:hover { border-color: #666; }
+    select:focus { border-color: #4D84FF; }
+    .select-wrap::after { content: ''; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #aaa; pointer-events: none; }
+    .nav-btns { display: flex; gap: 6px; }
+    .nav-btn { width: 32px; height: 32px; background: #222; border: 1px solid #444; border-radius: 6px; color: #aaa; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; user-select: none; }
+    .nav-btn:hover { background: #333; color: #fff; border-color: #666; }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .screen-counter { font-size: 12px; color: #666; white-space: nowrap; min-width: 48px; text-align: center; }
+    .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+    .tag-happy { background: #1a3a1a; color: #4ade80; border: 1px solid #2a5a2a; }
+    .tag-branch { background: #3a2a1a; color: #fbbf24; border: 1px solid #5a3a1a; }
+
+    /* Flow bar */
+    .flow-bar { width: 100%; background: #151515; border-bottom: 1px solid #2a2a2a; padding: 10px 24px; overflow-x: auto; white-space: nowrap; }
+    .flow-bar::-webkit-scrollbar { height: 4px; }
+    .flow-bar::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+    .flow-steps { display: inline-flex; align-items: center; gap: 4px; }
+    .flow-step { padding: 4px 10px; border-radius: 6px; font-size: 11px; color: #666; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; white-space: nowrap; }
+    .flow-step:hover { color: #aaa; background: #222; }
+    .flow-step.active { background: #1a2a4a; color: #4D84FF; border-color: #2a3a5a; font-weight: 600; }
+    .flow-step.visited { color: #888; }
+    .flow-step .domain-tag { font-size: 9px; opacity: 0.5; margin-right: 2px; }
+    .flow-arrow { color: #444; font-size: 12px; flex-shrink: 0; }
+
+    /* Phone */
+    .phone-wrap { margin: 32px 0 48px; position: relative; }
+    .phone-shell { width: 392px; background: #2a2a2a; border-radius: 44px; padding: 16px; box-shadow: 0 0 0 1px #3a3a3a, 0 24px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05); }
+    .phone-notch { width: 100px; height: 24px; background: #1a1a1a; border-radius: 0 0 16px 16px; position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 10; }
+    .screen-frame { width: 360px; height: 800px; border-radius: 30px; overflow: hidden; background: #fff; position: relative; }
+    .screen-frame iframe { width: 360px; height: 800px; border: none; display: block; }
+    .screen-label { text-align: center; margin-top: 16px; color: #666; font-size: 12px; letter-spacing: 0.3px; }
+    .screen-label strong { color: #aaa; font-weight: 600; }
+
+    .empty-state { width: 360px; height: 800px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #555; font-size: 14px; }
+    .empty-state span:first-child { font-size: 32px; opacity: 0.4; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="logo">BPW SCENARIO</span>
+    <div class="select-wrap scenario">
+      <select id="scenarioSelect" onchange="onScenarioChange()"></select>
+    </div>
+    <span class="tag" id="scenarioTag"></span>
+    <div class="nav-btns">
+      <button class="nav-btn" id="btnPrev" onclick="prev()" title="이전 (←)">&#8249;</button>
+      <button class="nav-btn" id="btnNext" onclick="next()" title="다음 (→)">&#8250;</button>
+    </div>
+    <span class="screen-counter" id="counter">- / -</span>
+  </div>
+
+  <div class="flow-bar" id="flowBar">
+    <div class="flow-steps" id="flowSteps"></div>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone-shell">
+      <div class="phone-notch"></div>
+      <div class="screen-frame" id="screenFrame">
+        <div class="empty-state">
+          <span>&#127912;</span>
+          <span>시나리오를 선택하세요</span>
+        </div>
+      </div>
+    </div>
+    <p class="screen-label" id="screenLabel">시나리오를 선택하세요</p>
+  </div>
+
+  <script>
+    /* ── 시나리오 데이터 ── */
+    const SCENARIOS = [
+      {
+        id: 'SCN-BPW-001', name: '내국인 온보딩', type: 'happy',
+        steps: [
+          { sid: 'ONB-001', name: '언어 선택',       src: 'domains/ONB_onboarding/screens/onb-language.html' },
+          { sid: 'ONB-002', name: '사용자 유형 선택', src: 'domains/ONB_onboarding/screens/onb-user-type.html' },
+          { sid: 'ONB-003', name: 'SMS 인증',         src: 'domains/ONB_onboarding/screens/onb-sms.html' },
+          { sid: 'ONB-004', name: '약관 동의',        src: 'domains/ONB_onboarding/screens/onb-terms.html' },
+          { sid: 'ONB-005', name: '가입 완료',        src: 'domains/ONB_onboarding/screens/onb-reg-complete.html' },
+          { sid: 'ONB-011', name: 'PIN 설정',         src: 'domains/ONB_onboarding/screens/onb-pin-setup.html' },
+          { sid: 'ONB-012', name: 'PIN 확인',         src: 'domains/ONB_onboarding/screens/onb-pin-confirm.html' },
+          { sid: 'ONB-013', name: '생체인증 등록',    src: 'domains/ONB_onboarding/screens/onb-bio.html' },
+          { sid: 'HOM-002', name: '홈 (Empty)',       src: 'domains/HOM_home/screens/hom-empty.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-002', name: '외국인 온보딩 (KYC Quick)', type: 'happy',
+        steps: [
+          { sid: 'ONB-001', name: '언어 선택',       src: 'domains/ONB_onboarding/screens/onb-language.html' },
+          { sid: 'ONB-002', name: '사용자 유형 선택', src: 'domains/ONB_onboarding/screens/onb-user-type.html' },
+          { sid: 'ONB-006', name: '연락처 인증',     src: 'domains/ONB_onboarding/screens/onb-kyc-contact.html' },
+          { sid: 'ONB-004', name: '약관 동의',       src: 'domains/ONB_onboarding/screens/onb-terms.html' },
+          { sid: 'ONB-007', name: 'KYC 방법 선택',   src: 'domains/ONB_onboarding/screens/onb-kyc-method.html' },
+          { sid: 'ONB-008', name: '여권 OCR',        src: 'domains/ONB_onboarding/screens/onb-kyc-passport.html' },
+          { sid: 'ONB-009', name: '안면 인식',       src: 'domains/ONB_onboarding/screens/onb-kyc-face.html' },
+          { sid: 'ONB-010', name: 'KYC 완료',        src: 'domains/ONB_onboarding/screens/onb-kyc-complete.html' },
+          { sid: 'ONB-011', name: 'PIN 설정',        src: 'domains/ONB_onboarding/screens/onb-pin-setup.html' },
+          { sid: 'ONB-012', name: 'PIN 확인',        src: 'domains/ONB_onboarding/screens/onb-pin-confirm.html' },
+          { sid: 'ONB-013', name: '생체인증 등록',   src: 'domains/ONB_onboarding/screens/onb-bio.html' },
+          { sid: 'HOM-002', name: '홈 (Empty)',      src: 'domains/HOM_home/screens/hom-empty.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-003', name: 'QR 결제 (정상)', type: 'happy',
+        steps: [
+          { sid: 'HOM-001', name: '홈',              src: 'domains/HOM_home/screens/hom-main.html' },
+          { sid: 'PAY-001', name: 'QR 스캔',         src: 'domains/PAY_payment/screens/pay-qr.html' },
+          { sid: 'PAY-002', name: '결제 확인 + PIN', src: 'domains/PAY_payment/screens/pay-confirm.html' },
+          { sid: 'PAY-003', name: '결제 완료',       src: 'domains/PAY_payment/screens/pay-complete.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-004', name: 'QR 결제 (잔액 부족)', type: 'branch',
+        steps: [
+          { sid: 'HOM-001', name: '홈',              src: 'domains/HOM_home/screens/hom-main.html' },
+          { sid: 'PAY-001', name: 'QR 스캔',         src: 'domains/PAY_payment/screens/pay-qr.html' },
+          { sid: 'PAY-002', name: '결제 확인',       src: 'domains/PAY_payment/screens/pay-confirm.html' },
+          { sid: 'PAY-004', name: '잔액 부족',       src: 'domains/PAY_payment/screens/pay-insufficient.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-005', name: 'Korbit 충전 (최초 연결)', type: 'happy',
+        steps: [
+          { sid: 'HOM-001',     name: '홈',              src: 'domains/HOM_home/screens/hom-main.html' },
+          { sid: 'CHG-001',     name: '충전 방법 선택',   src: 'domains/CHG_recharge/screens/chg-method.html' },
+          { sid: 'CHG-KRB-001', name: 'Korbit 연결',     src: 'domains/CHG_recharge/screens/chg-krb-connect.html' },
+          { sid: 'CHG-KRB-002', name: '출금 동의',       src: 'domains/CHG_recharge/screens/chg-krb-consent.html' },
+          { sid: 'CHG-KRB-003', name: '코인 선택',       src: 'domains/CHG_recharge/screens/chg-krb-coin.html' },
+          { sid: 'CHG-KRB-004', name: '수량 입력',       src: 'domains/CHG_recharge/screens/chg-krb-amount.html' },
+          { sid: 'CHG-KRB-005', name: '매도 확인',       src: 'domains/CHG_recharge/screens/chg-krb-confirm.html' },
+          { sid: 'CHG-KRB-006', name: '공동인증',        src: 'domains/CHG_recharge/screens/chg-krb-cert.html' },
+          { sid: 'CHG-KRB-007', name: '충전 완료',       src: 'domains/CHG_recharge/screens/chg-krb-complete.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-006', name: 'Korbit 충전 (재충전)', type: 'happy',
+        steps: [
+          { sid: 'HOM-001',     name: '홈',              src: 'domains/HOM_home/screens/hom-main.html' },
+          { sid: 'CHG-001',     name: '충전 방법 선택',   src: 'domains/CHG_recharge/screens/chg-method.html' },
+          { sid: 'CHG-KRB-003', name: '코인 선택',       src: 'domains/CHG_recharge/screens/chg-krb-coin.html' },
+          { sid: 'CHG-KRB-004', name: '수량 입력',       src: 'domains/CHG_recharge/screens/chg-krb-amount.html' },
+          { sid: 'CHG-KRB-005', name: '매도 확인',       src: 'domains/CHG_recharge/screens/chg-krb-confirm.html' },
+          { sid: 'CHG-KRB-006', name: '공동인증',        src: 'domains/CHG_recharge/screens/chg-krb-cert.html' },
+          { sid: 'CHG-KRB-007', name: '충전 완료',       src: 'domains/CHG_recharge/screens/chg-krb-complete.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-007', name: '직전송 충전', type: 'happy',
+        steps: [
+          { sid: 'HOM-001',     name: '홈',                src: 'domains/HOM_home/screens/hom-main.html' },
+          { sid: 'CHG-001',     name: '충전 방법 선택',     src: 'domains/CHG_recharge/screens/chg-method.html' },
+          { sid: 'CHG-DRT-001', name: '직전송 안내',       src: 'domains/CHG_recharge/screens/chg-drt-guide.html' },
+          { sid: 'CHG-DRT-002', name: '코인/네트워크 선택', src: 'domains/CHG_recharge/screens/chg-drt-coin.html' },
+          { sid: 'CHG-DRT-003', name: '환불주소 등록',     src: 'domains/CHG_recharge/screens/chg-drt-refund.html' },
+          { sid: 'CHG-DRT-004', name: '수신주소 안내',     src: 'domains/CHG_recharge/screens/chg-drt-address.html' },
+          { sid: 'CHG-DRT-005', name: '블록체인 대기',     src: 'domains/CHG_recharge/screens/chg-drt-wait.html' },
+          { sid: 'CHG-DRT-006', name: '직전송 충전 완료',  src: 'domains/CHG_recharge/screens/chg-drt-complete.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-008', name: '은행계좌 충전', type: 'happy',
+        steps: [
+          { sid: 'HOM-001',     name: '홈',              src: 'domains/HOM_home/screens/hom-main.html' },
+          { sid: 'CHG-001',     name: '충전 방법 선택',   src: 'domains/CHG_recharge/screens/chg-method.html' },
+          { sid: 'CHG-BNK-001', name: '계좌·금액 (PIN)',  src: 'domains/CHG_recharge/screens/chg-bnk-select.html' },
+          { sid: 'CHG-BNK-002', name: '충전 완료',       src: 'domains/CHG_recharge/screens/chg-bnk-complete.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-009', name: 'ATM 출금', type: 'happy',
+        steps: [
+          { sid: 'HOM-001', name: '홈',              src: 'domains/HOM_home/screens/hom-main.html' },
+          { sid: 'WDR-001', name: 'ATM QR 스캔',     src: 'domains/WDR_withdrawal/screens/wdr-qr.html' },
+          { sid: 'WDR-002', name: '출금 금액 입력',   src: 'domains/WDR_withdrawal/screens/wdr-amount.html' },
+          { sid: 'WDR-003', name: '출금 확인 + PIN',  src: 'domains/WDR_withdrawal/screens/wdr-confirm.html' },
+          { sid: 'WDR-004', name: '출금 완료',        src: 'domains/WDR_withdrawal/screens/wdr-complete.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-010', name: '은행계좌 등록', type: 'happy',
+        steps: [
+          { sid: 'HOM-001', name: '홈 (탭바)',       src: 'domains/HOM_home/screens/hom-main.html' },
+          { sid: 'ACT-001', name: '계좌 목록',       src: 'domains/ACT_activity/screens/act-accounts.html' },
+          { sid: 'ACT-002', name: '계좌 등록',       src: 'domains/ACT_activity/screens/act-account-reg.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-011', name: '거래내역 조회', type: 'happy',
+        steps: [
+          { sid: 'HOM-001', name: '홈 (탭바)',       src: 'domains/HOM_home/screens/hom-main.html' },
+          { sid: 'ACT-003', name: '거래 내역',       src: 'domains/ACT_activity/screens/act-history.html' },
+          { sid: 'ACT-004', name: '거래 상세',       src: 'domains/ACT_activity/screens/act-detail.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-012', name: '언어 변경', type: 'happy',
+        steps: [
+          { sid: 'HOM-001', name: '홈 (탭바)',       src: 'domains/HOM_home/screens/hom-main.html' },
+          { sid: 'SET-001', name: '설정 메뉴',       src: 'domains/SET_settings/screens/set-menu.html' },
+          { sid: 'SET-002', name: '언어 변경',       src: 'domains/SET_settings/screens/set-language.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-013', name: 'PIN 변경', type: 'happy',
+        steps: [
+          { sid: 'HOM-001', name: '홈 (탭바)',       src: 'domains/HOM_home/screens/hom-main.html' },
+          { sid: 'SET-001', name: '설정 메뉴',       src: 'domains/SET_settings/screens/set-menu.html' },
+          { sid: 'SET-003', name: 'PIN 변경',        src: 'domains/SET_settings/screens/set-pin-change.html' },
+        ]
+      },
+      {
+        id: 'SCN-BPW-014', name: '로그아웃', type: 'happy',
+        steps: [
+          { sid: 'HOM-001', name: '홈 (탭바)',       src: 'domains/HOM_home/screens/hom-main.html' },
+          { sid: 'SET-001', name: '설정 > 로그아웃', src: 'domains/SET_settings/screens/set-menu.html' },
+        ]
+      },
+    ];
+
+    /* ── 상태 ── */
+    let currentScenario = null;
+    let currentStep = 0;
+
+    /* ── 초기화 ── */
+    const scenarioSelect = document.getElementById('scenarioSelect');
+    const flowSteps = document.getElementById('flowSteps');
+    const frame = document.getElementById('screenFrame');
+    const label = document.getElementById('screenLabel');
+    const counterEl = document.getElementById('counter');
+    const tagEl = document.getElementById('scenarioTag');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+
+    // 시나리오 셀렉트 구성
+    const defaultOpt = document.createElement('option');
+    defaultOpt.value = '';
+    defaultOpt.textContent = '시나리오를 선택하세요';
+    defaultOpt.disabled = true;
+    defaultOpt.selected = true;
+    scenarioSelect.appendChild(defaultOpt);
+
+    SCENARIOS.forEach((s, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      const typeLabel = s.type === 'happy' ? '' : ' [분기]';
+      opt.textContent = `${s.id} · ${s.name}${typeLabel}`;
+      scenarioSelect.appendChild(opt);
+    });
+
+    /* ── 시나리오 변경 ── */
+    function onScenarioChange() {
+      const idx = parseInt(scenarioSelect.value);
+      if (isNaN(idx)) return;
+      currentScenario = SCENARIOS[idx];
+      currentStep = 0;
+      renderFlow();
+      renderScreen();
+    }
+
+    /* ── 플로우 바 렌더링 ── */
+    function renderFlow() {
+      if (!currentScenario) return;
+      flowSteps.innerHTML = '';
+      currentScenario.steps.forEach((step, i) => {
+        if (i > 0) {
+          const arrow = document.createElement('span');
+          arrow.className = 'flow-arrow';
+          arrow.textContent = '\u203A';
+          flowSteps.appendChild(arrow);
+        }
+        const el = document.createElement('span');
+        el.className = 'flow-step' + (i === currentStep ? ' active' : '') + (i < currentStep ? ' visited' : '');
+        const domain = step.sid.split('-')[0];
+        el.innerHTML = `<span class="domain-tag">${domain}</span>${step.sid}`;
+        el.title = `${step.sid}: ${step.name}`;
+        el.onclick = () => goToStep(i);
+        flowSteps.appendChild(el);
+      });
+
+      // 현재 스텝 가운데로 스크롤
+      const active = flowSteps.querySelector('.active');
+      if (active) active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+
+    /* ── 화면 렌더링 ── */
+    function renderScreen() {
+      if (!currentScenario) return;
+      const step = currentScenario.steps[currentStep];
+
+      let iframe = frame.querySelector('iframe');
+      if (!iframe) { frame.innerHTML = ''; iframe = document.createElement('iframe'); frame.appendChild(iframe); }
+      iframe.src = step.src;
+
+      label.innerHTML = `<strong>${step.sid}</strong> ${step.name}`;
+      counterEl.textContent = `${currentStep + 1} / ${currentScenario.steps.length}`;
+
+      tagEl.textContent = currentScenario.type === 'happy' ? 'Happy Path' : '분기';
+      tagEl.className = 'tag ' + (currentScenario.type === 'happy' ? 'tag-happy' : 'tag-branch');
+
+      btnPrev.disabled = currentStep <= 0;
+      btnNext.disabled = currentStep >= currentScenario.steps.length - 1;
+
+      renderFlow();
+    }
+
+    /* ── 네비게이션 ── */
+    function goToStep(i) { currentStep = i; renderScreen(); }
+    function prev() { if (currentStep > 0) { currentStep--; renderScreen(); } }
+    function next() { if (currentScenario && currentStep < currentScenario.steps.length - 1) { currentStep++; renderScreen(); } }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    });
+  </script>
+</body>
+</html>

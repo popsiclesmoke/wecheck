@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; background: #fff; }
+        .container { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .header-title { font-weight: 600; font-size: 14px; color: #111; }
+        .header-desc { font-size: 12px; color: #888; margin-top: 4px; line-height: 1.5; }
+        button {
+            background: #18A0FB;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover { background: #0D8CE8; }
+        button:disabled { background: #B3B3B3; cursor: not-allowed; }
+        .status { font-size: 12px; line-height: 1.6; min-height: 18px; }
+        .success { color: #1B8F54; }
+        .error-item { color: #E03E3E; }
+        .divider { border: none; border-top: 1px solid #f0f0f0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <p class="header-title">Pretendard Font Converter</p>
+            <p class="header-desc">모든 텍스트를 Pretendard로 일괄 변환합니다.<br>기존 weight를 유지하여 대응 variant로 매핑합니다.<br>선택 없으면 현재 페이지 전체를 변환합니다.</p>
+        </div>
+        <hr class="divider">
+        <button id="btn">Pretendard로 변환</button>
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        const btn = document.getElementById('btn')
+        const statusEl = document.getElementById('status')
+
+        btn.addEventListener('click', () => {
+            btn.disabled = true
+            btn.textContent = '처리 중...'
+            statusEl.textContent = ''
+            parent.postMessage({ pluginMessage: { type: 'convert-fonts' } }, '*')
+        })
+
+        window.onmessage = (event) => {
+            const msg = event.data.pluginMessage
+            if (!msg || msg.type !== 'result') return
+
+            btn.disabled = false
+            btn.textContent = 'Pretendard로 변환'
+
+            if (msg.errors.length === 0) {
+                statusEl.innerHTML =
+                    `<span class="success">✓ ${msg.fixedCount}개 노드 수정 완료</span>` +
+                    `<br><span style="color:#aaa">(스캔: ${msg.totalScanned}개)</span>`
+            } else {
+                const errHtml = msg.errors
+                    .map(e => `<span class="error-item">✗ ${e}</span>`)
+                    .join('<br>')
+                statusEl.innerHTML =
+                    `<span class="success">✓ ${msg.fixedCount}개 수정</span><br>` + errHtml
+            }
+        }
+    </script>
+</body>
+</html>

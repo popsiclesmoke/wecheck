@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360, initial-scale=1.0">
+  <title>ONB-009 안면 인식</title>
+  <link rel="stylesheet" href="../../../design/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 360px; height: 800px; overflow: hidden; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--color-gray-900);
+      color: var(--color-bg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Status bar */
+    .status-bar {
+      height: 24px; background: transparent;
+      display: flex; align-items: center; justify-content: flex-end;
+      padding: 0 16px; flex-shrink: 0;
+    }
+    .status-bar span { font-size: 11px; font-weight: 600; color: var(--color-bg); }
+
+    /* TopBar */
+    .topbar {
+      height: 56px; background: transparent;
+      display: flex; align-items: center; padding: 0 16px; flex-shrink: 0;
+    }
+    .back-btn {
+      width: 40px; height: 40px; background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-bg); border-radius: var(--radius-md); margin-left: -8px;
+    }
+    .back-btn:hover { background: color-mix(in srgb, var(--color-white) 10%, transparent); }
+
+    /* Title area */
+    .title-area {
+      padding: 0 20px 16px; flex-shrink: 0;
+    }
+    .page-title {
+      font-size: var(--text-title-lg-size);
+      font-weight: var(--text-title-lg-weight);
+      color: var(--color-bg); line-height: 1.3; margin-bottom: 6px;
+    }
+    .page-subtitle {
+      font-size: var(--text-body-sm-size);
+      color: color-mix(in srgb, var(--color-white) 55%, transparent); line-height: 1.5;
+    }
+
+    /* Face frame area */
+    .face-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 0 24px;
+    }
+
+    .face-frame-wrap {
+      position: relative;
+      width: 220px;
+      height: 260px;
+    }
+
+    /* Oval cutout face frame */
+    .face-oval {
+      width: 220px;
+      height: 260px;
+      border-radius: 50%;
+      border: 3px solid var(--color-primary);
+      position: relative;
+      overflow: hidden;
+      background: color-mix(in srgb, var(--color-white) 4%, transparent);
+      box-shadow: 0 0 0 9999px color-mix(in srgb, var(--color-gray-900) 60%, transparent);
+    }
+
+    /* Animated border pulse */
+    .face-oval::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: var(--color-primary);
+      border-right-color: var(--color-primary);
+      animation: rotatePulse 2s linear infinite;
+    }
+    @keyframes rotatePulse {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Face guide dots */
+    .face-guide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .face-silhouette {
+      width: 100px;
+      height: 130px;
+      opacity: 0.2;
+    }
+
+    /* Scanning line in oval */
+    .face-scan-line {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+      animation: faceScan 2s ease-in-out infinite;
+      top: 20%;
+    }
+    @keyframes faceScan {
+      0%, 100% { top: 15%; opacity: 0.5; }
+      50% { top: 80%; opacity: 1; }
+    }
+
+    /* Liveness check instruction */
+    .liveness-instruction {
+      margin-top: 16px;
+      padding: 8px 16px;
+      background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .liveness-instruction.hidden {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    .liveness-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .liveness-text {
+      font-size: var(--text-body-sm-size);
+      font-weight: 500;
+      color: var(--color-bg);
+    }
+
+    /* Status indicator */
+    .status-indicator {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .status-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: color-mix(in srgb, var(--color-white) 25%, transparent);
+      transition: background 0.3s;
+    }
+    .status-dot.active {
+      background: var(--color-primary);
+      animation: dotPulse 1s ease-in-out infinite;
+    }
+    .status-dot.done {
+      background: var(--color-primary);
+      animation: none;
+    }
+    @keyframes dotPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.8); }
+    }
+    .status-text {
+      font-size: var(--text-body-lg-size);
+      color: var(--color-bg);
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+    .status-sub {
+      font-size: var(--text-body-sm-size);
+      color: color-mix(in srgb, var(--color-white) 50%, transparent);
+      text-align: center;
+      transition: opacity 0.2s;
+    }
+
+    /* Guide pills at bottom of face area */
+    .guide-pills {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .guide-pill {
+      padding: 6px 12px;
+      background: color-mix(in srgb, var(--color-white) 10%, transparent);
+      border-radius: 20px;
+      font-size: var(--text-body-xs-size);
+      color: color-mix(in srgb, var(--color-white) 70%, transparent);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .guide-pill-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--color-primary);
+    }
+
+    /* Bottom area */
+    .bottom-area {
+      padding: 0 20px 32px; flex-shrink: 0; text-align: center;
+    }
+    .bottom-note {
+      font-size: var(--text-body-xs-size);
+      color: color-mix(in srgb, var(--color-white) 40%, transparent);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <!-- Status bar -->
+  <div class="status-bar"><span>9:41</span></div>
+
+  <!-- TopBar -->
+  <div class="topbar">
+    <button class="back-btn" onclick="history.back()">
+      <span data-icon="arrowBack" style="width:24px;height:24px;display:inline-flex"></span>
+    </button>
+  </div>
+
+  <!-- Title -->
+  <div class="title-area">
+    <div class="page-title">얼굴을 인식해주세요</div>
+    <div class="page-subtitle">원 안에 얼굴을 맞추고 정면을 바라봐 주세요</div>
+  </div>
+
+  <!-- Face area -->
+  <div class="face-area">
+    <div class="face-frame-wrap">
+      <div class="face-oval">
+        <!-- Silhouette guide (decorative illustration) -->
+        <div class="face-guide">
+          <svg class="face-silhouette" viewBox="0 0 110 140" fill="none">
+            <ellipse cx="55" cy="45" rx="28" ry="34" fill="white"/>
+            <path d="M10 140 Q10 90 55 90 Q100 90 100 140" fill="white"/>
+          </svg>
+        </div>
+        <!-- Scan line -->
+        <div class="face-scan-line"></div>
+      </div>
+    </div>
+
+    <!-- Liveness check instruction -->
+    <div class="liveness-instruction hidden" id="livenessInstruction">
+      <span class="liveness-icon">&#x1F441;</span>
+      <span class="liveness-text" id="livenessText">눈을 천천히 깜빡여주세요</span>
+    </div>
+
+    <!-- Status -->
+    <div class="status-indicator">
+      <div class="status-dots">
+        <div class="status-dot active" id="dot1"></div>
+        <div class="status-dot" id="dot2"></div>
+        <div class="status-dot" id="dot3"></div>
+      </div>
+      <div class="status-text" id="statusText">얼굴 인식 중...</div>
+      <div class="status-sub" id="statusSub">잠시 움직이지 말고 정면을 바라봐 주세요</div>
+    </div>
+
+    <!-- Guide pills -->
+    <div class="guide-pills">
+      <div class="guide-pill"><span class="guide-pill-dot"></span>안경 제거 권장</div>
+      <div class="guide-pill"><span class="guide-pill-dot"></span>밝은 환경 필요</div>
+      <div class="guide-pill"><span class="guide-pill-dot"></span>정면 응시</div>
+    </div>
+  </div>
+
+  <!-- Bottom area (no button -- auto-proceed after recognition) -->
+  <div class="bottom-area">
+    <div class="bottom-note">
+      안면 인식 데이터는 본인 확인 목적으로만 사용되며<br>인증 완료 후 즉시 삭제됩니다
+    </div>
+  </div>
+
+  <script src="../../../icons.js"></script>
+  <script>
+    /* Liveness Check 단계별 진행 시뮬레이션 */
+    /* 단계 1: 얼굴 인식 중... (0~2초) */
+    /* 단계 2: 눈 깜빡임 확인 중... (2~4초) — Liveness Check */
+    /* 단계 3: 인식 완료 (4초~) → 자동 이동 */
+
+    /* 단계 2: 눈 깜빡임 확인 (Liveness Check) */
+    setTimeout(function() {
+      /* dot1 완료, dot2 활성 */
+      document.getElementById('dot1').classList.remove('active');
+      document.getElementById('dot1').classList.add('done');
+      document.getElementById('dot2').classList.add('active');
+
+      /* 상태 텍스트 변경 */
+      document.getElementById('statusText').textContent = '눈 깜빡임 확인 중...';
+      document.getElementById('statusSub').textContent = '눈을 천천히 깜빡여주세요';
+
+      /* Liveness instruction 표시 */
+      document.getElementById('livenessInstruction').classList.remove('hidden');
+    }, 2000);
+
+    /* 단계 3: 인식 완료 */
+    setTimeout(function() {
+      /* dot2 완료, dot3 활성 */
+      document.getElementById('dot2').classList.remove('active');
+      document.getElementById('dot2').classList.add('done');
+      document.getElementById('dot3').classList.add('done');
+
+      /* 상태 텍스트 변경 */
+      document.getElementById('statusText').textContent = '인식 완료';
+      document.getElementById('statusSub').textContent = '잠시 후 다음 단계로 이동합니다';
+
+      /* Liveness instruction 숨김 */
+      document.getElementById('livenessInstruction').classList.add('hidden');
+    }, 4000);
+
+    /* 자동 이동 */
+    setTimeout(function() {
+      location.href = 'onb-kyc-complete.html';
+    }, 5500);
+  </script>
+</body>
+</html>

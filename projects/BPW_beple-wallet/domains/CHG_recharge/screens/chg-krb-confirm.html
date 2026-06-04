@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360, initial-scale=1.0">
+  <title>매도 확인</title>
+  <link rel="stylesheet" href="../../../design/tokens.css">
+  <style>
+    :root {
+      --color-btc-from: #F7A600;
+      --color-btc-to: #F27B00;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 360px; height: 800px; overflow: hidden; }
+    body {
+      font-family: 'Pretendard', -apple-system, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text-heading);
+      display: flex; flex-direction: column;
+    }
+    .topbar {
+      height: 56px; display: flex; align-items: center;
+      padding: 0 16px; gap: 8px;
+      border-bottom: 1px solid var(--color-border-card);
+      flex-shrink: 0; background: var(--color-bg);
+    }
+    .back-btn {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer;
+      color: var(--color-text-heading);
+    }
+    .topbar-title { font-size: var(--text-title-md-size); font-weight: var(--text-title-md-weight); }
+    .content { flex: 1; overflow-y: auto; padding: 24px 16px; }
+
+    .page-title {
+      font-size: var(--text-title-xl-size);
+      font-weight: var(--text-title-xl-weight);
+      color: var(--color-text-heading);
+      margin-bottom: 24px;
+    }
+
+    .summary-card {
+      background: var(--color-bg-content-2);
+      border-radius: var(--radius-2xl);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .summary-header {
+      display: flex; align-items: center; gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--color-border-card);
+      margin-bottom: 16px;
+    }
+    .coin-badge {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-btc-from), var(--color-btc-to));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 800; color: var(--color-bg);
+    }
+    .coin-badge-info .coin-badge-name {
+      font-size: var(--text-title-sm-size); font-weight: var(--text-title-sm-weight);
+      color: var(--color-text-heading);
+    }
+    .coin-badge-info .coin-badge-sub {
+      font-size: var(--text-body-xs-size); color: var(--color-text-description);
+    }
+
+    .summary-rows { display: flex; flex-direction: column; gap: 14px; }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .summary-label {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-description);
+    }
+    .summary-value {
+      font-size: var(--text-body-sm-size);
+      font-weight: 500;
+      color: var(--color-text-title);
+    }
+    .summary-divider { height: 1px; background: var(--color-border-card); margin: 4px 0; }
+    .summary-row.total .summary-label {
+      font-size: var(--text-title-sm-size);
+      font-weight: var(--text-title-sm-weight);
+      color: var(--color-text-heading);
+    }
+    .summary-row.total .summary-value {
+      font-size: var(--text-title-lg-size);
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    .notice-card {
+      background: var(--color-bg-content-2);
+      border-left: 3px solid var(--color-warning);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
+    .notice-text {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-body);
+      line-height: 1.6;
+    }
+    .notice-text strong { color: var(--color-text-heading); font-weight: 600; }
+
+    .info-text {
+      font-size: var(--text-body-xs-size);
+      color: var(--color-text-description);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .footer { padding: 16px; flex-shrink: 0; }
+    .btn-primary {
+      width: 100%; height: var(--btn-xl-height);
+      background: var(--color-primary); color: var(--color-bg);
+      border: none; border-radius: var(--radius-xl);
+      font-size: var(--btn-xl-font-size); font-weight: var(--btn-xl-font-weight);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <button class="back-btn" aria-label="뒤로가기">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <span class="topbar-title">매도 확인</span>
+  </div>
+
+  <div class="content">
+    <p class="page-title">매도 내역을<br>확인해 주세요</p>
+
+    <div class="summary-card">
+      <div class="summary-header">
+        <div class="coin-badge">₿</div>
+        <div class="coin-badge-info">
+          <div class="coin-badge-name">Bitcoin (BTC)</div>
+          <div class="coin-badge-sub">Korbit 시장가 매도</div>
+        </div>
+      </div>
+      <div class="summary-rows">
+        <div class="summary-row">
+          <span class="summary-label">코인명</span>
+          <span class="summary-value">Bitcoin (BTC)</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">매도 수량</span>
+          <span class="summary-value">0.00153 BTC</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">현재 시세</span>
+          <span class="summary-value">₩81,699,346 / BTC</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">예상 매도 금액</span>
+          <span class="summary-value">₩125,000</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">수수료 (0.05%)</span>
+          <span class="summary-value">- ₩63</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-row total">
+          <span class="summary-label">실수령 충전액</span>
+          <span class="summary-value">₩124,937</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="notice-card">
+      <div class="notice-text">
+        <strong>시장가로 즉시 매도</strong>됩니다.<br>
+        실시간 시세에 따라 실제 수령 금액은 다를 수 있습니다.
+      </div>
+    </div>
+
+    <div class="info-text">
+      매도 후 취소는 불가능합니다.<br>내용을 다시 한번 확인해 주세요.
+    </div>
+  </div>
+
+  <div class="footer">
+    <button class="btn-primary">매도하기</button>
+  </div>
+
+  <script src="../../../icons.js"></script>
+</body>
+</html>

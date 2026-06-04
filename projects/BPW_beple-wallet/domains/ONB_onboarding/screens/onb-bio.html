@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360, initial-scale=1.0">
+  <title>ONB-013 생체인증 등록</title>
+  <link rel="stylesheet" href="../../../design/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 360px; height: 800px; overflow: hidden; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text-heading);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Status bar */
+    .status-bar {
+      height: 24px; background: var(--color-bg);
+      display: flex; align-items: center; justify-content: flex-end;
+      padding: 0 16px; flex-shrink: 0;
+    }
+    .status-bar span { font-size: 11px; font-weight: 600; color: var(--color-text-heading); }
+
+    /* Centered content */
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 32px;
+      text-align: center;
+      gap: 0;
+    }
+
+    /* Bio icon with animation rings */
+    .bio-icon-wrap {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+    .ring-3 {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--color-blue-50);
+    }
+    .ring-2 {
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      background: var(--color-blue-100);
+    }
+    .ring-1 {
+      position: absolute;
+      inset: 24px;
+      border-radius: 50%;
+      background: var(--color-blue-200);
+    }
+    .bio-icon-circle {
+      position: relative;
+      z-index: 1;
+      width: var(--state-icon-size);
+      height: var(--state-icon-size);
+      border-radius: 50%;
+      background: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Pulse animation on icon */
+    /* Note: CSS custom properties cannot be used inside rgba() in @keyframes in all engines,
+       so we use a transparent version of the primary color token via color-mix or a dedicated
+       shadow token. Using var(--color-blue-200) with opacity is the closest token-safe approach. */
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary) 30%, transparent); }
+      50%       { box-shadow: 0 0 0 12px color-mix(in srgb, var(--color-primary) 0%, transparent); }
+    }
+    .bio-icon-circle {
+      animation: pulse 2s ease infinite;
+    }
+
+    /* Text */
+    .page-title {
+      font-size: var(--text-title-xl-size);
+      font-weight: var(--text-title-xl-weight);
+      color: var(--color-text-heading);
+      line-height: 1.35;
+      margin-bottom: 12px;
+    }
+    .body-text {
+      font-size: var(--text-body-lg-size);
+      color: var(--color-text-body);
+      line-height: 1.65;
+      margin-bottom: 36px;
+    }
+
+    /* Feature list */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 0;
+    }
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--color-blue-50);
+      border-radius: var(--radius-lg);
+      text-align: left;
+    }
+    .feature-icon {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-md);
+      background: var(--color-blue-100);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .feature-text {
+      flex: 1;
+    }
+    .feature-title {
+      font-size: var(--text-title-xs-size);
+      font-weight: var(--text-title-xs-weight);
+      color: var(--color-text-title);
+      margin-bottom: 2px;
+    }
+    .feature-desc {
+      font-size: var(--text-body-xs-size);
+      color: var(--color-text-description);
+    }
+
+    /* Bottom buttons */
+    .btn-area {
+      padding: 16px 20px 32px; flex-shrink: 0;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .btn-primary {
+      display: block; width: 100%;
+      height: var(--btn-xl-height); background: var(--color-primary);
+      color: var(--color-bg); border: none; border-radius: var(--btn-xl-radius);
+      font-size: var(--btn-xl-font-size); font-weight: var(--btn-xl-font-weight);
+      font-family: inherit; cursor: pointer; letter-spacing: -0.2px;
+    }
+    .btn-primary:disabled {
+      background: var(--color-gray-400);
+      color: var(--color-bg);
+      cursor: not-allowed;
+    }
+    .btn-ghost {
+      display: block; width: 100%;
+      height: var(--btn-xl-height);
+      background: transparent;
+      color: var(--color-primary);
+      border: 1.5px solid var(--color-primary);
+      border-radius: var(--btn-xl-radius);
+      font-size: var(--btn-xl-font-size);
+      font-weight: var(--btn-xl-font-weight);
+      font-family: inherit; cursor: pointer; letter-spacing: -0.2px;
+    }
+    .btn-ghost:hover { background: var(--color-blue-50); }
+  </style>
+</head>
+<body>
+  <!-- Status bar -->
+  <div class="status-bar"><span>9:41</span></div>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- Bio icon -->
+    <div class="bio-icon-wrap">
+      <div class="ring-3"></div>
+      <div class="ring-2"></div>
+      <div class="ring-1"></div>
+      <div class="bio-icon-circle">
+        <!-- Fingerprint SVG -->
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M16 4C9.37 4 4 9.37 4 16" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M16 4C22.63 4 28 9.37 28 16" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M10 16C10 12.69 12.69 10 16 10C19.31 10 22 12.69 22 16C22 19.31 19.31 22 16 22" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M16 10C16 10 16 16 16 19C16 20.66 17.34 22 19 22" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M8 22C8 22 7 20 7 16C7 11.03 11.03 7 16 7" stroke="white" stroke-width="2.2" stroke-linecap="round" opacity="0.6"/>
+          <path d="M24 22C24 22 25 20 25 16C25 11.03 20.97 7 16 7" stroke="white" stroke-width="2.2" stroke-linecap="round" opacity="0.6"/>
+          <circle cx="16" cy="16" r="2" fill="white"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Text -->
+    <div class="page-title">생체인증을<br>등록하시겠어요?</div>
+    <div class="body-text">등록하면 PIN 대신 생체인증으로<br>빠르게 결제할 수 있어요</div>
+
+    <!-- Features -->
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-text">
+          <div class="feature-title">빠른 결제</div>
+          <div class="feature-desc">PIN 입력 없이 지문/Face ID로 즉시 결제</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-text">
+          <div class="feature-title">강력한 보안</div>
+          <div class="feature-desc">기기 내 생체정보를 활용한 안전한 인증</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="btn-area">
+    <button class="btn-primary" id="bioRegisterBtn" onclick="alert('생체인증 등록 완료!')">생체인증 등록하기</button>
+    <button class="btn-ghost" onclick="alert('나중에 등록할 수 있습니다')">나중에 하기</button>
+  </div>
+
+  <script src="../../../icons.js"></script>
+  <script>
+    /* Check biometric authentication availability on page load */
+    document.addEventListener('DOMContentLoaded', function() {
+      var btn = document.getElementById('bioRegisterBtn');
+
+      try {
+        if (window.PublicKeyCredential &&
+            typeof PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable === 'function') {
+          PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+            .then(function(available) {
+              if (!available) {
+                btn.disabled = true;
+                btn.textContent = '생체인증을 지원하지 않는 기기입니다';
+              }
+            })
+            .catch(function() {
+              /* Promise rejected — treat as unsupported */
+              btn.disabled = true;
+              btn.textContent = '생체인증을 지원하지 않는 기기입니다';
+            });
+        } else {
+          /* API not available (old browser or non-https) */
+          btn.disabled = true;
+          btn.textContent = '생체인증을 지원하지 않는 기기입니다';
+        }
+      } catch (e) {
+        /* Unexpected error — treat as unsupported */
+        btn.disabled = true;
+        btn.textContent = '생체인증을 지원하지 않는 기기입니다';
+      }
+    });
+  </script>
+</body>
+</html>

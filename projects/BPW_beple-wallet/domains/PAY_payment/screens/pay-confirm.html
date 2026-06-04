@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360, initial-scale=1.0">
+  <title>결제 확인</title>
+  <link rel="stylesheet" href="../../../design/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 360px; height: 800px; overflow: hidden; }
+    body {
+      font-family: var(--text-font-family);
+      background: var(--color-bg);
+      color: var(--color-text-heading);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TopBar */
+    .topbar {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 8px;
+      border-bottom: 1px solid var(--color-border-card);
+      flex-shrink: 0;
+    }
+    .back-btn {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-heading);
+    }
+    .topbar-title {
+      font-size: var(--text-title-md-size);
+      font-weight: var(--text-title-md-weight);
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 20px 16px 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Merchant card */
+    .merchant-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: var(--color-bg-content-2);
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+    }
+    .merchant-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--color-primary);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-white);
+      flex-shrink: 0;
+    }
+    .merchant-name {
+      font-size: var(--text-title-sm-size);
+      font-weight: var(--text-title-sm-weight);
+      color: var(--color-text-title);
+    }
+    .merchant-category {
+      font-size: var(--text-body-xs-size);
+      color: var(--color-text-description);
+      margin-top: 2px;
+    }
+
+    /* Amount */
+    .amount-section {
+      text-align: center;
+      padding: 16px 0 20px;
+    }
+    .amount-label {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-description);
+      margin-bottom: 6px;
+    }
+    .amount-value {
+      font-size: var(--text-title-2xl-size);
+      font-weight: var(--text-title-2xl-weight);
+      color: var(--color-primary);
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: var(--color-border-divider);
+      margin: 0 0 16px;
+    }
+
+    /* Payment method */
+    .payment-method {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+    }
+    .method-label {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-description);
+    }
+    .method-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+    }
+    .method-name {
+      font-size: var(--text-title-xs-size);
+      font-weight: var(--text-title-xs-weight);
+      color: var(--color-text-title);
+    }
+    .method-balance {
+      font-size: var(--text-body-xs-size);
+      color: var(--color-text-description);
+    }
+
+    /* Footer */
+    .footer {
+      flex-shrink: 0;
+      padding: 12px 16px 24px;
+    }
+    .btn-primary-xl {
+      width: 100%;
+      height: var(--btn-xl-height);
+      padding: var(--btn-xl-padding-y) var(--btn-xl-padding-x);
+      background: var(--color-primary);
+      color: var(--color-white);
+      border: none;
+      border-radius: var(--btn-xl-radius);
+      font-family: var(--text-font-family);
+      font-size: var(--btn-xl-font-size);
+      font-weight: var(--btn-xl-font-weight);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-primary-xl:active {
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+  <!-- TopBar -->
+  <div class="topbar">
+    <button class="back-btn" aria-label="뒤로가기">
+      <span data-icon="arrowBack" style="width:24px;height:24px;display:inline-flex"></span>
+    </button>
+    <span class="topbar-title">결제 확인</span>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- Merchant card -->
+    <div class="merchant-card">
+      <div class="merchant-icon">
+        <span data-icon="shoppingCart" style="width:22px;height:22px;display:inline-flex"></span>
+      </div>
+      <div>
+        <div class="merchant-name">스타벅스 강남점</div>
+        <div class="merchant-category">카페·음료</div>
+      </div>
+    </div>
+
+    <!-- Amount -->
+    <div class="amount-section">
+      <div class="amount-label">결제 금액</div>
+      <div class="amount-value">₩5,500</div>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Payment method -->
+    <div class="payment-method">
+      <span class="method-label">결제 수단</span>
+      <div class="method-info">
+        <span class="method-name">Beple Money</span>
+        <span class="method-balance">잔액: ₩125,000</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <button class="btn-primary-xl" onclick="location.href='pay-pin.html'">결제하기</button>
+  </div>
+
+  <script src="../../../icons.js"></script>
+</body>
+</html>

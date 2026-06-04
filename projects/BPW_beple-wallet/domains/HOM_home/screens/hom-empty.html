@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360, initial-scale=1.0">
+  <title>홈 — 빈 상태</title>
+  <link rel="stylesheet" href="../../../design/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 360px; height: 800px; overflow: hidden; }
+    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--color-bg-content-1); color: var(--color-text-heading); }
+
+    /* ── Status Bar ── */
+    .status-bar {
+      width: 360px; height: 24px;
+      background: var(--color-bg);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px;
+    }
+    .status-bar-time { font-size: var(--text-body-xs-size); font-weight: 600; color: var(--color-text-heading); }
+    .status-bar-icons { display: flex; align-items: center; gap: 4px; }
+
+    /* ── TopBar ── */
+    .topbar {
+      position: fixed; top: 24px; left: 0;
+      width: 360px; height: 56px;
+      background: var(--color-bg);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px;
+      z-index: 100;
+      border-bottom: 1px solid var(--color-border-card);
+    }
+    .topbar-logo {
+      font-size: var(--text-title-md-size);
+      font-weight: var(--text-title-md-weight);
+      color: var(--color-primary);
+    }
+    .topbar-icon-btn {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      border: none; background: none; cursor: pointer;
+      border-radius: 50%;
+    }
+
+    /* ── Scrollable Body ── */
+    .scroll-body {
+      position: absolute; top: 80px; bottom: 56px; left: 0;
+      width: 360px;
+      overflow-y: auto; overflow-x: hidden;
+      background: var(--color-bg-content-1);
+    }
+    .scroll-body::-webkit-scrollbar { display: none; }
+
+    /* ── Balance Card ── */
+    .balance-section { padding: 16px 16px 0; }
+    .balance-card {
+      background: var(--color-blue-50);
+      border-radius: var(--radius-2xl);
+      padding: 20px;
+      box-shadow: var(--shadow-card);
+    }
+    .balance-label {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-description);
+      margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .balance-label-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--color-gray-400);
+    }
+    .balance-amount-row {
+      display: flex; align-items: baseline; gap: 4px;
+      margin-bottom: 6px;
+    }
+    .balance-amount {
+      font-size: var(--text-title-2xl-size);
+      font-weight: var(--text-title-2xl-weight);
+      color: var(--color-text-disabled);
+    }
+    .balance-unit {
+      font-size: var(--text-title-sm-size);
+      font-weight: var(--text-title-sm-weight);
+      color: var(--color-text-disabled);
+    }
+    .balance-hint {
+      font-size: var(--text-body-xs-size);
+      color: var(--color-text-description);
+    }
+
+    /* ── Quick Actions ── */
+    .quick-actions { padding: 16px 16px 0; }
+    .quick-actions-grid {
+      background: var(--color-bg);
+      border-radius: var(--radius-2xl);
+      padding: 16px 8px;
+      display: flex;
+      box-shadow: var(--shadow-card);
+    }
+    .quick-btn {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      border: none; background: none; cursor: pointer;
+    }
+    .quick-btn-circle {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--color-blue-100);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .quick-btn-label {
+      font-size: var(--text-body-sm-size);
+      font-weight: 600;
+      color: var(--color-text-title);
+    }
+
+    /* ── Section Header ── */
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 16px 10px;
+    }
+    .section-title {
+      font-size: var(--text-title-md-size);
+      font-weight: var(--text-title-md-weight);
+      color: var(--color-text-heading);
+    }
+
+    /* ── Charge Method Cards ── */
+    .charge-method-list {
+      display: flex; flex-direction: column; gap: 12px;
+      padding: 0 16px;
+    }
+    .charge-card {
+      background: var(--color-bg-content-2);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex; align-items: center; gap: 12px;
+      cursor: pointer;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    .charge-card-icon {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--color-blue-50);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .charge-card-icon-text {
+      font-size: var(--text-title-md-size);
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+    .charge-card-info {
+      flex: 1;
+      min-width: 0;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .charge-card-name {
+      font-size: var(--text-body-lg-size);
+      font-weight: 700;
+      color: var(--color-text-heading);
+    }
+    .charge-card-status {
+      font-size: var(--text-body-xs-size);
+    }
+    .charge-card-status.cta {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+    .charge-card-action {
+      display: flex; align-items: center; gap: 4px;
+      flex-shrink: 0;
+    }
+    .charge-card-action-arrow {
+      width: 16px; height: 16px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-text-description);
+    }
+
+    /* ── Empty Guidance ── */
+    .empty-guidance {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 24px 16px;
+      text-align: center;
+    }
+    .empty-guidance-text {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-description);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .btn-primary {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%;
+      height: var(--btn-xl-height);
+      background: var(--color-primary);
+      color: var(--color-white);
+      border: none; cursor: pointer;
+      border-radius: var(--radius-xl);
+      font-size: var(--btn-xl-font-size);
+      font-weight: var(--btn-xl-font-weight);
+      font-family: inherit;
+    }
+
+    /* ── Bottom TabBar (3-tab) ── */
+    .tabbar {
+      position: fixed; bottom: 0; left: 0;
+      width: 360px; height: 56px;
+      background: var(--color-bg);
+      border-top: 1px solid var(--color-border-card);
+      display: flex; align-items: center;
+      z-index: 100;
+    }
+    .tab-item {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 4px; height: 100%;
+      border: none; background: none; cursor: pointer;
+    }
+    .tab-label {
+      font-size: var(--text-body-xs-size); font-weight: 500;
+      color: var(--color-text-description);
+    }
+    .tab-item.active .tab-label { color: var(--color-primary); font-weight: 700; }
+    .tab-center-icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      display: flex; align-items: center; justify-content: center;
+      margin-top: -20px;
+      box-shadow: var(--shadow-card);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="status-bar-time">9:41</span>
+    <div class="status-bar-icons">
+      <span data-icon="wifi" style="width:14px;height:14px;display:inline-flex;color:var(--color-text-heading)"></span>
+    </div>
+  </div>
+
+  <!-- TopBar -->
+  <div class="topbar">
+    <span class="topbar-logo">비플월렛</span>
+    <button class="topbar-icon-btn" aria-label="알림">
+      <span data-icon="bell" style="width:22px;height:22px;display:inline-flex;color:var(--color-text-heading)"></span>
+    </button>
+  </div>
+
+  <!-- Scrollable Body -->
+  <div class="scroll-body">
+
+    <!-- Balance Card — Zero State -->
+    <div class="balance-section">
+      <div class="balance-card">
+        <div class="balance-label">
+          <span class="balance-label-dot"></span>
+          Beple Money
+        </div>
+        <div class="balance-amount-row">
+          <span class="balance-amount">&#8361;0</span>
+          <span class="balance-unit">원</span>
+        </div>
+        <div class="balance-hint">충전하고 시작해보세요</div>
+      </div>
+    </div>
+
+    <!-- Quick Actions — Active -->
+    <div class="quick-actions">
+      <div class="quick-actions-grid">
+        <button class="quick-btn">
+          <div class="quick-btn-circle">
+            <span data-icon="plus" style="width:22px;height:22px;display:inline-flex;color:var(--color-primary)"></span>
+          </div>
+          <span class="quick-btn-label">충전</span>
+        </button>
+        <button class="quick-btn">
+          <div class="quick-btn-circle">
+            <span data-icon="creditCard" style="width:22px;height:22px;display:inline-flex;color:var(--color-primary)"></span>
+          </div>
+          <span class="quick-btn-label">결제</span>
+        </button>
+        <button class="quick-btn">
+          <div class="quick-btn-circle">
+            <span data-icon="arrowDown" style="width:22px;height:22px;display:inline-flex;color:var(--color-primary)"></span>
+          </div>
+          <span class="quick-btn-label">출금</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Charge Method Section — All Disconnected -->
+    <div class="section-header">
+      <span class="section-title">충전 수단</span>
+    </div>
+    <div class="charge-method-list">
+
+      <!-- Korbit — Not Connected -->
+      <div class="charge-card">
+        <div class="charge-card-icon">
+          <span class="charge-card-icon-text">K</span>
+        </div>
+        <div class="charge-card-info">
+          <span class="charge-card-name">Korbit</span>
+          <span class="charge-card-status cta">연결하기</span>
+        </div>
+        <div class="charge-card-action">
+          <span class="charge-card-action-arrow" data-icon="chevronRight"></span>
+        </div>
+      </div>
+
+      <!-- Bank Account — Not Registered -->
+      <div class="charge-card">
+        <div class="charge-card-icon">
+          <span data-icon="creditCard" style="width:20px;height:20px;display:inline-flex;color:var(--color-primary)"></span>
+        </div>
+        <div class="charge-card-info">
+          <span class="charge-card-name">은행계좌</span>
+          <span class="charge-card-status cta">계좌 등록하기</span>
+        </div>
+        <div class="charge-card-action">
+          <span class="charge-card-action-arrow" data-icon="chevronRight"></span>
+        </div>
+      </div>
+
+      <!-- External Wallet -->
+      <div class="charge-card">
+        <div class="charge-card-icon">
+          <span data-icon="globe" style="width:20px;height:20px;display:inline-flex;color:var(--color-primary)"></span>
+        </div>
+        <div class="charge-card-info">
+          <span class="charge-card-name">외부 지갑</span>
+          <span class="charge-card-status cta">직전송 안내</span>
+        </div>
+        <div class="charge-card-action">
+          <span class="charge-card-action-arrow" data-icon="chevronRight"></span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty Guidance -->
+    <div class="empty-guidance">
+      <div class="empty-guidance-text">충전 수단을 연결하고 시작해보세요</div>
+      <button class="btn-primary">충전하기</button>
+    </div>
+
+    <!-- Bottom spacing -->
+    <div style="height:16px;"></div>
+  </div>
+
+  <!-- Bottom TabBar (3-tab) -->
+  <nav class="tabbar">
+    <button class="tab-item">
+      <span data-icon="creditCard" style="width:22px;height:22px;display:inline-flex;color:var(--color-text-description)"></span>
+      <span class="tab-label">결제내역</span>
+    </button>
+    <button class="tab-item active">
+      <div class="tab-center-icon">
+        <span data-icon="home" style="width:24px;height:24px;display:inline-flex;color:var(--color-white)"></span>
+      </div>
+      <span class="tab-label" style="color:var(--color-primary);">홈</span>
+    </button>
+    <button class="tab-item">
+      <span data-icon="moreHorizontal" style="width:22px;height:22px;display:inline-flex;color:var(--color-text-description)"></span>
+      <span class="tab-label">더보기</span>
+    </button>
+  </nav>
+
+  <script src="../../../icons.js"></script>
+</body>
+</html>

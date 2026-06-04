@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BPW beple-wallet — 전체 화면 뷰어</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+      background: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Top Bar ── */
+    .topbar {
+      width: 100%;
+      background: #111;
+      border-bottom: 1px solid #2a2a2a;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 13px;
+      font-weight: 700;
+      color: #4D84FF;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .logo span {
+      color: #666;
+      font-weight: 400;
+      margin-left: 6px;
+    }
+
+    .select-wrap {
+      position: relative;
+      flex: 1;
+      max-width: 480px;
+    }
+
+    .screen-select {
+      width: 100%;
+      height: 36px;
+      padding: 0 32px 0 12px;
+      background: #1e1e1e;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      color: #e0e0e0;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .screen-select:hover { border-color: #555; }
+    .screen-select:focus { border-color: #4D84FF; }
+
+    .select-wrap::after {
+      content: '';
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0; height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid #777;
+      pointer-events: none;
+    }
+
+    .nav-btns { display: flex; gap: 4px; }
+
+    .nav-btn {
+      width: 30px; height: 30px;
+      background: #1e1e1e;
+      border: 1px solid #3a3a3a;
+      border-radius: 6px;
+      color: #999;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.12s;
+      user-select: none;
+    }
+    .nav-btn:hover { background: #2a2a2a; color: #fff; border-color: #555; }
+    .nav-btn:active { background: #333; }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+    .counter-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      min-width: 72px;
+    }
+
+    .screen-counter {
+      font-size: 12px;
+      color: #555;
+      white-space: nowrap;
+    }
+
+    .domain-badge {
+      font-size: 10px;
+      color: #4D84FF;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    /* ── Phone Frame ── */
+    .phone-wrap {
+      margin: 28px 0 48px;
+    }
+
+    .phone-shell {
+      width: 392px;
+      background: #242424;
+      border-radius: 44px;
+      padding: 16px;
+      box-shadow:
+        0 0 0 1px #333,
+        0 28px 80px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      position: relative;
+    }
+
+    .phone-notch {
+      width: 96px; height: 24px;
+      background: #111;
+      border-radius: 0 0 14px 14px;
+      position: absolute;
+      top: 16px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    .screen-frame {
+      width: 360px; height: 800px;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+
+    .screen-frame iframe {
+      width: 360px; height: 800px;
+      border: none;
+      display: block;
+    }
+
+    /* ── Label ── */
+    .screen-label {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 12px;
+      color: #555;
+      letter-spacing: 0.2px;
+    }
+    .screen-label .screen-id { color: #4D84FF; font-weight: 600; margin-right: 6px; }
+    .screen-label .screen-name { color: #888; }
+
+    /* ── Domain pill ── */
+    .domain-info {
+      text-align: center;
+      margin-top: 6px;
+      font-size: 11px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="logo">BPW<span>beple-wallet</span></div>
+
+    <div class="select-wrap">
+      <select class="screen-select" id="screenSelect" onchange="navigate()">
+
+        <optgroup label="── ONB · 온보딩 ──────────────">
+          <option value="domains/ONB_onboarding/screens/onb-language.html"    data-domain="ONB" data-id="ONB-001">ONB-001 · 언어 선택</option>
+          <option value="domains/ONB_onboarding/screens/onb-user-type.html"   data-domain="ONB" data-id="ONB-002">ONB-002 · 사용자 유형 선택</option>
+          <option value="domains/ONB_onboarding/screens/onb-sms.html"         data-domain="ONB" data-id="ONB-003">ONB-003 · SMS 인증</option>
+          <option value="domains/ONB_onboarding/screens/onb-terms.html"       data-domain="ONB" data-id="ONB-004">ONB-004 · 약관 동의</option>
+          <option value="domains/ONB_onboarding/screens/onb-reg-complete.html" data-domain="ONB" data-id="ONB-005">ONB-005 · 가입 완료 (내국인)</option>
+          <option value="domains/ONB_onboarding/screens/onb-kyc-contact.html" data-domain="ONB" data-id="ONB-006">ONB-006 · 연락처 인증 (외국인)</option>
+          <option value="domains/ONB_onboarding/screens/onb-kyc-method.html"  data-domain="ONB" data-id="ONB-007">ONB-007 · KYC 방법 선택</option>
+          <option value="domains/ONB_onboarding/screens/onb-kyc-passport.html" data-domain="ONB" data-id="ONB-008">ONB-008 · 여권 OCR</option>
+          <option value="domains/ONB_onboarding/screens/onb-kyc-face.html"    data-domain="ONB" data-id="ONB-009">ONB-009 · 안면 인식</option>
+          <option value="domains/ONB_onboarding/screens/onb-kyc-complete.html" data-domain="ONB" data-id="ONB-010">ONB-010 · KYC 완료</option>
+          <option value="domains/ONB_onboarding/screens/onb-pin-setup.html"   data-domain="ONB" data-id="ONB-011">ONB-011 · PIN 설정</option>
+          <option value="domains/ONB_onboarding/screens/onb-pin-confirm.html" data-domain="ONB" data-id="ONB-012">ONB-012 · PIN 확인</option>
+          <option value="domains/ONB_onboarding/screens/onb-bio.html"         data-domain="ONB" data-id="ONB-013">ONB-013 · 생체인증 등록</option>
+        </optgroup>
+
+        <optgroup label="── HOM · 홈 ──────────────────">
+          <option value="domains/HOM_home/screens/hom-main.html"   data-domain="HOM" data-id="HOM-001">HOM-001 · 메인 홈</option>
+          <option value="domains/HOM_home/screens/hom-empty.html"  data-domain="HOM" data-id="HOM-002">HOM-002 · 메인 홈 (Empty)</option>
+          <option value="domains/HOM_home/screens/hom-banner.html" data-domain="HOM" data-id="HOM-003">HOM-003 · 배너 상세</option>
+        </optgroup>
+
+        <optgroup label="── CHG · 충전 ──────────────────">
+          <option value="domains/CHG_recharge/screens/chg-method.html"       data-domain="CHG" data-id="CHG-001">CHG-001 · 충전 방법 선택</option>
+          <option value="domains/CHG_recharge/screens/chg-krb-connect.html"  data-domain="CHG" data-id="CHG-KRB-001">CHG-KRB-001 · Korbit 연결</option>
+          <option value="domains/CHG_recharge/screens/chg-krb-consent.html"  data-domain="CHG" data-id="CHG-KRB-002">CHG-KRB-002 · 출금 동의</option>
+          <option value="domains/CHG_recharge/screens/chg-krb-coin.html"     data-domain="CHG" data-id="CHG-KRB-003">CHG-KRB-003 · 코인 선택</option>
+          <option value="domains/CHG_recharge/screens/chg-krb-amount.html"   data-domain="CHG" data-id="CHG-KRB-004">CHG-KRB-004 · 수량 입력</option>
+          <option value="domains/CHG_recharge/screens/chg-krb-confirm.html"  data-domain="CHG" data-id="CHG-KRB-005">CHG-KRB-005 · 매도 확인</option>
+          <option value="domains/CHG_recharge/screens/chg-krb-cert.html"     data-domain="CHG" data-id="CHG-KRB-006">CHG-KRB-006 · 공동인증</option>
+          <option value="domains/CHG_recharge/screens/chg-krb-complete.html" data-domain="CHG" data-id="CHG-KRB-007">CHG-KRB-007 · Korbit 충전 완료</option>
+          <option value="domains/CHG_recharge/screens/chg-drt-guide.html"    data-domain="CHG" data-id="CHG-DRT-001">CHG-DRT-001 · 직전송 안내</option>
+          <option value="domains/CHG_recharge/screens/chg-drt-coin.html"     data-domain="CHG" data-id="CHG-DRT-002">CHG-DRT-002 · 코인/네트워크 선택</option>
+          <option value="domains/CHG_recharge/screens/chg-drt-refund.html"   data-domain="CHG" data-id="CHG-DRT-003">CHG-DRT-003 · 환불주소 등록</option>
+          <option value="domains/CHG_recharge/screens/chg-drt-address.html"  data-domain="CHG" data-id="CHG-DRT-004">CHG-DRT-004 · 수신주소 안내</option>
+          <option value="domains/CHG_recharge/screens/chg-drt-wait.html"     data-domain="CHG" data-id="CHG-DRT-005">CHG-DRT-005 · 블록체인 대기</option>
+          <option value="domains/CHG_recharge/screens/chg-bnk-select.html"   data-domain="CHG" data-id="CHG-BNK-001">CHG-BNK-001 · 계좌 선택·금액 입력</option>
+          <option value="domains/CHG_recharge/screens/chg-bnk-complete.html" data-domain="CHG" data-id="CHG-BNK-002">CHG-BNK-002 · 은행 충전 완료</option>
+        </optgroup>
+
+        <optgroup label="── PAY · 결제 ──────────────────">
+          <option value="domains/PAY_payment/screens/pay-qr.html"           data-domain="PAY" data-id="PAY-001">PAY-001 · QR 스캔</option>
+          <option value="domains/PAY_payment/screens/pay-confirm.html"      data-domain="PAY" data-id="PAY-002">PAY-002 · 결제 확인</option>
+          <option value="domains/PAY_payment/screens/pay-complete.html"     data-domain="PAY" data-id="PAY-003">PAY-003 · 결제 완료</option>
+          <option value="domains/PAY_payment/screens/pay-insufficient.html" data-domain="PAY" data-id="PAY-004">PAY-004 · 잔액 부족</option>
+        </optgroup>
+
+        <optgroup label="── WDR · 출금 ──────────────────">
+          <option value="domains/WDR_withdrawal/screens/wdr-qr.html"       data-domain="WDR" data-id="WDR-001">WDR-001 · ATM QR 스캔</option>
+          <option value="domains/WDR_withdrawal/screens/wdr-amount.html"   data-domain="WDR" data-id="WDR-002">WDR-002 · 출금 금액 입력</option>
+          <option value="domains/WDR_withdrawal/screens/wdr-confirm.html"  data-domain="WDR" data-id="WDR-003">WDR-003 · 출금 확인</option>
+          <option value="domains/WDR_withdrawal/screens/wdr-complete.html" data-domain="WDR" data-id="WDR-004">WDR-004 · 출금 완료</option>
+        </optgroup>
+
+        <optgroup label="── ACT · 내역·계좌 ───────────────">
+          <option value="domains/ACT_activity/screens/act-accounts.html"    data-domain="ACT" data-id="ACT-001">ACT-001 · 계좌 목록</option>
+          <option value="domains/ACT_activity/screens/act-account-reg.html" data-domain="ACT" data-id="ACT-002">ACT-002 · 계좌 등록</option>
+          <option value="domains/ACT_activity/screens/act-history.html"     data-domain="ACT" data-id="ACT-003">ACT-003 · 거래 내역</option>
+          <option value="domains/ACT_activity/screens/act-detail.html"      data-domain="ACT" data-id="ACT-004">ACT-004 · 거래 상세</option>
+        </optgroup>
+
+        <optgroup label="── SET · 설정 ──────────────────">
+          <option value="domains/SET_settings/screens/set-menu.html"       data-domain="SET" data-id="SET-001">SET-001 · 설정 메뉴</option>
+          <option value="domains/SET_settings/screens/set-language.html"   data-domain="SET" data-id="SET-002">SET-002 · 언어 변경</option>
+          <option value="domains/SET_settings/screens/set-pin-change.html" data-domain="SET" data-id="SET-003">SET-003 · PIN 변경</option>
+          <option value="domains/SET_settings/screens/set-bio.html"        data-domain="SET" data-id="SET-004">SET-004 · 생체인증 설정</option>
+        </optgroup>
+
+      </select>
+    </div>
+
+    <div class="nav-btns">
+      <button class="nav-btn" id="prevBtn" onclick="prev()" title="이전 (←)">‹</button>
+      <button class="nav-btn" id="nextBtn" onclick="next()" title="다음 (→)">›</button>
+    </div>
+
+    <div class="counter-wrap">
+      <span class="domain-badge" id="domainBadge">—</span>
+      <span class="screen-counter" id="counter">— / 47</span>
+    </div>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone-shell">
+      <div class="phone-notch"></div>
+      <div class="screen-frame" id="screenFrame">
+        <div style="width:360px;height:800px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#888;background:#f5f5f5;">
+          <div style="font-size:28px;opacity:0.3;">🎨</div>
+          <div style="font-size:13px;">화면을 선택하세요</div>
+        </div>
+      </div>
+    </div>
+    <p class="screen-label" id="screenLabel">
+      <span class="screen-id">—</span>
+      <span class="screen-name">화면을 선택하세요</span>
+    </p>
+    <p class="domain-info" id="domainInfo">BPW beple-wallet · 전체 47개 화면</p>
+  </div>
+
+  <script>
+    const select   = document.getElementById('screenSelect');
+    const frame    = document.getElementById('screenFrame');
+    const label    = document.getElementById('screenLabel');
+    const counter  = document.getElementById('counter');
+    const badge    = document.getElementById('domainBadge');
+    const info     = document.getElementById('domainInfo');
+    const prevBtn  = document.getElementById('prevBtn');
+    const nextBtn  = document.getElementById('nextBtn');
+
+    function getOptions() {
+      return Array.from(select.options);
+    }
+
+    // Domain display names
+    const DOMAIN_NAMES = {
+      ONB: 'ONB · 온보딩',
+      HOM: 'HOM · 홈',
+      CHG: 'CHG · 충전',
+      PAY: 'PAY · 결제',
+      WDR: 'WDR · 출금',
+      ACT: 'ACT · 내역·계좌',
+      SET: 'SET · 설정',
+    };
+
+    // Count screens per domain
+    const domainCounts = {};
+    getOptions().forEach(o => {
+      const d = o.dataset.domain;
+      if (d) domainCounts[d] = (domainCounts[d] || 0) + 1;
+    });
+
+    function updateUI() {
+      const options = getOptions();
+      if (!options.length) return;
+
+      const opt   = options[select.selectedIndex];
+      const src   = opt.value;
+      const id    = opt.dataset.id   || '';
+      const dom   = opt.dataset.domain || '';
+      const total = options.length;
+      const idx   = select.selectedIndex + 1;
+
+      // iframe
+      let iframe = frame.querySelector('iframe');
+      if (!iframe) {
+        frame.innerHTML = '';
+        iframe = document.createElement('iframe');
+        frame.appendChild(iframe);
+      }
+      iframe.src = src;
+
+      // label
+      document.getElementById('screenLabel').innerHTML =
+        `<span class="screen-id">${id}</span><span class="screen-name">${opt.text.replace(/^[A-Z0-9\-·\s]+·\s*/, '')}</span>`;
+
+      // counter & badge
+      counter.textContent = `${idx} / ${total}`;
+      badge.textContent   = dom;
+
+      // domain info
+      const cnt = domainCounts[dom] || 0;
+      info.textContent = `${DOMAIN_NAMES[dom] || dom}  ·  ${cnt}개 화면`;
+
+      // nav button states
+      prevBtn.disabled = select.selectedIndex === 0;
+      nextBtn.disabled = select.selectedIndex === options.length - 1;
+    }
+
+    function navigate() { updateUI(); }
+
+    function prev() {
+      if (select.selectedIndex > 0) {
+        select.selectedIndex--;
+        updateUI();
+      }
+    }
+
+    function next() {
+      const opts = getOptions();
+      if (select.selectedIndex < opts.length - 1) {
+        select.selectedIndex++;
+        updateUI();
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  prev();
+      if (e.key === 'ArrowRight') next();
+    });
+
+    // init
+    updateUI();
+  </script>
+
+</body>
+</html>

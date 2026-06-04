@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360, initial-scale=1.0">
+  <title>ONB-003 SMS 인증</title>
+  <link rel="stylesheet" href="../../../design/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 360px; height: 800px; overflow: hidden; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text-heading);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Status bar */
+    .status-bar {
+      height: 24px;
+      background: var(--color-bg);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 16px;
+      flex-shrink: 0;
+    }
+    .status-bar span { font-size: var(--text-body-xs-size); font-weight: 600; color: var(--color-text-heading); }
+
+    /* TopBar */
+    .topbar {
+      height: 56px;
+      background: var(--color-bg);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      flex-shrink: 0;
+    }
+    .back-btn {
+      width: 40px; height: 40px;
+      background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-text-heading);
+      border-radius: var(--radius-md);
+      margin-left: -8px;
+    }
+    .back-btn:hover { background: var(--color-bg-content-1); }
+
+    /* Content — [#3] overflow-y: auto */
+    .content {
+      flex: 1;
+      padding: 8px 20px 0;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .page-title {
+      font-size: var(--text-title-xl-size);
+      font-weight: var(--text-title-xl-weight);
+      color: var(--color-text-heading);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .page-subtitle {
+      font-size: var(--text-body-sm-size);
+      color: var(--color-text-description);
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
+
+    /* TextField line style */
+    .field-group {
+      margin-bottom: 28px;
+    }
+    .field-label {
+      font-size: var(--input-label-font-size);
+      font-weight: 500;
+      color: var(--color-text-description);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .field-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      border-bottom: var(--input-border-line) solid var(--color-border-divider);
+      padding-bottom: 8px;
+      max-width: 100%;
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    .field-row:focus-within {
+      border-color: var(--color-primary);
+    }
+    .field-row.error {
+      border-color: var(--color-error);
+    }
+    .field-input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: var(--input-placeholder-size-line);
+      color: var(--color-text-heading);
+      background: transparent;
+      letter-spacing: var(--text-letter-spacing);
+    }
+    .field-input::placeholder {
+      color: var(--color-text-disabled);
+    }
+    .field-input:disabled {
+      color: var(--color-text-disabled);
+      cursor: not-allowed;
+    }
+    /* [#7-a] Timer color: Gray/600 per design-spec ONB-003 */
+    .field-timer {
+      font-size: var(--text-body-sm-size);
+      font-weight: 500;
+      color: var(--color-text-description);
+      flex-shrink: 0;
+      min-width: 38px;
+      text-align: right;
+    }
+    .field-action-btn {
+      flex-shrink: 0;
+      height: var(--btn-sm-height);
+      padding: 0 var(--btn-sm-padding-x);
+      background: var(--color-primary);
+      color: var(--color-bg);
+      border: none;
+      border-radius: var(--btn-sm-radius);
+      font-size: var(--btn-sm-font-size);
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .field-action-btn:disabled {
+      background: var(--color-gray-400);
+      cursor: not-allowed;
+    }
+    .field-error {
+      margin-top: 6px;
+      font-size: var(--text-body-xs-size);
+      color: var(--color-error);
+      display: none;
+    }
+    .field-error.show { display: block; }
+
+    /* OTP field -- hidden initially */
+    .otp-group {
+      display: none;
+    }
+    .otp-group.show {
+      display: block;
+    }
+
+    /* Resend button -- hidden initially, shown when timer expires */
+    .resend-btn {
+      flex-shrink: 0;
+      height: var(--btn-sm-height);
+      padding: 0 var(--btn-sm-padding-x);
+      background: var(--color-primary);
+      color: var(--color-bg);
+      border: none;
+      border-radius: var(--btn-sm-radius);
+      font-size: var(--btn-sm-font-size);
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      display: none;
+    }
+    .resend-btn.show {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Expired error message */
+    .field-expired {
+      margin-top: 6px;
+      font-size: var(--text-body-xs-size);
+      color: var(--color-error);
+      display: none;
+    }
+    .field-expired.show { display: block; }
+
+    /* Info note */
+    .info-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 12px 16px;
+      background: var(--color-blue-50);
+      border-radius: var(--radius-md);
+      margin-top: 4px;
+    }
+    .info-note-icon {
+      color: var(--color-primary);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .info-note-text {
+      font-size: var(--text-body-xs-size);
+      color: var(--color-text-body);
+      line-height: 1.5;
+    }
+
+    /* Bottom button */
+    .btn-area {
+      padding: 16px 20px 32px;
+      flex-shrink: 0;
+    }
+    .btn-primary {
+      display: block;
+      width: 100%;
+      height: var(--btn-xl-height);
+      background: var(--color-primary);
+      color: var(--color-bg);
+      border: none;
+      border-radius: var(--btn-xl-radius);
+      font-size: var(--btn-xl-font-size);
+      font-weight: var(--btn-xl-font-weight);
+      font-family: inherit;
+      cursor: pointer;
+      letter-spacing: var(--text-letter-spacing);
+    }
+    .btn-primary:disabled {
+      background: var(--color-gray-400);
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <!-- Status bar -->
+  <div class="status-bar"><span>9:41</span></div>
+
+  <!-- TopBar -->
+  <div class="topbar">
+    <button class="back-btn" onclick="history.back()">
+      <span data-icon="arrowBack" style="width:24px;height:24px;display:inline-flex"></span>
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="page-title">휴대폰 번호를<br>입력하세요</div>
+    <div class="page-subtitle">본인 명의의 휴대폰 번호를 입력해주세요</div>
+
+    <!-- Phone number field -->
+    <div class="field-group">
+      <label class="field-label">휴대폰 번호</label>
+      <div class="field-row" id="phoneRow">
+        <input class="field-input" id="phoneInput" type="tel"
+          placeholder="010-0000-0000" maxlength="13"
+          oninput="onPhoneInput(this)">
+        <button class="field-action-btn" id="sendBtn" onclick="sendOTP()" disabled>인증번호 발송</button>
+      </div>
+    </div>
+
+    <!-- OTP field -->
+    <div class="field-group otp-group" id="otpGroup">
+      <label class="field-label">인증번호</label>
+      <div class="field-row" id="otpRow">
+        <input class="field-input" id="otpInput" type="number"
+          placeholder="인증번호 6자리 입력" maxlength="6"
+          oninput="onOTPInput(this)">
+        <span class="field-timer" id="timer">3:00</span>
+        <button class="resend-btn" id="resendBtn" onclick="resendOTP()">재발송</button>
+      </div>
+      <div class="field-error" id="otpError"></div>
+      <div class="field-expired" id="expiredError">인증시간이 만료됐습니다. 재발송해주세요.</div>
+    </div>
+
+    <!-- Info note -->
+    <div class="info-note" id="infoNote" style="display:none;">
+      <span class="info-note-icon" data-icon="infoCircle" style="width:14px;height:14px;display:inline-flex"></span>
+      <span class="info-note-text">인증번호가 오지 않는다면 스팸 문자함을 확인해주세요.<br>3분 이내에 인증번호를 입력해주세요.</span>
+    </div>
+  </div>
+
+  <!-- Button -->
+  <div class="btn-area">
+    <button class="btn-primary" id="mainBtn" onclick="onMainBtn()" disabled>인증번호 발송</button>
+  </div>
+
+  <script src="../../../icons.js"></script>
+  <script>
+    let otpSent = false;
+    let timerInterval = null;
+    let seconds = 180;
+    let timerExpired = false;
+    /* [#7-b] OTP attempt tracking */
+    let otpAttempts = 0;
+    var OTP_MAX_ATTEMPTS = 5;
+    let otpLocked = false;
+    /* Demo OTP code for testing */
+    var DEMO_OTP = '123456';
+
+    function onPhoneInput(el) {
+      var v = el.value.replace(/\D/g, '');
+      if (v.length > 3 && v.length <= 7) v = v.slice(0,3) + '-' + v.slice(3);
+      else if (v.length > 7) v = v.slice(0,3) + '-' + v.slice(3,7) + '-' + v.slice(7,11);
+      el.value = v;
+      var valid = v.replace(/-/g,'').length >= 10;
+      document.getElementById('sendBtn').disabled = !valid;
+      if (!otpSent) document.getElementById('mainBtn').disabled = !valid;
+    }
+
+    function sendOTP() {
+      otpSent = true;
+      timerExpired = false;
+      otpAttempts = 0;
+      otpLocked = false;
+      document.getElementById('otpGroup').classList.add('show');
+      document.getElementById('infoNote').style.display = 'flex';
+      document.getElementById('mainBtn').textContent = '인증하기';
+      document.getElementById('mainBtn').disabled = true;
+      document.getElementById('otpInput').value = '';
+      document.getElementById('otpInput').disabled = false;
+      /* Hide resend button, show timer */
+      document.getElementById('resendBtn').classList.remove('show');
+      document.getElementById('timer').style.display = '';
+      document.getElementById('expiredError').classList.remove('show');
+      document.getElementById('otpError').classList.remove('show');
+      document.getElementById('otpError').textContent = '';
+      document.getElementById('otpRow').classList.remove('error');
+      startTimer();
+    }
+
+    function resendOTP() {
+      /* Re-send OTP: reset timer, attempts, and UI */
+      timerExpired = false;
+      otpAttempts = 0;
+      otpLocked = false;
+      document.getElementById('resendBtn').classList.remove('show');
+      document.getElementById('timer').style.display = '';
+      document.getElementById('expiredError').classList.remove('show');
+      document.getElementById('otpError').classList.remove('show');
+      document.getElementById('otpError').textContent = '';
+      document.getElementById('otpRow').classList.remove('error');
+      document.getElementById('otpInput').value = '';
+      document.getElementById('otpInput').disabled = false;
+      document.getElementById('mainBtn').disabled = true;
+      startTimer();
+    }
+
+    function startTimer() {
+      seconds = 180;
+      clearInterval(timerInterval);
+      timerInterval = setInterval(function() {
+        seconds--;
+        var m = Math.floor(seconds / 60);
+        var s = seconds % 60;
+        document.getElementById('timer').textContent = m + ':' + String(s).padStart(2,'0');
+        if (seconds <= 0) {
+          clearInterval(timerInterval);
+          timerExpired = true;
+          document.getElementById('timer').textContent = '0:00';
+          /* Hide timer, show resend button */
+          document.getElementById('timer').style.display = 'none';
+          document.getElementById('resendBtn').classList.add('show');
+          /* Disable main button and show expired message */
+          document.getElementById('mainBtn').disabled = true;
+          document.getElementById('expiredError').classList.add('show');
+        }
+      }, 1000);
+    }
+
+    function onOTPInput(el) {
+      if (!timerExpired && !otpLocked) {
+        document.getElementById('mainBtn').disabled = el.value.length < 6;
+      }
+    }
+
+    /* [#7-b] OTP verification with attempt counting */
+    function verifyOTP() {
+      if (otpLocked || timerExpired) return;
+
+      var inputCode = document.getElementById('otpInput').value.trim();
+
+      /* Success: OTP matches */
+      if (inputCode === DEMO_OTP) {
+        clearInterval(timerInterval);
+        location.href = 'onb-reg-complete.html';
+        return;
+      }
+
+      /* Failure: OTP mismatch */
+      otpAttempts++;
+
+      if (otpAttempts >= OTP_MAX_ATTEMPTS) {
+        /* Exceeded max attempts — lock out */
+        document.getElementById('otpRow').classList.add('error');
+        document.getElementById('otpError').textContent = '인증 시도가 초과되었습니다. 다시 시도해주세요.';
+        document.getElementById('otpError').classList.add('show');
+        document.getElementById('otpInput').disabled = true;
+        document.getElementById('mainBtn').disabled = true;
+        otpLocked = true;
+        clearInterval(timerInterval);
+      } else {
+        /* Show mismatch with attempt count */
+        document.getElementById('otpRow').classList.add('error');
+        document.getElementById('otpError').textContent = '인증번호가 일치하지 않습니다. (' + otpAttempts + '/' + OTP_MAX_ATTEMPTS + ')';
+        document.getElementById('otpError').classList.add('show');
+      }
+    }
+
+    function onMainBtn() {
+      if (!otpSent) {
+        sendOTP();
+      } else if (!timerExpired && !otpLocked) {
+        verifyOTP();
+      }
+    }
+  </script>
+</body>
+</html>

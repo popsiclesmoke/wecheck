@@ -1,0 +1,162 @@
+/* 기본 폰트: Noto Sans KR */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   WeCheck Design Tokens
+   출처: references/wecheck-components_3.md, references/wecheck-spacing-spec.md
+   모든 화면은 반드시 이 토큰(var(--*))만 사용한다. 하드코딩 색상/간격 금지.
+   ========================================================================== */
+
+:root {
+  /* ── 색상: Primary ── */
+  --color-primary:          #2B5AFE;
+  --color-error:            #FF4949;
+
+  /* ── 색상: Text ── */
+  --color-text-default:     #222222;
+  --color-text-org:         #333333;
+  --color-text-disabled:    #878D95;
+  --color-text-placeholder: #B1B7C0;
+  --color-text-white:       #FFFFFF;
+  --color-statusbar:        #000000;   /* StatusBar 시간/아이콘 (wecheck-components §5-1) */
+
+  /* ── 색상: Box / Border ── */
+  --color-border-default:   #E5E8ED;
+  --color-border-selected:  #777777;
+  --color-border-input:     #DDDDDD;
+  --color-border-checkbox:  #B8BABE;
+
+  /* ── 색상: Background ── */
+  --color-bg-disabled:      #EAEDF1;
+  --color-bg-unselected:    #F5F6F8;
+  --color-bg-tab:           #F3F4F7;
+  --color-bg-white:         #FFFFFF;
+  --color-error-bg:         rgba(255, 73, 73, 0.08);
+
+  /* ── 색상: 보조 (태그/일러스트) ── */
+  --color-tag-road-bg:      #EAECFF;
+  --color-tag-jibun-bg:     #EAEDF1;
+  --color-caution:          #FFCE3C;
+  --color-chat:             #9FE4FF;
+
+  /* ── 색상: Chart Gradient ── */
+  --color-chart-1: #05CBC2;
+  --color-chart-2: #1BB3D0;
+  --color-chart-3: #3F8AE9;
+  --color-chart-4: #4584EC;
+  --color-chart-5: #4B7DF0;
+
+  /* ── 딤 배경 ── */
+  --color-dim:     rgba(0, 0, 0, 0.70);
+
+  /* ── 타이포그래피: font-size ── */
+  --font-display1:  22px;
+  --font-heading1:  19px;
+  --font-heading2:  17px;
+  --font-heading4:  15px;
+  --font-heading5:  14px;
+  --font-heading6:  13px;
+  --font-body1:     15px;
+  --font-body2:     14px;
+  --font-body4:     12px;
+  --font-caption2:  12px;
+
+  /* ── 타이포그래피: font-weight ── */
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold: 600;
+  --weight-logo:    800;
+
+  /* ── 타이포그래피: line-height ── */
+  --lh-display1:  32px;
+  --lh-heading1:  26px;
+  --lh-heading2:  26px;
+  --lh-heading4:  22px;
+  --lh-heading5:  20px;
+  --lh-heading6:  20px;
+  --lh-body1:     20px;
+  --lh-body2:     20px;
+  --lh-body4:     100%;
+  --lh-caption2:  18px;
+
+  /* ── 타이포그래피: letter-spacing ── */
+  --tracking-tight: -0.04em;
+
+  /* ── 스페이싱 ── */
+  --space-xxs:   4px;
+  --space-xs:    6px;
+  --space-sm:    8px;
+  --space-md:   10px;
+  --space-card: 12px;
+  --space-lg:   14px;
+  --space-step-gap: 15px;  /* step-row ChartIcon ↔ 타이틀 gap */
+  --space-xl:   16px;
+  --space-xxl:  20px;
+  --space-xxxl: 24px;
+
+  /* ── 레이아웃 고정값 ── */
+  --space-page-top:          30px;   /* 헤더 이후 첫 콘텐츠 상단 여백 */
+  --space-page-title-bottom: 40px;   /* 화면 타이틀 영역 하단 여백 */
+  --screen-width:      360px;
+  --screen-height:     680px;
+  --page-margin:       20px;   /* ⛔ 콘텐츠 진입 금지 영역. 텍스트·아이콘·border·배경 등 모든 요소는 이 안으로 들어오면 안 됨 */
+  --component-width:   100%;
+  --statusbar-height:  44px;
+  --header-height:     50px;
+  --header-total:      94px;
+  --button-height:     50px;
+  --button-popup-h:    46px;
+  --input-height:      46px;
+  --popup-width:       290px;
+  --popup-margin:      35px;   /* 팝업 좌우 여백 — (360 - 290) / 2 = 35px, 반응형으로 팝업이 함께 늘어남 */
+  --carrier-width:     77px;
+
+  /* ── Border Radius ── */
+  --radius-checkbox-s: 3px;
+  --radius-checkbox-m: 4px;
+  --radius-tag:        4px;
+  --radius-default:    8px;
+  --radius-tab-active: 15px;
+  --radius-tab-outer:  18px;
+  --radius-sheet-top:  18px;
+  --radius-round:      40px;
+  --radius-circle:     50%;
+}
+
+/* ==========================================================================
+   Scrollbar — 스크롤바는 오른쪽 20px padding 영역 안에 overlay.
+   콘텐츠 너비는 항상 360 - 20*2 = 320px 유지.
+   - .content: overflow-y: overlay → 스크롤바가 padding 위에 떠서 공간 차지 안 함
+   - 그 외 컨테이너: scrollbar-gutter: stable (고정 폭 레이아웃에만 사용)
+   - width: 4px → 스크롤바 두께
+   ========================================================================== */
+
+/* thin 4px 스크롤바 */
+::-webkit-scrollbar              { width: 4px; height: 4px; }
+::-webkit-scrollbar-track        { background: transparent; }
+::-webkit-scrollbar-thumb        { background: rgba(0, 0, 0, 0.14); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover  { background: rgba(0, 0, 0, 0.25); }
+
+/* Firefox */
+* { scrollbar-width: thin; scrollbar-color: rgba(0, 0, 0, 0.14) transparent; }
+
+/*
+ * .content 스크롤바 전략
+ * - overflow-y: overlay  : 스크롤바를 padding 위에 overlay. Chrome 121+ deprecated이나
+ *                           현재 주요 브라우저에서 여전히 동작. 동작 시 320px 완전 보존.
+ * - contain: layout (아래 .dropdown-wrap) : dropdown이 abs-pos로 .content scroll area를
+ *                           확장하는 것을 막아 scrollbar 자체가 생기지 않도록 함. 근본 원인 차단.
+ */
+.content { overflow-y: overlay !important; }
+
+/* dropdown abs-pos 자식이 .content의 scrollable area를 확장하지 않도록 layout 격리 */
+.dropdown-wrap { contain: layout; }
+
+/* 그 외 스크롤 컨테이너: 고정 폭 내에서 gutter 예약 */
+.sheet-content,
+.sheet-body,
+.bs-body,
+.popup-scroll-area,
+.dropdown-list {
+  scrollbar-gutter: stable;
+}
