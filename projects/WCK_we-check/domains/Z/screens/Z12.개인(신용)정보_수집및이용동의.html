@@ -22,6 +22,10 @@
     .wifi { width: 16px; height: 11px; }
     .batt { width: 22px; height: 11px; border-radius: 2px; }
 
+    /* Header */
+    .header { height: var(--header-height); flex-shrink: 0; display: flex; align-items: center; padding: 0 var(--page-margin); position: relative; background: var(--color-bg-white); }
+    .logo { position: absolute; left: 50%; transform: translateX(-50%); }
+
     /* Sheet Header */
     .sheet-header { height: 75px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--page-margin); background: var(--color-bg-white); border-radius: var(--radius-sheet-top) var(--radius-sheet-top) 0 0; }
     .sheet-title { font-size: var(--font-heading1); font-weight: var(--weight-medium); line-height: var(--lh-heading1); letter-spacing: -0.76px; color: var(--color-text-default); }
@@ -61,6 +65,9 @@
     </g>
   </svg>
 </div>
+    <div class="header">
+      <img class="logo" src="../../../design/ci%20png/WeCheck.png" alt="WeCheck" style="height:16px; width:auto;">
+    </div>
     <div class="sheet-header">
       <div class="icon-btn"><i data-icon="arrowBack"></i></div>
       <span class="sheet-title">개인(신용)정보 수집 및 이용동의</span>
