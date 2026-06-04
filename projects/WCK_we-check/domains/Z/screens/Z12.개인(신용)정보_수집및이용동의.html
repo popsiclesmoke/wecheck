@@ -9,7 +9,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     i[data-icon] { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; }
     html, body { width: 100%; height: 100%; font-family: 'Noto Sans KR', -apple-system, 'Apple SD Gothic Neo', sans-serif; background: var(--color-bg-white); color: var(--color-text-default); letter-spacing: var(--tracking-tight); overflow: hidden; }
-    .screen { width: 100%; height: 100vh; display: flex; flex-direction: column; }
+    .screen { width: 100%; height: 100vh; display: flex; flex-direction: column; position: relative; }
 
     /* StatusBar */
     
@@ -26,9 +26,15 @@
     .header { height: var(--header-height); flex-shrink: 0; display: flex; align-items: center; padding: 0 var(--page-margin); position: relative; background: var(--color-bg-white); }
     .logo { position: absolute; left: 50%; transform: translateX(-50%); }
 
+    /* Dim */
+    .dim { position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 1; }
+
+    /* Sheet */
+    .sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; background: var(--color-bg-white); border-radius: var(--radius-sheet-top) var(--radius-sheet-top) 0 0; display: flex; flex-direction: column; max-height: 80vh; }
+
     /* Sheet Header */
-    .sheet-header { height: 75px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--page-margin); background: var(--color-bg-white); border-radius: var(--radius-sheet-top) var(--radius-sheet-top) 0 0; }
-    .sheet-title { font-size: var(--font-heading1); font-weight: var(--weight-medium); line-height: var(--lh-heading1); letter-spacing: -0.76px; color: var(--color-text-default); }
+    .sheet-header { height: 75px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--page-margin); background: var(--color-bg-white); border-radius: var(--radius-sheet-top) var(--radius-sheet-top) 0 0; position: relative; }
+    .sheet-title { position: absolute; left: 50%; transform: translateX(-50%); font-size: var(--font-heading1); font-weight: var(--weight-medium); line-height: var(--lh-heading1); letter-spacing: -0.76px; color: var(--color-text-default); white-space: nowrap; }
     .icon-btn { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
     /* Content */
@@ -68,6 +74,8 @@
     <div class="header">
       <img class="logo" src="../../../design/ci%20png/WeCheck.png" alt="WeCheck" style="height:16px; width:auto;">
     </div>
+    <div class="dim"></div>
+    <div class="sheet">
     <div class="sheet-header">
       <span class="sheet-title">개인(신용)정보 수집 및 이용동의</span>
       <div class="icon-btn"><i data-icon="close"></i></div>
@@ -216,6 +224,7 @@
       <p class="doc-footer">개인(신용)정보 수집 및 이용에 대한 동의를 거부하실 수 있으며, 동의 거부 시 증명서 발급신청서비스의 이용이 불가능합니다.</p>
       <p class="doc-agree">위와 같은 개인(신용)정보 수집 및 이용에 동의합니다.</p>
     </div>
+    </div><!-- /.sheet -->
   </div>
   <script src="../../../icons.js"></script>
 
