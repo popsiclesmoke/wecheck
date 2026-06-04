@@ -40,8 +40,7 @@
     .err-code { font-size: 13px; font-weight: var(--weight-regular); line-height: 18px; letter-spacing: -0.52px; color: var(--color-text-placeholder); }
 
     /* Bottom */
-    .bottom { flex-shrink: 0; padding: 0 var(--page-margin) var(--page-margin); display: flex; flex-direction: column; align-items: center; gap: 20px; }
-    .back-link { font-size: 13px; font-weight: var(--weight-regular); line-height: 18px; letter-spacing: -0.52px; color: var(--color-text-placeholder); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+    .bottom { flex-shrink: 0; padding: 0 var(--page-margin) var(--page-margin); }
     .btn { width: var(--component-width); height: var(--button-height); border-radius: var(--radius-default); border: none; cursor: pointer; font-size: var(--font-heading4); font-weight: var(--weight-medium); display: flex; align-items: center; justify-content: center; letter-spacing: var(--tracking-tight); font-family: inherit; }
     .btn-primary { background: var(--color-primary); color: var(--color-text-white); }
   </style>
@@ -66,14 +65,12 @@
     <div class="content">
       <div class="err-icon"><i data-icon="error" data-size="56"></i></div>
       <div class="err-text-group">
-        <span class="err-title">인증정보 오류</span>
-        <p class="err-desc">요청 세션이 만료되었습니다.<br>해당 기관 요청 페이지로부터 다시 요청하시기 바랍니다.</p>
-        <span class="err-code">오류코드: WC003</span>
+        <span class="err-title">세션이 만료되었습니다</span>
+        <p class="err-desc">보안을 위해 처음부터 다시 진행해주세요.</p>
       </div>
     </div>
     <div class="bottom">
-      <span class="back-link">처음으로 돌아가기</span>
-      <button class="btn btn-primary">재시도</button>
+      <button class="btn btn-primary">확인</button>
     </div>
   </div>
   <script src="../../../icons.js"></script>

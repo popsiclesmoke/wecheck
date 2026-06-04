@@ -19,9 +19,7 @@
     .sig-bar { width: 17px; height: 11px; clip-path: polygon(0 70%,20% 70%,20% 100%,0 100%,0 70%,30% 45%,50% 45%,50% 100%,30% 100%,60% 25%,80% 25%,80% 100%,90% 0,100% 0,100% 100%); }
     .wifi { width: 16px; height: 11px; }
     .batt { width: 22px; height: 11px; border-radius: 2px; }
-    .header { height: var(--header-height); flex-shrink: 0; display: flex; align-items: center; padding: 0 var(--page-margin); background: var(--color-bg-white); position: relative; }
-    .logo { position: absolute; left: 50%; transform: translateX(-50%); }
-    .h-btn { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .header { height: var(--header-height); flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 0 var(--page-margin); background: var(--color-bg-white); }
 
     /* Content */
     .content { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 110px var(--page-margin) 0; gap: 24px; }
@@ -34,7 +32,7 @@
     .bottom { flex-shrink: 0; padding: 0 var(--page-margin) var(--page-margin); }
     .btn-row { display: flex; gap: 10px; }
     .btn { height: var(--button-height); border-radius: var(--radius-default); border: none; cursor: pointer; font-size: var(--font-heading4); font-weight: var(--weight-medium); font-family: inherit; letter-spacing: var(--tracking-tight); display: flex; align-items: center; justify-content: center; flex: 1; }
-    .btn-disabled { background: #eaedf1; color: #b1b7c0; cursor: default; }
+    .btn-secondary { background: var(--color-bg-white); color: var(--color-primary); border: 1px solid var(--color-primary); }
     .btn-primary { background: var(--color-primary); color: var(--color-text-white); }
   </style>
 </head>
@@ -53,9 +51,7 @@
   </svg>
 </div>
     <div class="header">
-      <div class="h-btn"><i data-icon="arrowBack"></i></div>
-      <img class="logo" src="../../../design/ci%20png/WeCheck.png" alt="WeCheck" style="height:16px; width:auto;">
-      <div class="h-btn" style="margin-left:auto;"><i data-icon="close"></i></div>
+      <img src="../../../design/ci%20png/WeCheck.png" alt="WeCheck" style="height:16px; width:auto;">
     </div>
 
     <div class="content">
@@ -69,8 +65,8 @@
 
     <div class="bottom">
       <div class="btn-row">
-        <button class="btn btn-disabled">다음</button>
-        <button class="btn btn-primary">건너뛰기</button>
+        <button class="btn btn-secondary">처음으로</button>
+        <button class="btn btn-primary">재시도</button>
       </div>
     </div>
   </div>
