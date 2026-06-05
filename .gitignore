@@ -7,3 +7,24 @@ Thumbs.db
 
 # 에디터
 *.log
+
+# 루트 레벨 앱 파일 (미사용 / 별도 관리)
+capture-auth.js
+changelog.md
+design/
+domains/
+eslint.config.js
+icons.js
+index.html
+package.json
+package-lock.json
+product-spec.md
+public/
+references/
+scenario-list.md
+scenario_index.html
+src/
+vercel.json
+vite.config.js
+projects/AAA_project-template/
+projects/BPW_beple-wallet/
