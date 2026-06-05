@@ -44,6 +44,7 @@
 | TERM-002 | 서비스 이용약관 상세 | TERM | domains/Z/screens/Z10.서비스이용약관.html |
 | TERM-003 | 개인(신용)정보 수집·이용 동의 상세 | TERM | domains/Z/screens/Z12.개인(신용)정보_수집및이용동의.html |
 | TERM-004 | 개인(신용)정보 제3자 제공 동의 상세 | TERM | domains/Z/screens/Z13.개인(신용)정보_제3자제공동의.html |
+| TERM-005 | 약관 상세 (통합) | TERM | domains/A/screens/A03.위체크메인_약관상세.html |
 | AUTH-001 | 인증 방식 선택 | AUTH | domains/C/screens/C00.인증방식선택.html |
 | AUTH-002 | 간편인증서 선택 | AUTH | domains/C/screens/C10.간편인증서_인증서선택.html |
 | AUTH-003 | 간편인증서 선택 (장차법) | AUTH | domains/C/screens/C10_1.간편인증서_인증서선택_장차법PC용.html |
@@ -58,6 +59,14 @@
 | AUTH-012 | 알림 미수신 팝업 | AUTH | domains/T/screens/T12.간편인증서_알림미수신팝업.html |
 | AUTH-013 | 인증 완료 | AUTH | domains/E/screens/E00.인증완료.html |
 | AUTH-014 | 세션 만료 | AUTH | domains/E/screens/E15.세션만료.html |
+| AUTH-015 | 간편인증 완료 (공통) | AUTH | domains/C/screens/C12.간편인증_인증서선택_인증완료(공통).html |
+| AUTH-016 | 인증번호 입력 (활성화) | AUTH | domains/C/screens/C12_3.간편인증서_인증요청_인증번호입력_활성화.html |
+| AUTH-017 | 증명서 조회 로딩 | AUTH | domains/C/screens/C20.증명서조회_로딩.html |
+| AUTH-018 | 증명서 조회 완료 | AUTH | domains/C/screens/C22.증명서조회_완료.html |
+| AUTH-019 | 증명서 조회 완료 (비회원) | AUTH | domains/C/screens/C22_비회원.증명서조회_완료.html |
+| AUTH-020 | 증명서 조회 로딩 (진행도) | AUTH | domains/C/screens/C30.증명서조회_로딩.html |
+| AUTH-021 | 보안문자 — 음성듣기 | AUTH | domains/C/screens/C40.캡챠이미지_음성듣기.html |
+| AUTH-022 | 보안문자 입력 실패 | AUTH | domains/C/screens/C40.캡챠이미지_입력실패.html |
 | SRCH-001 | 주소 정보 입력 | SRCH | domains/B/screens/B01.주소정보입력.html |
 | SRCH-002 | 주소 정보 입력 — 추가 항목 | SRCH | domains/B/screens/B01_1.주소정보입력_정보추가.html |
 | SRCH-003 | 주소 정보 입력 (활성화) | SRCH | domains/B/screens/B02.주소정보입력_활성화.html |
@@ -98,7 +107,7 @@
 | HIST-002 | 발급 이력 목록 — 이력 없음 | HIST | domains/H/screens/H00_1.발급이력목록_이력없음.html |
 | HIST-003 | 발급 이력 상세 | HIST | domains/H/screens/H01.발급이력상세.html |
 
-> 정의 Screen ID 총 58개. 단 RSLT-001/012 = AUTH-013/014 동일 화면 참조, CMN-004~007 = AUTH-012·MAIN-002~004 동일 화면 참조이므로, 물리 HTML 기준 고유 화면 수는 52개.
+> 정의 Screen ID 총 67개. 단 RSLT-001/012 = AUTH-013/014 동일 화면 참조, CMN-004~007 = AUTH-012·MAIN-002~004 동일 화면 참조이므로, 물리 HTML 기준 고유 화면 수는 61개.
 
 ---
 
@@ -469,3 +478,4 @@ AUTH-002: 간편인증서 선택
 | v0.2 | 2026-06-04 | 강다현 | 2026-06-04 APPROVED screen-list(SRCH·ISSU·RSLT·CMN) 기준 전면 재작성. 17개 시나리오 도출, 누락 화면 4건·고아(변형/공통) 화면 15건 식별 |
 | v0.3 | 2026-06-04 | 강다현 | 누락 화면 검증 반영 — AUTH-010 파일명 불일치 수정(C40), ISSU-005 기획 외 항목 제거. 실질 누락 2건(HIST-001/002, MAIN 발급이력 메뉴)으로 정정 |
 | v0.4 | 2026-06-05 | 강다현 | HIST 도메인 완료 반영 — Screen ID 맵 HIST-001~003 추가, SCN-WCK-008/009 시나리오 추가, 누락 화면 전체 해소, 도메인 매핑 테이블 HIST(H) 추가 |
+| v0.5 | 2026-06-05 | 강다현 | 미등록 HTML 9건 Screen ID 추가 — TERM-005(A03), AUTH-015~022(C12 인증완료/C12_3 활성화/C20/C22/C22_비회원/C30/C40 변형 2종). 총 67개(물리 61개)로 갱신 |
