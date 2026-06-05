@@ -34,6 +34,10 @@
   --color-bg-white:         #FFFFFF;
   --color-error-bg:         rgba(255, 73, 73, 0.08);
 
+  /* ── 색상: WeCheck 클라이언트 블루 ── */
+  --client-blue:            #2288EE;   /* 선택/배지/강조 색상 */
+  --client-blue-light:      #EAF5FF;   /* 선택 배경/배지 배경 */
+
   /* ── 색상: 보조 (태그/일러스트) ── */
   --color-tag-road-bg:      #EAECFF;
   --color-tag-jibun-bg:     #EAEDF1;
@@ -66,6 +70,7 @@
   --weight-regular: 400;
   --weight-medium:  500;
   --weight-semibold: 600;
+  --weight-bold:    700;
   --weight-logo:    800;
 
   /* ── 타이포그래피: line-height ── */
