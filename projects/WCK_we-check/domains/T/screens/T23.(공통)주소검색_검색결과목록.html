@@ -30,6 +30,8 @@
     /* 주소 카드 */
     .addr-card { border: 1px solid var(--color-border-default); border-radius: var(--radius-default); padding: var(--page-margin); display: flex; flex-direction: column; gap: var(--space-md); cursor: pointer; }
     .addr-card.selected { border-color: var(--color-border-selected); }
+    .addr-card.selected .addr-zip,
+    .addr-card.selected .addr-text { color: var(--color-border-selected); }
     .addr-zip { font-size: var(--font-body2); font-weight: var(--weight-regular); line-height: var(--lh-body2); letter-spacing: -0.56px; color: var(--color-text-default); }
     .addr-row { display: flex; align-items: center; gap: var(--space-sm); }
     .addr-tag { width: 38px; height: 18px; padding: 0; border-radius: var(--radius-badge); font-size: 10px; font-weight: var(--weight-regular); line-height: 18px; flex-shrink: 0; text-align: center; }
