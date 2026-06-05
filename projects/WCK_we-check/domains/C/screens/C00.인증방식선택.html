@@ -19,9 +19,9 @@
     
     .statusbar { height: var(--statusbar-height); flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: var(--color-bg-white); }
     .statusbar svg { display: block; }
-    .statusbar .time { font-size: var(--font-body2); font-weight: var(--weight-semibold); color: #222222; }
+    .statusbar .time { font-size: var(--font-body2); font-weight: var(--weight-semibold); color: var(--color-text-default); }
     .statusbar .indicators { display: flex; align-items: center; gap: var(--space-xs); }
-    .statusbar .indicators span { display: inline-block; background: #222222; border-radius: 2px; }
+    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: 2px; }
     .sig-bar { width: 17px; height: 11px; clip-path: polygon(0 70%,20% 70%,20% 100%,0 100%,0 70%,30% 45%,50% 45%,50% 100%,30% 100%,60% 25%,80% 25%,80% 100%,90% 0,100% 0,100% 100%); }
     .wifi { width: 16px; height: 11px; }
     .batt { width: 22px; height: 11px; border-radius: 2px; }
@@ -44,7 +44,7 @@
     .auth-list { display: flex; flex-direction: column; gap: 10px; }
     .auth-card {
       display: flex; align-items: center;
-      border: 1px solid #e5e8ed;
+      border: 1px solid var(--color-border-default);
       border-radius: var(--radius-default);
       overflow: hidden;
       padding-right: 20px;
@@ -54,7 +54,7 @@
     .auth-bar { width: 10px; height: 100px; background: var(--color-primary); flex-shrink: 0; }
     .auth-body { flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
     .auth-title { font-size: 16px; font-weight: var(--weight-regular); line-height: normal; letter-spacing: -0.64px; color: var(--color-text-default); }
-    .auth-desc { font-size: 12px; font-weight: var(--weight-regular); line-height: var(--lh-body2); letter-spacing: -0.48px; color: #b1b7c0; }
+    .auth-desc { font-size: 12px; font-weight: var(--weight-regular); line-height: var(--lh-body2); letter-spacing: -0.48px; color: var(--color-text-placeholder); }
   </style>
 </head>
 <body>

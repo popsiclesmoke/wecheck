@@ -30,9 +30,17 @@
   /* ── 색상: Background ── */
   --color-bg-disabled:      #EAEDF1;
   --color-bg-unselected:    #F5F6F8;
+  --color-bg-surface:       #FBFBFB;   /* captcha box·버튼 등 off-white 표면 */
   --color-bg-tab:           #F3F4F7;
   --color-bg-white:         #FFFFFF;
   --color-error-bg:         rgba(255, 73, 73, 0.08);
+
+  /* ── 색상: 상태 ── */
+  --color-success:          #4CAF50;   /* 인증 완료 체크 뱃지 */
+
+  /* ── 색상: 프로그레스바 ── */
+  --color-progress:         #3B70F7;   /* 프로그레스바 채움 */
+  --color-bg-progress:      #DFE4EB;   /* 프로그레스바 트랙 배경 */
 
   /* ── 색상: WeCheck 클라이언트 블루 ── */
   --client-blue:            #2288EE;   /* 선택/배지/강조 색상 */
