@@ -340,6 +340,129 @@
 
 ---
 
+### 12. Status Badge
+
+발급 이력 등 처리 상태를 표시하는 뱃지. 완료·실패·진행 3종.
+
+```css
+.badge          { flex-shrink: 0; display: inline-flex; align-items: center; height: 22px; padding: 0 var(--space-sm); border-radius: var(--radius-badge); font-size: var(--font-body4); font-weight: var(--weight-medium); white-space: nowrap; }
+.badge-done     { color: var(--color-primary);       background: var(--color-tag-road-bg);   }
+.badge-fail     { color: var(--color-error);         background: var(--color-error-bg);      }
+.badge-progress { color: var(--color-text-disabled); background: var(--color-bg-unselected); }
+```
+
+```html
+<span class="badge badge-done">완료</span>
+<span class="badge badge-fail">실패</span>
+<span class="badge badge-progress">진행중</span>
+```
+
+---
+
+### 13. Error Area
+
+에러·완료 화면의 일러스트 + 제목 + 보조설명 조합.
+
+```css
+.error-icon  { width: 59px; height: 51px; object-fit: contain; }
+.error-title { font-size: var(--font-heading1); font-weight: var(--weight-medium); line-height: var(--lh-heading1); letter-spacing: -0.76px; color: var(--color-text-default); text-align: center; }
+.error-sub   { font-size: var(--font-heading6); font-weight: var(--weight-regular); line-height: var(--lh-heading6); letter-spacing: -0.52px; color: var(--color-text-placeholder); text-align: center; }
+```
+
+```html
+<div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
+  <img class="error-icon" src="../../../design/icons/icon/error.svg" alt="">
+  <p class="error-title">에러 제목</p>
+  <p class="error-sub">보조 설명 텍스트</p>
+</div>
+```
+
+---
+
+### 14. Illust Image
+
+브랜드 일러스트 이미지 표시 영역. 완료·대기 화면 중앙에 사용.
+
+```css
+.illust { width: 106px; height: 77px; object-fit: contain; }
+```
+
+```html
+<img class="illust" src="../../../design/icons/illust/phone.svg" alt="">
+```
+
+---
+
+### 15. Section
+
+컨텐츠 묶음 단위. 레이블 + 입력/내용 조합에 사용.
+
+```css
+.section       { display: flex; flex-direction: column; gap: 10px; }
+.section-label { font-size: var(--font-body2); font-weight: var(--weight-regular); line-height: var(--lh-body2); letter-spacing: -0.56px; color: var(--color-text-default); }
+```
+
+```html
+<div class="section">
+  <span class="section-label">레이블</span>
+  <!-- 입력 필드 또는 콘텐츠 -->
+</div>
+```
+
+---
+
+### 16. Verify Box
+
+인증번호 입력 필드. 플레이스홀더 텍스트 + 타이머 카운트다운이 한 줄에 표시됨.
+
+```css
+.verify-box         { width: 100%; height: var(--input-height); border: 1px solid var(--color-border-default); border-radius: var(--radius-default); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; }
+.verify-placeholder { font-size: var(--font-body1); font-weight: var(--weight-regular); color: var(--color-text-placeholder); letter-spacing: -0.6px; }
+.verify-timer       { font-size: var(--font-heading6); font-weight: var(--weight-regular); color: var(--color-primary); letter-spacing: -0.52px; }
+```
+
+```html
+<div class="verify-box">
+  <span class="verify-placeholder">인증번호 6자리 입력</span>
+  <span class="verify-timer">3:00</span>
+</div>
+```
+
+---
+
+### 17. Certificate Card
+
+인증 수단 선택 그리드 카드. 2열 그리드로 배치.
+
+```css
+.cert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); padding-bottom: var(--page-margin); }
+.cert-card { display: flex; align-items: center; gap: 15px; padding: var(--space-xxl) 13px; border: 1px solid var(--color-border-default); border-radius: var(--radius-default); cursor: pointer; min-width: 0; transition: border-color 0.15s, border-width 0.1s; }
+.cert-card.selected { border: 2px solid var(--color-primary); padding: calc(var(--space-xxl) - 1px) 12px; }
+.cert-icon { width: 50px; height: 50px; border-radius: var(--radius-default); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.cert-icon img { width: 100%; height: 100%; object-fit: cover; }
+.cert-icon.with-border { border: 1px solid var(--color-border-default); border-radius: 16px; }
+.cert-name { font-size: var(--font-body2); font-weight: var(--weight-medium); color: var(--color-text-org); line-height: var(--lh-body2); min-width: 0; word-break: keep-all; }
+```
+
+```html
+<div class="cert-grid">
+  <div class="cert-card selected">
+    <div class="cert-icon with-border">
+      <img src="../../../design/icons/illust/phone.svg" alt="휴대폰인증">
+    </div>
+    <span class="cert-name">휴대폰인증</span>
+  </div>
+  <div class="cert-card">
+    <div class="cert-icon">
+      <img src="../../../design/ci png/카카오톡.png" alt="카카오톡">
+    </div>
+    <span class="cert-name">카카오톡</span>
+  </div>
+</div>
+```
+
+---
+
 ## 아이콘 사용법
 
 아이콘은 `icons.js`가 `i[data-icon]`을 자동 치환합니다.
