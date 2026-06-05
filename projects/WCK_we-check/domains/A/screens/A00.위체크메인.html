@@ -61,6 +61,10 @@
     .dropdown-item { height: 30px; display: flex; align-items: center; font-size: var(--font-heading6); font-weight: var(--weight-regular); color: var(--color-text-default); letter-spacing: -0.52px; cursor: pointer; }
     .dropdown-item:active { opacity: 0.6; }
 
+    /* 발급이력 진입 메뉴 */
+    .hist-menu { display: flex; align-items: center; justify-content: space-between; padding: 14px var(--page-margin); border-top: 1px solid var(--color-border-default); cursor: pointer; }
+    .hist-menu-text { font-size: var(--font-body2); font-weight: var(--weight-regular); color: var(--color-text-disabled); letter-spacing: var(--tracking-tight); }
+
     /* Bottom */
     .bottom { flex-shrink: 0; padding: 0 var(--page-margin) var(--page-margin); }
     .btn { width: var(--component-width); height: var(--button-height); border-radius: var(--radius-default); border: none; cursor: pointer; font-size: var(--font-heading4); font-weight: var(--weight-medium); display: flex; align-items: center; justify-content: center; letter-spacing: var(--tracking-tight); font-family: inherit; }
@@ -138,6 +142,10 @@
           </div>
         </li>
       </ul>
+    </div>
+    <div class="hist-menu" id="histMenu">
+      <span class="hist-menu-text">발급 이력 보기</span>
+      <i data-icon="chevronRight" style="width:16px;height:16px;color:var(--color-text-disabled);"></i>
     </div>
     <div class="bottom">
       <button class="btn btn-primary">시작하기</button>
