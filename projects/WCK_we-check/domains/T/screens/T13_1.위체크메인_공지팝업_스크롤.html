@@ -37,14 +37,14 @@
     .btn { width: var(--component-width); height: var(--button-height); border-radius: var(--radius-default); border: none; cursor: pointer; font-size: var(--font-heading4); font-weight: var(--weight-medium); font-family: inherit; letter-spacing: var(--tracking-tight); display: flex; align-items: center; justify-content: center; background: var(--color-primary); color: var(--color-text-white); }
     .dim { position: absolute; inset: 0; background: var(--color-dim); z-index: 10; }
     /* 스크롤 팝업 */
-    .popup { position: absolute; top: 50%; left: var(--popup-margin); right: var(--popup-margin); transform: translateY(-50%); z-index: 20; background: var(--color-bg-white); border-radius: var(--radius-default); overflow: hidden; }
-    .popup-body { padding: 30px var(--page-margin) 20px; display: flex; flex-direction: column; gap: 20px; align-items: center; text-align: center; position: relative; }
+    .popup { position: absolute; top: 50%; left: var(--popup-margin); right: var(--popup-margin); transform: translateY(-50%); z-index: 20; background: var(--color-bg-white); border-radius: var(--radius-default); overflow: hidden; min-height: 392px; display: flex; flex-direction: column; }
+    .popup-body { flex: 1; padding: 30px var(--page-margin) 20px; display: flex; flex-direction: column; gap: 20px; align-items: center; text-align: center; position: relative; }
     .popup-title { font-size: var(--font-heading1); font-weight: var(--weight-medium); line-height: var(--lh-heading1); letter-spacing: -0.76px; color: var(--color-text-default); }
     .popup-scroll-area { width: 100%; max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; position: relative; }
     .popup-scroll-area::-webkit-scrollbar { width: 3px; }
     .popup-scroll-area::-webkit-scrollbar-thumb { background: #DADFE6; border-radius: 4px; }
     .popup-desc { font-size: var(--font-body2); font-weight: var(--weight-regular); line-height: var(--lh-body2); letter-spacing: -0.56px; color: var(--color-text-default); text-align: center; }
-    .popup-close { width: 100%; height: var(--button-popup-h); background: var(--color-primary); color: var(--color-text-white); border: none; cursor: pointer; font-size: var(--font-heading4); font-weight: var(--weight-regular); font-family: inherit; letter-spacing: var(--tracking-tight); border-radius: 0 0 var(--radius-default) var(--radius-default); }
+    .popup-close { width: 100%; height: var(--button-popup-h); background: var(--color-bg-disabled); color: var(--color-text-default); border: none; cursor: pointer; font-size: var(--font-heading4); font-weight: var(--weight-regular); font-family: inherit; letter-spacing: var(--tracking-tight); border-radius: 0 0 var(--radius-default) var(--radius-default); }
   </style>
 </head>
 <body>
