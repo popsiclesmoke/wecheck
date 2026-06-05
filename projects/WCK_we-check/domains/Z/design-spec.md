@@ -15,7 +15,7 @@
 | 상태 | APPROVED |
 
 > 기반 문서: `product-spec.md`, `feature-list.md`, `screen-list.md`
-> 디자인 가이드: `references/wecheck-components_3.md`, `references/wecheck-spacing-spec.md`
+> 디자인 가이드: `projects/WCK_we-check/design/design-guide.md`
 
 ---
 

@@ -15,8 +15,7 @@
 | 상태 | APPROVED |
 
 > 기반 문서: `product-spec.md`, `feature-list.md`, `screen-list.md`
-> 디자인 토큰: `projects/WCK_we-check/design/tokens.css`
-> 공통 디자인 가이드: `common/design/design-guide.md`
+> 디자인 가이드: `projects/WCK_we-check/design/design-guide.md`
 
 ---
 
