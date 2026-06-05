@@ -8,12 +8,22 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif; background: #1a1a1a; min-height: 100vh; display: flex; flex-direction: column; align-items: center; color: #ddd; }
 
-    .topbar { width: 100%; background: #111; border-bottom: 1px solid #333; padding: 12px 24px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; }
+    .topbar { width: 100%; background: #111; border-bottom: 1px solid #333; padding: 12px 24px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; }
     .logo { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.5px; white-space: nowrap; opacity: 0.7; }
-    .select-wrap { position: relative; flex: 1; min-width: 280px; max-width: 520px; }
-    .scn-select { width: 100%; height: 38px; padding: 0 36px 0 14px; background: #222; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 14px; font-family: inherit; cursor: pointer; appearance: none; -webkit-appearance: none; outline: none; transition: border-color 0.15s; }
-    .scn-select:hover { border-color: #666; }
-    .scn-select:focus { border-color: #4D84FF; }
+
+    /* 모드 탭 */
+    .mode-tabs { display: flex; gap: 2px; background: #222; border: 1px solid #333; border-radius: 8px; padding: 3px; flex-shrink: 0; }
+    .mode-tab { height: 28px; padding: 0 12px; background: transparent; border: none; border-radius: 6px; color: #666; font-size: 12px; font-family: inherit; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .mode-tab:hover { color: #aaa; }
+    .mode-tab.active { background: #333; color: #fff; }
+
+    .controls-wrap { display: flex; align-items: center; gap: 10px; flex: 1; }
+    .select-wrap { position: relative; flex: 1; min-width: 240px; max-width: 520px; }
+    .select-wrap.sm { flex: none; width: 160px; min-width: unset; }
+    .scn-select,
+    .dom-select { width: 100%; height: 38px; padding: 0 36px 0 14px; background: #222; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 14px; font-family: inherit; cursor: pointer; appearance: none; -webkit-appearance: none; outline: none; transition: border-color 0.15s; }
+    .scn-select:hover, .dom-select:hover { border-color: #666; }
+    .scn-select:focus, .dom-select:focus { border-color: #4D84FF; }
     .select-wrap::after { content: ''; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #aaa; pointer-events: none; }
 
     .tag { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
@@ -24,10 +34,11 @@
     .nav-btn { width: 32px; height: 32px; background: #222; border: 1px solid #444; border-radius: 6px; color: #aaa; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; user-select: none; }
     .nav-btn:hover { background: #333; color: #fff; border-color: #666; }
     .nav-btn:active { background: #444; }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
     .counter { font-size: 12px; color: #888; white-space: nowrap; min-width: 56px; text-align: center; }
 
+    /* 시나리오 모드 전용 */
     .scn-desc { width: 100%; max-width: 1100px; padding: 14px 24px 0; font-size: 13px; color: #999; line-height: 1.5; }
-
     .flowbar { width: 100%; max-width: 1100px; padding: 14px 24px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
     .step { display: flex; align-items: center; gap: 6px; }
     .step-chip { font-size: 12px; padding: 6px 12px; border-radius: 8px; background: #242424; border: 1px solid #3a3a3a; color: #bbb; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
@@ -36,6 +47,15 @@
     .step-chip.missing { background: rgba(255,80,80,0.12); border-color: rgba(255,80,80,0.5); color: #ff8080; }
     .step-sep { color: #555; font-size: 13px; }
 
+    /* 도메인 모드 전용 */
+    .domain-bar { width: 100%; background: #151515; border-bottom: 1px solid #2a2a2a; padding: 10px 24px; display: flex; align-items: center; gap: 8px; overflow-x: auto; }
+    .domain-bar::-webkit-scrollbar { height: 4px; }
+    .domain-bar::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+    .domain-chip { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #666; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; white-space: nowrap; }
+    .domain-chip:hover { color: #aaa; background: #222; }
+    .domain-chip.active { background: #1a2a4a; color: #4D84FF; border-color: #2a3a5a; }
+
+    /* 폰 */
     .phone-wrap { margin: 18px 0 48px; position: relative; }
     .phone-shell { width: 392px; background: #2a2a2a; border-radius: 44px; padding: 16px; box-shadow: 0 0 0 1px #3a3a3a, 0 24px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05); }
     .phone-notch { width: 100px; height: 24px; background: #1a1a1a; border-radius: 0 0 16px 16px; position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 10; }
@@ -52,20 +72,52 @@
 </head>
 <body>
   <div class="topbar">
-    <span class="logo">WCK · We-Check 시나리오</span>
-    <div class="select-wrap">
-      <select class="scn-select" id="scnSelect" onchange="selectScenario()"></select>
+    <span class="logo">WCK · We-Check</span>
+
+    <div class="mode-tabs">
+      <button class="mode-tab active" id="tabScenario" onclick="setMode('scenario')">시나리오</button>
+      <button class="mode-tab"        id="tabDomain"   onclick="setMode('domain')">도메인</button>
     </div>
-    <span class="tag" id="scnTag"></span>
+
+    <!-- 시나리오 모드 컨트롤 -->
+    <div class="controls-wrap" id="scenarioControls">
+      <div class="select-wrap">
+        <select class="scn-select" id="scnSelect" onchange="selectScenario()"></select>
+      </div>
+      <span class="tag" id="scnTag"></span>
+    </div>
+
+    <!-- 도메인 모드 컨트롤 -->
+    <div class="controls-wrap" id="domainControls" style="display:none">
+      <div class="select-wrap sm">
+        <select class="dom-select" id="domainSelect" onchange="onDomainChange()"></select>
+      </div>
+      <div class="select-wrap">
+        <select class="dom-select" id="screenSelect" onchange="onScreenChange()"></select>
+      </div>
+    </div>
+
     <div class="nav-btns">
-      <button class="nav-btn" onclick="prevStep()" title="이전 (←)">‹</button>
-      <button class="nav-btn" onclick="nextStep()" title="다음 (→)">›</button>
+      <button class="nav-btn" id="btnPrev" onclick="prev()" title="이전 (←)">‹</button>
+      <button class="nav-btn" id="btnNext" onclick="next()" title="다음 (→)">›</button>
     </div>
     <span class="counter" id="counter">— / —</span>
   </div>
 
+  <!-- 시나리오 모드 전용 -->
   <p class="scn-desc" id="scnDesc"></p>
   <div class="flowbar" id="flowbar"></div>
+
+  <!-- 도메인 모드 전용 -->
+  <div class="domain-bar" id="domainBar" style="display:none">
+    <span class="domain-chip" data-domain="A"  onclick="selectDomain('A')">A · 위체크 메인</span>
+    <span class="domain-chip" data-domain="B"  onclick="selectDomain('B')">B · 주소 정보 입력</span>
+    <span class="domain-chip" data-domain="BR" onclick="selectDomain('BR')">BR · 인증번호/파일 첨부</span>
+    <span class="domain-chip" data-domain="C"  onclick="selectDomain('C')">C · 인증</span>
+    <span class="domain-chip" data-domain="E"  onclick="selectDomain('E')">E · 에러/완료</span>
+    <span class="domain-chip" data-domain="T"  onclick="selectDomain('T')">T · 공통</span>
+    <span class="domain-chip" data-domain="Z"  onclick="selectDomain('Z')">Z · 약관</span>
+  </div>
 
   <div class="phone-wrap">
     <div class="phone-shell">
@@ -76,8 +128,7 @@
   </div>
 
   <script>
-  /* ── 시나리오 데이터 ──
-     각 step: { sid, name, src }   src 는 프로젝트 폴더 기준 상대 경로 (null = HTML 미존재 화면) */
+  /* ── 시나리오 데이터 ── */
   const SCENARIOS = [
     { id:'SCN-WCK-001', name:'증명서 발급 전체 여정 (앱 최초 진입 → 발급 완료)', type:'happy',
       desc:'앱을 처음 실행한 사용자가 공지·약관·본인인증을 거쳐 주소 입력·결과 선택 후 인증번호·서류 업로드로 발급을 완료하고 결과를 조회한다.',
@@ -250,18 +301,127 @@
       ]},
   ];
 
-  /* ── 뷰어 로직 ── */
-  const scnSelect = document.getElementById('scnSelect');
-  const scnTag    = document.getElementById('scnTag');
-  const scnDesc   = document.getElementById('scnDesc');
-  const flowbar   = document.getElementById('flowbar');
-  const frame     = document.getElementById('screenFrame');
-  const label     = document.getElementById('screenLabel');
-  const counter   = document.getElementById('counter');
+  /* ── 도메인 데이터 ── */
+  const DOMAINS = {
+    A: { name: 'A · 위체크 메인', screens: [
+      { file: 'A00.위체크메인.html',         label: '01. 위체크 메인' },
+      { file: 'A02.위체크메인_약관동의.html', label: '02. 약관 동의' },
+      { file: 'A03.위체크메인_약관상세.html', label: '03. 약관 상세' },
+    ]},
+    B: { name: 'B · 주소 정보 입력', screens: [
+      { file: 'B01.주소정보입력.html',                   label: '01. 주소 정보 입력' },
+      { file: 'B02.주소정보입력_활성화.html',             label: '02. 주소 정보 입력 (활성화)' },
+      { file: 'B01_1.주소정보입력_정보추가.html',         label: '03. 주소 정보 입력 — 추가 항목' },
+      { file: 'B02_1.주소정보입력_활성화_정보추가.html',  label: '04. 주소 정보 입력 (활성화) — 추가 항목' },
+      { file: 'B10.검색_결과목록_선택.html',              label: '05. 검색 결과 목록 선택' },
+      { file: 'B11.검색_변경확인.html',                   label: '06. 검색 변경 확인' },
+    ]},
+    BR: { name: 'BR · 인증번호/파일 첨부', screens: [
+      { file: 'BR00.인증번호입력.html',          label: '01. 인증번호 입력' },
+      { file: 'BR00_1.인증번호입력_오류.html',   label: '02. 인증번호 입력 (오류)' },
+      { file: 'BR01.파일첨부.html',              label: '03. 파일 첨부' },
+      { file: 'BR01_1.파일첨부_업로드선택.html', label: '04. 파일 첨부 — 업로드 선택' },
+    ]},
+    C: { name: 'C · 인증', screens: [
+      { file: 'C00.인증방식선택.html',                              label: '01. 인증 방식 선택' },
+      { file: 'C10.간편인증서_인증서선택.html',                     label: '02. 간편인증서 선택' },
+      { file: 'C10_1.간편인증서_인증서선택_장차법PC용.html',         label: '03. 간편인증서 선택 (장차법)' },
+      { file: 'C10_2.간편인증서_인증서선택_1열.html',               label: '04. 간편인증서 선택 (1열)' },
+      { file: 'C11.간편인증서_인증서선택_로딩.html',                 label: '05. 인증서 목록 로딩' },
+      { file: 'C11_1.간편인증서_PASS통신사선택_팝업.html',           label: '06. PASS 통신사 선택 (팝업)' },
+      { file: 'C11_2.간편인증서_휴대폰인증통신사선택.html',           label: '07. 휴대폰 인증 통신사 선택' },
+      { file: 'C12_0.간편인증서_인증서선택_인증요청.html',            label: '08. 인증 요청' },
+      { file: 'C12.간편인증_인증서선택_인증요청.html',               label: '09. 인증 요청 대기 (비활성)' },
+      { file: 'C12.간편인증_인증서선택_인증완료(공통).html',          label: '10. 인증 완료 대기 (활성)' },
+      { file: 'C40.캡챠이미지.html',                                label: '11. 캡챠이미지' },
+      { file: 'C40.캡챠이미지_음성듣기.html',                       label: '12. 캡챠이미지 (음성듣기)' },
+      { file: 'C40.캡챠이미지_입력실패.html',                       label: '13. 캡챠이미지 (입력실패)' },
+      { file: 'C12_3.간편인증서_인증요청_인증번호입력.html',          label: '14. 인증번호 입력' },
+      { file: 'C12_3.간편인증서_인증요청_인증번호입력_활성화.html',    label: '15. 인증번호 입력 (활성화)' },
+      { file: 'C20.증명서조회_로딩.html',                           label: '16. 증명서 조회 로딩 (트럭)' },
+      { file: 'C22.증명서조회_완료.html',                           label: '17. 증명서 조회 완료 (트럭)' },
+      { file: 'C22_비회원.증명서조회_완료.html',                    label: '18. 증명서 조회 완료 (비회원)' },
+      { file: 'C30.증명서조회_로딩.html',                           label: '19. 증명서 조회 로딩 (서류)' },
+    ]},
+    E: { name: 'E · 에러/완료', screens: [
+      { file: 'E00.인증완료.html',               label: '01. 인증 완료' },
+      { file: 'E02.에러_미보유인증서.html',        label: '02. 에러 — 미보유 인증서' },
+      { file: 'E04.에러_인증서오류.html',          label: '03. 에러 — 인증서 오류' },
+      { file: 'E08.인증완료_증명서결과조회.html',  label: '04. 인증 완료 — 증명서 결과 조회' },
+      { file: 'E10.네트워크에러.html',             label: '05. 네트워크 에러' },
+      { file: 'E11.에러_기타오류.html',            label: '06. 에러 — 기타 오류' },
+      { file: 'E12.에러_정보조회_비회원.html',     label: '07. 에러 — 정보 조회 (비회원)' },
+      { file: 'E12.에러_정보조회_생년월일.html',   label: '08. 에러 — 정보 조회 (생년월일)' },
+      { file: 'E12.에러_정보조회_세션.html',       label: '09. 에러 — 정보 조회 (세션)' },
+      { file: 'E12.에러_정보조회_실패.html',       label: '10. 에러 — 정보 조회 (실패)' },
+      { file: 'E14.에러_증명서.html',              label: '11. 에러 — 증명서' },
+      { file: 'E15.세션만료.html',                 label: '12. 세션 만료' },
+      { file: 'E17.에러_주소.html',                label: '13. 에러 — 주소' },
+      { file: 'E20.대기열로딩.html',               label: '14. 대기열 로딩' },
+      { file: 'E21.에러_조회실패팝업.html',         label: '15. 에러 — 조회 실패 팝업' },
+      { file: 'E40.에러_2버튼.html',               label: '16. 에러 — 2버튼' },
+    ]},
+    T: { name: 'T · 공통 팝업/검색', screens: [
+      { file: 'T00.(공통)정보입력_기본팝업.html',        label: '01. 기본 팝업' },
+      { file: 'T01.(공통)정보입력_기본팝업_투버튼.html', label: '02. 기본 팝업 (2버튼)' },
+      { file: 'T10.(공통)정보입력_선택팝업.html',        label: '03. 선택 팝업' },
+      { file: 'T12.간편인증서_알림미수신팝업.html',       label: '04. 알림 미수신 팝업' },
+      { file: 'T13.위체크메인_공지팝업_1개.html',        label: '05. 공지 팝업 (1개)' },
+      { file: 'T13_1.위체크메인_공지팝업_스크롤.html',   label: '06. 공지 팝업 (스크롤)' },
+      { file: 'T13_2.위체크메인_공지팝업_2개이상.html',  label: '07. 공지 팝업 (2개 이상)' },
+      { file: 'T20.(공통)주소검색.html',                 label: '08. 주소 검색' },
+      { file: 'T20.(공통)주소검색_검색결과없음.html',    label: '09. 주소 검색 — 결과 없음' },
+      { file: 'T23.(공통)주소검색_검색결과목록.html',    label: '10. 주소 검색 — 결과 목록' },
+    ]},
+    Z: { name: 'Z · 약관', screens: [
+      { file: 'Z10.서비스이용약관.html',                    label: '01. 서비스 이용 약관' },
+      { file: 'Z12.개인(신용)정보_수집및이용동의.html',     label: '02. 개인정보 수집·이용 동의' },
+      { file: 'Z13.개인(신용)정보_제3자제공동의.html',      label: '03. 개인정보 제3자 제공 동의' },
+    ]},
+  };
 
-  let curScn = 0;
-  let curStep = 0;
+  /* ── 상태 ── */
+  let mode           = 'scenario';
+  let curScn         = 0;
+  let curStep        = 0;
+  let curDomainKey   = null;
+  let curScreenIdx   = 0;
 
+  /* ── DOM refs ── */
+  const scnSelect    = document.getElementById('scnSelect');
+  const domainSelect = document.getElementById('domainSelect');
+  const screenSelect = document.getElementById('screenSelect');
+  const scnTag       = document.getElementById('scnTag');
+  const scnDesc      = document.getElementById('scnDesc');
+  const flowbar      = document.getElementById('flowbar');
+  const domainBar    = document.getElementById('domainBar');
+  const frame        = document.getElementById('screenFrame');
+  const label        = document.getElementById('screenLabel');
+  const counter      = document.getElementById('counter');
+  const btnPrev      = document.getElementById('btnPrev');
+  const btnNext      = document.getElementById('btnNext');
+
+  /* ── 모드 전환 ── */
+  function setMode(m) {
+    mode = m;
+    document.getElementById('tabScenario').classList.toggle('active', m === 'scenario');
+    document.getElementById('tabDomain').classList.toggle('active',   m === 'domain');
+    document.getElementById('scenarioControls').style.display = m === 'scenario' ? '' : 'none';
+    document.getElementById('domainControls').style.display   = m === 'domain'   ? '' : 'none';
+    flowbar.style.display   = m === 'scenario' ? '' : 'none';
+    scnDesc.style.display   = m === 'scenario' ? '' : 'none';
+    domainBar.style.display = m === 'domain'   ? '' : 'none';
+
+    if (m === 'domain') {
+      if (!curDomainKey) selectDomain('A');
+      else renderDomainScreen();
+    } else {
+      renderFlowbar();
+      renderStep();
+    }
+  }
+
+  /* ── 시나리오 초기화 ── */
   SCENARIOS.forEach((s, i) => {
     const opt = document.createElement('option');
     opt.value = i;
@@ -269,6 +429,14 @@
     scnSelect.appendChild(opt);
   });
 
+  /* ── 도메인 드롭다운 초기화 ── */
+  Object.entries(DOMAINS).forEach(([key, d]) => {
+    const opt = document.createElement('option');
+    opt.value = key; opt.textContent = d.name;
+    domainSelect.appendChild(opt);
+  });
+
+  /* ── 시나리오 모드 ── */
   function renderFlowbar() {
     const scn = SCENARIOS[curScn];
     flowbar.innerHTML = '';
@@ -292,7 +460,7 @@
   }
 
   function renderStep() {
-    const scn = SCENARIOS[curScn];
+    const scn  = SCENARIOS[curScn];
     const step = scn.steps[curStep];
     frame.innerHTML = '';
     if (step.src) {
@@ -302,11 +470,13 @@
     } else {
       const m = document.createElement('div');
       m.className = 'missing-screen';
-      m.innerHTML = `<div class="mt">⚠ 화면 미존재</div><div class="ms">${step.sid} · ${step.name}<br>이 화면의 HTML이 아직 없습니다.<br>(scenario-list 누락 화면 목록 참조)</div>`;
+      m.innerHTML = `<div class="mt">⚠ 화면 미존재</div><div class="ms">${step.sid} · ${step.name}<br>이 화면의 HTML이 아직 없습니다.</div>`;
       frame.appendChild(m);
     }
     label.innerHTML = `<span class="sid">${step.sid}</span> · <strong>${step.name}</strong>`;
     counter.textContent = `${curStep + 1} / ${scn.steps.length}`;
+    btnPrev.disabled = curStep <= 0;
+    btnNext.disabled = curStep >= scn.steps.length - 1;
     Array.from(flowbar.querySelectorAll('.step-chip')).forEach((c, i) => {
       c.classList.toggle('active', i === curStep);
     });
@@ -323,19 +493,87 @@
     renderStep();
   }
 
-  function prevStep() { if (curStep > 0) { curStep--; renderStep(); } }
-  function nextStep() { const s = SCENARIOS[curScn]; if (curStep < s.steps.length - 1) { curStep++; renderStep(); } }
+  /* ── 도메인 모드 ── */
+  function selectDomain(key) {
+    curDomainKey  = key;
+    curScreenIdx  = 0;
+    domainSelect.value = key;
+
+    document.querySelectorAll('.domain-chip').forEach(el => {
+      el.classList.toggle('active', el.dataset.domain === key);
+    });
+
+    const screens = DOMAINS[key].screens;
+    screenSelect.innerHTML = '';
+    screens.forEach((s, i) => {
+      const opt = document.createElement('option');
+      opt.value = i; opt.textContent = s.label;
+      screenSelect.appendChild(opt);
+    });
+    screenSelect.selectedIndex = 0;
+
+    renderDomainScreen();
+  }
+
+  function onDomainChange() { selectDomain(domainSelect.value); }
+
+  function onScreenChange() {
+    curScreenIdx = parseInt(screenSelect.value);
+    renderDomainScreen();
+  }
+
+  function renderDomainScreen() {
+    const domain = DOMAINS[curDomainKey];
+    const screen = domain.screens[curScreenIdx];
+    const src    = `domains/${curDomainKey}/screens/${screen.file}`;
+    frame.innerHTML = '';
+    const iframe = document.createElement('iframe');
+    iframe.src = src;
+    frame.appendChild(iframe);
+    label.innerHTML = `<span class="sid">${curDomainKey}</span> · <strong>${screen.label.replace(/^\d+\.\s*/, '')}</strong>`;
+    counter.textContent = `${curScreenIdx + 1} / ${domain.screens.length}`;
+    btnPrev.disabled = curScreenIdx <= 0;
+    btnNext.disabled = curScreenIdx >= domain.screens.length - 1;
+  }
+
+  /* ── 공통 네비게이션 ── */
+  function prev() {
+    if (mode === 'scenario') {
+      if (curStep > 0) { curStep--; renderStep(); }
+    } else {
+      if (curScreenIdx > 0) {
+        curScreenIdx--;
+        screenSelect.selectedIndex = curScreenIdx;
+        renderDomainScreen();
+      }
+    }
+  }
+
+  function next() {
+    if (mode === 'scenario') {
+      const scn = SCENARIOS[curScn];
+      if (curStep < scn.steps.length - 1) { curStep++; renderStep(); }
+    } else {
+      const max = DOMAINS[curDomainKey].screens.length - 1;
+      if (curScreenIdx < max) {
+        curScreenIdx++;
+        screenSelect.selectedIndex = curScreenIdx;
+        renderDomainScreen();
+      }
+    }
+  }
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowLeft') prevStep();
-    if (e.key === 'ArrowRight') nextStep();
+    if (e.key === 'ArrowLeft')  prev();
+    if (e.key === 'ArrowRight') next();
   });
 
-  // iframe 내 활성 버튼 클릭 → 다음 스텝 (screens 의 postMessage 연동)
-  window.addEventListener('message', e => { if (e.data === 'next') nextStep(); });
+  window.addEventListener('message', e => { if (e.data === 'next') next(); });
 
+  /* ── 초기 렌더 ── */
   scnSelect.value = 0;
   selectScenario();
+  btnPrev.disabled = true;
   </script>
 </body>
 </html>
