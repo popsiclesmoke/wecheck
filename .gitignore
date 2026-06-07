@@ -8,6 +8,12 @@ Thumbs.db
 # 에디터
 *.log
 
+# 가이드 문서 (로컬 전용)
+common/design/screen-gen-guide.md
+common/design/screen-maint-guide.md
+.claude/commands/screen-gen.md
+.claude/commands/screen-maint.md
+
 # 루트 레벨 앱 파일 (미사용 / 별도 관리)
 capture-auth.js
 changelog.md
