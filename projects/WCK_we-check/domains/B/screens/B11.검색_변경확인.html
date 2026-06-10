@@ -26,26 +26,26 @@
 
     /* Step area */
     .step-area { flex-shrink: 0; padding: var(--space-page-top) var(--page-margin) 0; display: flex; flex-direction: column; gap: var(--space-xxl); }
-    .step-row { display: flex; align-items: center; gap: 15px; }
-    .step-icon { position: relative; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .step-num { position: absolute; z-index: 1; font-size: 10px; font-weight: var(--weight-regular); color: var(--color-text-default); line-height: 1; letter-spacing: -0.3px; }
+    .step-row { display: flex; align-items: center; gap: var(--space-step-gap); }
+    .step-icon { position: relative; width: var(--step-icon-size); height: var(--step-icon-size); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-num { position: absolute; z-index: 1; font-size: var(--font-micro); font-weight: var(--weight-regular); color: var(--color-text-default); line-height: 1; letter-spacing: -0.3px; }
     .step-title { font-size: var(--font-heading1); font-weight: var(--weight-medium); line-height: var(--lh-heading1); letter-spacing: -0.76px; color: var(--color-text-default); }
     .step-desc { font-size: var(--font-body2); font-weight: var(--weight-regular); line-height: var(--lh-body2); letter-spacing: -0.56px; color: var(--color-text-default); padding-bottom: 30px; }
 
     /* Content */
-    .content { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 var(--page-margin); display: flex; flex-direction: column; gap: 30px; margin-top: var(--space-xxl); }
+    .content { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 var(--page-margin); display: flex; flex-direction: column; gap: var(--space-xxxl); margin-top: var(--space-xxl); }
 
     /* 대상자 row */
-    .target-row { background: var(--client-blue-light); border-radius: var(--radius-default); padding: 16px 20px 16px 16px; display: flex; align-items: center; gap: 10px; }
+    .target-row { background: var(--client-blue-light); border-radius: var(--radius-default); padding: 16px 20px 16px 16px; display: flex; align-items: center; gap: var(--space-md); }
     .target-label { font-size: var(--font-heading4); font-weight: var(--weight-medium); letter-spacing: -0.6px; color: var(--color-text-default); white-space: nowrap; }
     .target-divider { width: 1px; height: 18px; background: var(--color-border-default); flex-shrink: 0; }
     .target-name { font-size: var(--font-heading4); font-weight: var(--weight-regular); letter-spacing: -0.6px; color: var(--color-text-default); }
 
     /* Account change section */
-    .account-section { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .account-item { width: 100%; border-top: 1px solid var(--color-border-default); border-bottom: 1px solid var(--color-border-default); padding: 20px 16px; display: flex; flex-direction: column; gap: 10px; }
+    .account-section { display: flex; flex-direction: column; align-items: center; gap: var(--space-md); }
+    .account-item { width: 100%; border-top: 1px solid var(--color-border-default); border-bottom: 1px solid var(--color-border-default); padding: 20px 16px; display: flex; flex-direction: column; gap: var(--space-md); }
     .account-label { font-size: var(--font-body2); font-weight: var(--weight-medium); letter-spacing: -0.56px; color: var(--color-text-default); }
-    .account-info { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: var(--weight-regular); line-height: 18px; letter-spacing: -0.52px; white-space: nowrap; }
+    .account-info { display: flex; align-items: center; gap: var(--space-md); font-size: var(--font-heading6); font-weight: var(--weight-regular); line-height: var(--lh-caption2); letter-spacing: -0.52px; white-space: nowrap; }
     .account-bank { color: var(--color-text-default); }
     .account-bank.highlight { color: var(--client-blue); }
     .account-num { color: var(--color-text-default); }

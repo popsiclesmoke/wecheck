@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -19,21 +19,21 @@
     .h-btn { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
 
     /* 배경 딤 */
-    .dim { position: absolute; inset: 0; background: rgba(0,0,0,0.70); z-index: 1; }
+    .dim { position: absolute; inset: 0; background: var(--color-dim); z-index: 1; }
 
     /* 바텀 시트 */
     .sheet { position: absolute; bottom: 0; left: 0; right: 0; z-index: 2; background: var(--color-bg-white); border-radius: var(--radius-sheet-top) var(--radius-sheet-top) 0 0; padding-bottom: var(--page-margin); }
 
     /* 시트 헤더 */
-    .sheet-header { height: 75px; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--page-margin); }
+    .sheet-header { height: var(--sheet-header-h); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--page-margin); }
     .sheet-title { font-size: var(--font-heading1); font-weight: var(--weight-medium); line-height: var(--lh-heading1); letter-spacing: -0.76px; color: var(--color-text-default); }
     .close-btn { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
     /* 통신사 카드 영역 */
-    .carrier-area { padding: 0 var(--page-margin) var(--space-xxl); display: flex; flex-direction: column; gap: 10px; }
+    .carrier-area { padding: 0 var(--page-margin) var(--space-xxl); display: flex; flex-direction: column; gap: var(--space-md); }
 
     /* 카드 행 */
-    .carrier-row { display: flex; gap: 10px; }
+    .carrier-row { display: flex; gap: var(--space-md); }
     .carrier-card {
       flex: 1; height: 72px;
       border: 1px solid var(--color-border-default);
@@ -43,7 +43,7 @@
       cursor: pointer;
     }
     .carrier-card.selected { border: 2px solid var(--color-primary); }
-    .carrier-main { font-size: var(--font-heading2); font-weight: var(--weight-medium); line-height: 22px; letter-spacing: -0.64px; color: var(--color-text-org); }
+    .carrier-main { font-size: var(--font-heading2); font-weight: var(--weight-medium); line-height: var(--lh-heading4); letter-spacing: -0.64px; color: var(--color-text-org); }
     .carrier-sub { font-size: var(--font-body2); font-weight: var(--weight-regular); line-height: var(--lh-body2); color: var(--color-text-org); }
 
     /* 버튼 */

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -15,15 +15,15 @@
     .statusbar svg { display: block; }
     .statusbar .time { font-size: var(--font-body2); font-weight: var(--weight-semibold); color: var(--color-text-default); }
     .statusbar .indicators { display: flex; align-items: center; gap: var(--space-xs); }
-    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: 2px; }
+    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: var(--radius-badge); }
     .sig-bar { width: 17px; height: 11px; clip-path: polygon(0 70%,20% 70%,20% 100%,0 100%,0 70%,30% 45%,50% 45%,50% 100%,30% 100%,60% 25%,80% 25%,80% 100%,90% 0,100% 0,100% 100%); }
     .wifi { width: 16px; height: 11px; }
-    .batt { width: 22px; height: 11px; border-radius: 2px; }
+    .batt { width: 22px; height: 11px; border-radius: var(--radius-badge); }
     .header { height: var(--header-height); flex-shrink: 0; display: flex; align-items: center; padding: 0 var(--page-margin); position: relative; }
     .logo { position: absolute; left: 50%; transform: translateX(-50%); font-size: var(--font-heading1); font-weight: var(--weight-logo); color: var(--color-primary); white-space: nowrap; }
     .h-btn { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .search-wrap { flex-shrink: 0; margin: 0 var(--page-margin); border-bottom: 1px solid var(--color-text-default); display: flex; align-items: center; justify-content: space-between; height: 40px; }
-    .search-input { flex: 1; border: none; background: transparent; font-size: var(--font-body2); font-weight: var(--weight-regular); color: var(--color-text-default); letter-spacing: -0.6px; font-family: inherit; outline: none; }
+    .search-input { flex: 1; border: none; background: transparent; font-size: var(--font-body2); font-weight: var(--weight-regular); color: var(--color-text-default); letter-spacing: var(--tracking-tight); font-family: inherit; outline: none; }
     .search-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     /* 결과 리스트 */
     .content { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-md) var(--page-margin); display: flex; flex-direction: column; gap: var(--space-md); }
@@ -32,12 +32,12 @@
     .addr-card.selected { border-color: var(--color-border-selected); }
     .addr-card.selected .addr-zip,
     .addr-card.selected .addr-text { color: var(--color-border-selected); }
-    .addr-zip { font-size: var(--font-body2); font-weight: var(--weight-regular); line-height: var(--lh-body2); letter-spacing: -0.56px; color: var(--color-text-default); }
+    .addr-zip { font-size: var(--font-body2); font-weight: var(--weight-regular); line-height: var(--lh-body2); letter-spacing: var(--tracking-tight); color: var(--color-text-default); }
     .addr-row { display: flex; align-items: center; gap: var(--space-sm); }
-    .addr-tag { width: 38px; height: 18px; padding: 0; border-radius: var(--radius-badge); font-size: 10px; font-weight: var(--weight-regular); line-height: 18px; flex-shrink: 0; text-align: center; }
+    .addr-tag { width: 38px; height: 18px; padding: 0; border-radius: var(--radius-badge); font-size: var(--font-micro); font-weight: var(--weight-regular); line-height: var(--lh-caption2); flex-shrink: 0; text-align: center; }
     .tag-road { background: var(--color-tag-road-bg); color: var(--color-primary); }
     .tag-jibun { background: var(--color-tag-jibun-bg); color: var(--color-text-default); }
-    .addr-text { font-size: var(--font-body4); font-weight: var(--weight-regular); line-height: 18px; letter-spacing: -0.6px; color: var(--color-text-default); }
+    .addr-text { font-size: var(--font-body4); font-weight: var(--weight-regular); line-height: var(--lh-caption2); letter-spacing: var(--tracking-tight); color: var(--color-text-default); }
     /* 하단 버튼 */
     .bottom { flex-shrink: 0; padding: 0 var(--page-margin) var(--page-margin); }
     .btn { width: var(--component-width); height: var(--button-height); border-radius: var(--radius-default); border: none; cursor: pointer; font-size: var(--font-heading4); font-weight: var(--weight-medium); font-family: inherit; letter-spacing: var(--tracking-tight); display: flex; align-items: center; justify-content: center; background: var(--color-primary); color: var(--color-text-white); }

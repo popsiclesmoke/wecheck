@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>[PROJECT_CODE] [service-name] — 전체 화면 뷰어</title>
+  <title>WCK We-Check — 전체 화면 뷰어</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -186,16 +186,85 @@
 <body>
 
   <div class="topbar">
-    <div class="logo">[PROJECT_CODE]<span>[service-name]</span></div>
+    <div class="logo">WCK<span>We-Check</span></div>
 
     <div class="select-wrap">
       <select class="screen-select" id="screenSelect" onchange="navigate()">
-        <!-- @designer-agent 가 도메인별 화면을 아래 형식으로 채운다 -->
-        <!--
-        <optgroup label="── DOM · 도메인명 ──────────────">
-          <option value="domains/DOM_domain-name/screens/dom-screen.html" data-domain="DOM" data-id="DOM-001">DOM-001 · 화면명</option>
+        <optgroup label="── MAIN · 메인 (A) ──────────────">
+          <option value="domains/A/screens/A00.위체크메인.html" data-domain="MAIN" data-id="A00">A00 · 위체크메인</option>
         </optgroup>
-        -->
+        <optgroup label="── TERM · 약관 (A·Z) ──────────────">
+          <option value="domains/A/screens/A02.위체크메인_약관동의.html" data-domain="TERM" data-id="A02">A02 · 위체크메인_약관동의</option>
+          <option value="domains/A/screens/A03.위체크메인_약관상세.html" data-domain="TERM" data-id="A03">A03 · 위체크메인_약관상세</option>
+          <option value="domains/Z/screens/Z10.서비스이용약관.html" data-domain="TERM" data-id="Z10">Z10 · 서비스이용약관</option>
+          <option value="domains/Z/screens/Z12.개인(신용)정보_수집및이용동의.html" data-domain="TERM" data-id="Z12">Z12 · 개인(신용)정보_수집및이용동의</option>
+          <option value="domains/Z/screens/Z13.개인(신용)정보_제3자제공동의.html" data-domain="TERM" data-id="Z13">Z13 · 개인(신용)정보_제3자제공동의</option>
+        </optgroup>
+        <optgroup label="── AUTH · 인증 (C) ──────────────">
+          <option value="domains/C/screens/C00.인증방식선택.html" data-domain="AUTH" data-id="C00">C00 · 인증방식선택</option>
+          <option value="domains/C/screens/C10.간편인증서_인증서선택.html" data-domain="AUTH" data-id="C10">C10 · 간편인증서_인증서선택</option>
+          <option value="domains/C/screens/C10_1.간편인증서_인증서선택_장차법PC용.html" data-domain="AUTH" data-id="C10_1">C10_1 · 간편인증서_인증서선택_장차법PC용</option>
+          <option value="domains/C/screens/C10_2.간편인증서_인증서선택_1열.html" data-domain="AUTH" data-id="C10_2">C10_2 · 간편인증서_인증서선택_1열</option>
+          <option value="domains/C/screens/C11.간편인증서_인증서선택_로딩.html" data-domain="AUTH" data-id="C11">C11 · 간편인증서_인증서선택_로딩</option>
+          <option value="domains/C/screens/C11_1.간편인증서_PASS통신사선택_팝업.html" data-domain="AUTH" data-id="C11_1">C11_1 · 간편인증서_PASS통신사선택_팝업</option>
+          <option value="domains/C/screens/C11_2.간편인증서_휴대폰인증통신사선택.html" data-domain="AUTH" data-id="C11_2">C11_2 · 간편인증서_휴대폰인증통신사선택</option>
+          <option value="domains/C/screens/C12_0.간편인증서_인증서선택_인증요청.html" data-domain="AUTH" data-id="C12_0">C12_0 · 간편인증서_인증서선택_인증요청</option>
+          <option value="domains/C/screens/C12.간편인증_인증서선택_인증요청.html" data-domain="AUTH" data-id="C12">C12 · 간편인증_인증서선택_인증요청</option>
+          <option value="domains/C/screens/C12.간편인증_인증서선택_인증완료(공통).html" data-domain="AUTH" data-id="C12">C12 · 간편인증_인증서선택_인증완료(공통)</option>
+          <option value="domains/C/screens/C12_3.간편인증서_인증요청_인증번호입력.html" data-domain="AUTH" data-id="C12_3">C12_3 · 간편인증서_인증요청_인증번호입력</option>
+          <option value="domains/C/screens/C12_3.간편인증서_인증요청_인증번호입력_활성화.html" data-domain="AUTH" data-id="C12_3">C12_3 · 간편인증서_인증요청_인증번호입력_활성화</option>
+          <option value="domains/C/screens/C20.증명서조회_로딩.html" data-domain="AUTH" data-id="C20">C20 · 증명서조회_로딩</option>
+          <option value="domains/C/screens/C22.증명서조회_완료.html" data-domain="AUTH" data-id="C22">C22 · 증명서조회_완료</option>
+          <option value="domains/C/screens/C22_비회원.증명서조회_완료.html" data-domain="AUTH" data-id="C22_비회원">C22_비회원 · 증명서조회_완료</option>
+          <option value="domains/C/screens/C30.증명서조회_로딩.html" data-domain="AUTH" data-id="C30">C30 · 증명서조회_로딩</option>
+          <option value="domains/C/screens/C40.캡챠이미지.html" data-domain="AUTH" data-id="C40">C40 · 캡챠이미지</option>
+          <option value="domains/C/screens/C40.캡챠이미지_음성듣기.html" data-domain="AUTH" data-id="C40">C40 · 캡챠이미지_음성듣기</option>
+          <option value="domains/C/screens/C40.캡챠이미지_입력실패.html" data-domain="AUTH" data-id="C40">C40 · 캡챠이미지_입력실패</option>
+        </optgroup>
+        <optgroup label="── SRCH · 계좌·검색 (B) ──────────────">
+          <option value="domains/B/screens/B01.주소정보입력.html" data-domain="SRCH" data-id="B01">B01 · 주소정보입력</option>
+          <option value="domains/B/screens/B01_1.주소정보입력_정보추가.html" data-domain="SRCH" data-id="B01_1">B01_1 · 주소정보입력_정보추가</option>
+          <option value="domains/B/screens/B02.주소정보입력_활성화.html" data-domain="SRCH" data-id="B02">B02 · 주소정보입력_활성화</option>
+          <option value="domains/B/screens/B02_1.주소정보입력_활성화_정보추가.html" data-domain="SRCH" data-id="B02_1">B02_1 · 주소정보입력_활성화_정보추가</option>
+          <option value="domains/B/screens/B10.검색_결과목록_선택.html" data-domain="SRCH" data-id="B10">B10 · 검색_결과목록_선택</option>
+          <option value="domains/B/screens/B11.검색_변경확인.html" data-domain="SRCH" data-id="B11">B11 · 검색_변경확인</option>
+        </optgroup>
+        <optgroup label="── ISSU · 발급·인증번호 (BR) ──────────────">
+          <option value="domains/BR/screens/BR00.인증번호입력.html" data-domain="ISSU" data-id="BR00">BR00 · 인증번호입력</option>
+          <option value="domains/BR/screens/BR00_1.인증번호입력_오류.html" data-domain="ISSU" data-id="BR00_1">BR00_1 · 인증번호입력_오류</option>
+          <option value="domains/BR/screens/BR01.파일첨부.html" data-domain="ISSU" data-id="BR01">BR01 · 파일첨부</option>
+          <option value="domains/BR/screens/BR01_1.파일첨부_업로드선택.html" data-domain="ISSU" data-id="BR01_1">BR01_1 · 파일첨부_업로드선택</option>
+        </optgroup>
+        <optgroup label="── RSLT · 결과·에러 (E) ──────────────">
+          <option value="domains/E/screens/E00.인증완료.html" data-domain="RSLT" data-id="E00">E00 · 인증완료</option>
+          <option value="domains/E/screens/E02.에러_미보유인증서.html" data-domain="RSLT" data-id="E02">E02 · 에러_미보유인증서</option>
+          <option value="domains/E/screens/E04.에러_인증서오류.html" data-domain="RSLT" data-id="E04">E04 · 에러_인증서오류</option>
+          <option value="domains/E/screens/E08.인증완료_증명서결과조회.html" data-domain="RSLT" data-id="E08">E08 · 인증완료_증명서결과조회</option>
+          <option value="domains/E/screens/E10.네트워크에러.html" data-domain="RSLT" data-id="E10">E10 · 네트워크에러</option>
+          <option value="domains/E/screens/E11.에러_기타오류.html" data-domain="RSLT" data-id="E11">E11 · 에러_기타오류</option>
+          <option value="domains/E/screens/E12.에러_정보조회_비회원.html" data-domain="RSLT" data-id="E12">E12 · 에러_정보조회_비회원</option>
+          <option value="domains/E/screens/E12.에러_정보조회_생년월일.html" data-domain="RSLT" data-id="E12">E12 · 에러_정보조회_생년월일</option>
+          <option value="domains/E/screens/E12.에러_정보조회_세션.html" data-domain="RSLT" data-id="E12">E12 · 에러_정보조회_세션</option>
+          <option value="domains/E/screens/E12.에러_정보조회_실패.html" data-domain="RSLT" data-id="E12">E12 · 에러_정보조회_실패</option>
+          <option value="domains/E/screens/E14.에러_증명서.html" data-domain="RSLT" data-id="E14">E14 · 에러_증명서</option>
+          <option value="domains/E/screens/E15.세션만료.html" data-domain="RSLT" data-id="E15">E15 · 세션만료</option>
+          <option value="domains/E/screens/E17.에러_주소.html" data-domain="RSLT" data-id="E17">E17 · 에러_주소</option>
+          <option value="domains/E/screens/E20.대기열로딩.html" data-domain="RSLT" data-id="E20">E20 · 대기열로딩</option>
+          <option value="domains/E/screens/E21.에러_조회실패팝업.html" data-domain="RSLT" data-id="E21">E21 · 에러_조회실패팝업</option>
+          <option value="domains/E/screens/E40.에러_2버튼.html" data-domain="RSLT" data-id="E40">E40 · 에러_2버튼</option>
+        </optgroup>
+        <optgroup label="── CMN · 공통 (T) ──────────────">
+          <option value="domains/T/screens/T00.(공통)정보입력_기본팝업.html" data-domain="CMN" data-id="T00">T00 · (공통)정보입력_기본팝업</option>
+          <option value="domains/T/screens/T01.(공통)정보입력_기본팝업_투버튼.html" data-domain="CMN" data-id="T01">T01 · (공통)정보입력_기본팝업_투버튼</option>
+          <option value="domains/T/screens/T10.(공통)정보입력_선택팝업.html" data-domain="CMN" data-id="T10">T10 · (공통)정보입력_선택팝업</option>
+          <option value="domains/T/screens/T12.간편인증서_알림미수신팝업.html" data-domain="CMN" data-id="T12">T12 · 간편인증서_알림미수신팝업</option>
+          <option value="domains/T/screens/T13.위체크메인_공지팝업_1개.html" data-domain="CMN" data-id="T13">T13 · 위체크메인_공지팝업_1개</option>
+          <option value="domains/T/screens/T13_1.위체크메인_공지팝업_스크롤.html" data-domain="CMN" data-id="T13_1">T13_1 · 위체크메인_공지팝업_스크롤</option>
+          <option value="domains/T/screens/T13_2.위체크메인_공지팝업_2개이상.html" data-domain="CMN" data-id="T13_2">T13_2 · 위체크메인_공지팝업_2개이상</option>
+          <option value="domains/T/screens/T20.(공통)주소검색.html" data-domain="CMN" data-id="T20">T20 · (공통)주소검색</option>
+          <option value="domains/T/screens/T20.(공통)주소검색_검색결과없음.html" data-domain="CMN" data-id="T20">T20 · (공통)주소검색_검색결과없음</option>
+          <option value="domains/T/screens/T23.(공통)주소검색_검색결과목록.html" data-domain="CMN" data-id="T23">T23 · (공통)주소검색_검색결과목록</option>
+        </optgroup>
       </select>
     </div>
 
@@ -224,7 +293,7 @@
       <span class="screen-id">—</span>
       <span class="screen-name">화면을 선택하세요</span>
     </p>
-    <p class="domain-info" id="domainInfo">[PROJECT_CODE] [service-name] · 전체 0개 화면</p>
+    <p class="domain-info" id="domainInfo">WCK We-Check · 전체 61개 화면</p>
   </div>
 
   <script>
@@ -241,9 +310,15 @@
       return Array.from(select.options);
     }
 
-    /* @designer-agent 가 도메인 추가 시 여기에 표시명을 등록한다 */
+    /* 도메인 표시명 (data-domain 기준) */
     const DOMAIN_NAMES = {
-      // 'DOM': 'DOM · 도메인명',
+      'MAIN': 'MAIN · 메인',
+      'TERM': 'TERM · 약관',
+      'AUTH': 'AUTH · 인증',
+      'SRCH': 'SRCH · 계좌·검색',
+      'ISSU': 'ISSU · 발급·인증번호',
+      'RSLT': 'RSLT · 결과·에러',
+      'CMN':  'CMN · 공통',
     };
 
     const domainCounts = {};

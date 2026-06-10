@@ -214,7 +214,7 @@
         {sid:'RSLT-004',name:'증명서 결과 조회',src:'domains/E/screens/E08.인증완료_증명서결과조회.html'},
       ]},
     { id:'SCN-WCK-101', name:'본인인증 (휴대폰 인증 · 보안문자 방식)', type:'branch',
-      desc:'휴대폰 인증 통신사를 선택하고 보안문자 입력 방식으로 본인인증을 완료한다. (AUTH-010 화면 HTML 미존재)',
+      desc:'휴대폰 인증 통신사를 선택하고 보안문자 입력 방식으로 본인인증을 완료한다. (AUTH-010은 C40.캡챠이미지.html로 구현됨)',
       steps:[
         {sid:'MAIN-001',name:'위체크 메인 (최초 진입)',src:'domains/A/screens/A00.위체크메인.html'},
         {sid:'TERM-001',name:'약관 동의',src:'domains/A/screens/A02.위체크메인_약관동의.html'},
@@ -224,7 +224,7 @@
         {sid:'AUTH-007',name:'휴대폰 인증 통신사 선택',src:'domains/C/screens/C11_2.간편인증서_휴대폰인증통신사선택.html'},
         {sid:'AUTH-008',name:'인증 요청',src:'domains/C/screens/C12_0.간편인증서_인증서선택_인증요청.html'},
         {sid:'AUTH-009',name:'인증 요청 (대기 중)',src:'domains/C/screens/C12.간편인증_인증서선택_인증요청.html'},
-        {sid:'AUTH-010',name:'보안문자 입력 (HTML 미존재)',src:null},
+        {sid:'AUTH-010',name:'보안문자 입력 (캡챠)',src:'domains/C/screens/C40.캡챠이미지.html'},
         {sid:'RSLT-001',name:'인증 완료',src:'domains/E/screens/E00.인증완료.html'},
       ]},
     { id:'SCN-WCK-102', name:'인증 알림 미수신 → 재요청', type:'branch',

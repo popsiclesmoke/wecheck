@@ -63,9 +63,11 @@
   --color-dim:     rgba(0, 0, 0, 0.70);
 
   /* ── 타이포그래피: font-size ── */
+  --font-display2:  24px;
   --font-display1:  22px;
   --font-heading1:  19px;
   --font-heading2:  17px;
+  --font-heading3:  16px;
   --font-heading4:  15px;
   --font-heading5:  14px;
   --font-heading6:  13px;
@@ -73,6 +75,7 @@
   --font-body2:     14px;
   --font-body4:     12px;
   --font-caption2:  12px;
+  --font-micro:     10px;   /* step-num, 기관명 등 극소형 라벨 */
 
   /* ── 타이포그래피: font-weight ── */
   --weight-regular: 400;
@@ -82,6 +85,7 @@
   --weight-logo:    800;
 
   /* ── 타이포그래피: line-height ── */
+  --lh-display2:  30px;
   --lh-display1:  32px;
   --lh-heading1:  26px;
   --lh-heading2:  26px;
@@ -124,6 +128,8 @@
   --popup-width:       290px;
   --popup-margin:      35px;   /* 팝업 좌우 여백 — (360 - 290) / 2 = 35px, 반응형으로 팝업이 함께 늘어남 */
   --carrier-width:     77px;
+  --step-icon-size:    36px;   /* 단계 아이콘 (step-row) */
+  --sheet-header-h:    75px;   /* 바텀시트·약관 헤더 높이 */
 
   /* ── Border Radius ── */
   --radius-checkbox-s: 3px;

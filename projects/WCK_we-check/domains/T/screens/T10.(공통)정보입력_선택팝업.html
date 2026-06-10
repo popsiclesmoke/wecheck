@@ -13,10 +13,10 @@
     .dim { position: absolute; inset: 0; background: var(--color-dim); z-index: 10; }
     .popup { position: absolute; top: 50%; left: var(--popup-margin); right: var(--popup-margin); transform: translateY(-50%); z-index: 20; background: var(--color-bg-white); border-radius: var(--radius-default); overflow: hidden; padding-bottom: var(--page-margin); }
     .popup-header { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--page-margin); }
-    .popup-title { font-size: var(--font-heading1); font-weight: var(--weight-medium); line-height: var(--lh-heading1); letter-spacing: -0.76px; color: var(--color-text-default); }
+    .popup-title { font-size: var(--font-heading1); font-weight: var(--weight-medium); line-height: var(--lh-heading1); letter-spacing: var(--tracking-tight); color: var(--color-text-default); }
     .close-btn { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .popup-list { padding: 0 var(--page-margin); }
-    .list-item { height: var(--input-height); display: flex; align-items: center; border-bottom: 1px solid var(--color-border-default); font-size: var(--font-body2); font-weight: var(--weight-regular); line-height: var(--lh-body2); letter-spacing: -0.56px; color: var(--color-text-default); cursor: pointer; }
+    .list-item { height: var(--input-height); display: flex; align-items: center; border-bottom: 1px solid var(--color-border-default); font-size: var(--font-body2); font-weight: var(--weight-regular); line-height: var(--lh-body2); letter-spacing: var(--tracking-tight); color: var(--color-text-default); cursor: pointer; }
     .list-item:last-child { border-bottom: none; }
   </style>
 </head>
@@ -56,9 +56,17 @@
     document.addEventListener('click',function(e){
       var btn=e.target.closest('.bottom .btn,.bs-body .btn,.pbtn-right');
       if(btn)tryNext(btn);
+      var item=e.target.closest('.list-item');
+      if(item){
+        var items=item.parentNode.querySelectorAll('.list-item');
+        for(var i=0;i<items.length;i++){items[i].style.color='';items[i].style.fontWeight='';}
+        item.style.color='var(--color-primary)';
+        item.style.fontWeight='var(--weight-medium)';
+        window.parent.postMessage('next','*');
+      }
       var uploadBtn=e.target.closest('.upload-btn');
       if(uploadBtn){var ov=document.querySelector('.overlay');var sh=document.querySelector('.bottom-sheet');if(ov)ov.style.display='';if(sh)sh.style.display='';return;}
-      var closeBtn=e.target.closest('.pbtn-left,.bs-header .h-btn');
+      var closeBtn=e.target.closest('.pbtn-left,.bs-header .h-btn,.close-btn,.dim');
       if(closeBtn){
         var dim=document.querySelector('.dim');
         var popup=document.querySelector('.popup');

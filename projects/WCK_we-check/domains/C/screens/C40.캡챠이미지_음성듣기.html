@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -17,10 +17,10 @@
     .statusbar svg { display: block; }
     .statusbar .time { font-size: var(--font-body2); font-weight: var(--weight-semibold); color: var(--color-text-default); }
     .statusbar .indicators { display: flex; align-items: center; gap: var(--space-xs); }
-    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: 2px; }
+    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: var(--radius-badge); }
     .sig-bar { width: 17px; height: 11px; clip-path: polygon(0 70%,20% 70%,20% 100%,0 100%,0 70%,30% 45%,50% 45%,50% 100%,30% 100%,60% 25%,80% 25%,80% 100%,90% 0,100% 0,100% 100%); }
     .wifi { width: 16px; height: 11px; }
-    .batt { width: 22px; height: 11px; border-radius: 2px; }
+    .batt { width: 22px; height: 11px; border-radius: var(--radius-badge); }
 
     /* Header */
     .header { height: var(--header-height); flex-shrink: 0; display: flex; align-items: center; padding: 0 var(--page-margin); background: var(--color-bg-white); position: relative; }
@@ -32,16 +32,16 @@
 
     /* Step area */
     .step-area { padding: var(--space-page-top) 0 var(--space-xxl); display: flex; flex-direction: column; gap: var(--space-xxl); }
-    .step-row { display: flex; align-items: center; gap: 15px; }
-    .step-icon { position: relative; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-row { display: flex; align-items: center; gap: var(--space-step-gap); }
+    .step-icon { position: relative; width: var(--step-icon-size); height: var(--step-icon-size); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .step-icon i { position: absolute; inset: 0; display: block; }
-    .step-num { position: relative; z-index: 1; font-size: 10px; font-weight: var(--weight-regular); color: var(--color-text-default); line-height: 1; letter-spacing: -0.4px; }
+    .step-num { position: relative; z-index: 1; font-size: var(--font-micro); font-weight: var(--weight-regular); color: var(--color-text-default); line-height: 1; letter-spacing: -0.4px; }
     .step-title { font-size: var(--font-heading1); font-weight: var(--weight-medium); color: var(--color-text-default); letter-spacing: -0.76px; }
     .step-desc { font-size: var(--font-body2); font-weight: var(--weight-regular); color: var(--color-text-default); line-height: var(--lh-body2); letter-spacing: -0.56px; }
     .step-desc .blue { color: var(--color-primary); font-weight: var(--weight-medium); }
 
     /* 캡챠 영역 */
-    .captcha-wrap { display: flex; flex-direction: column; gap: 10px; }
+    .captcha-wrap { display: flex; flex-direction: column; gap: var(--space-md); }
 
     /* 캡챠 박스 */
     .captcha-box { width: 100%; height: 90px; border: 1px solid var(--color-border-default); border-radius: var(--radius-default); display: flex; align-items: center; justify-content: space-between; padding: 10px 11px 10px 15px; }
@@ -50,10 +50,10 @@
 
     /* 우측 버튼 묶음 (새로고침 + 음성듣기) */
     .captcha-btns { display: flex; flex-direction: column; gap: 5px; width: 65px; flex-shrink: 0; }
-    .captcha-btn { width: 100%; height: 30px; background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; font-weight: var(--weight-regular); color: var(--color-text-default); letter-spacing: -0.52px; font-family: inherit; }
+    .captcha-btn { width: 100%; height: 30px; background: var(--color-bg-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-tag); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: var(--font-heading6); font-weight: var(--weight-regular); color: var(--color-text-default); letter-spacing: -0.52px; font-family: inherit; }
 
     /* 언더라인 입력 */
-    .underline-input { width: 100%; height: 46px; border: none; border-bottom: 1px solid var(--color-border-default); background: transparent; padding: 12px 0; font-size: var(--font-body2); font-weight: var(--weight-regular); color: var(--color-text-default); letter-spacing: -0.6px; font-family: inherit; outline: none; }
+    .underline-input { width: 100%; height: var(--input-height); border: none; border-bottom: 1px solid var(--color-border-default); background: transparent; padding: 12px 0; font-size: var(--font-body2); font-weight: var(--weight-regular); color: var(--color-text-default); letter-spacing: -0.6px; font-family: inherit; outline: none; }
     .underline-input::placeholder { color: var(--color-border-default); }
 
     /* Bottom */
@@ -97,7 +97,7 @@
       <div class="captcha-wrap">
         <div class="captcha-box">
           <div class="captcha-img">
-            <img src="https://www.figma.com/api/mcp/asset/1fb2d108-c638-4259-ad4f-a2c95886e0c4" alt="보안문자">
+            <img src="../../../design/img/placeholder-captcha.svg" alt="보안문자">
           </div>
           <div class="captcha-btns">
             <button class="captcha-btn">새로고침</button>

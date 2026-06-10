@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -17,22 +17,22 @@
     .statusbar svg { display: block; }
     .statusbar .time { font-size: var(--font-body2); font-weight: var(--weight-semibold); color: var(--color-text-default); }
     .statusbar .indicators { display: flex; align-items: center; gap: var(--space-xs); }
-    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: 2px; }
+    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: var(--radius-badge); }
     .sig-bar { width: 17px; height: 11px; clip-path: polygon(0 70%,20% 70%,20% 100%,0 100%,0 70%,30% 45%,50% 45%,50% 100%,30% 100%,60% 25%,80% 25%,80% 100%,90% 0,100% 0,100% 100%); }
     .wifi { width: 16px; height: 11px; }
-    .batt { width: 22px; height: 11px; border-radius: 2px; }
+    .batt { width: 22px; height: 11px; border-radius: var(--radius-badge); }
     .header { height: var(--header-height); flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--page-margin); background: var(--color-bg-white); position: relative; }
     .logo { position: absolute; left: 50%; transform: translateX(-50%); font-size: var(--font-heading1); font-weight: var(--weight-logo); color: var(--color-primary); white-space: nowrap; }
     .h-btn { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
 
     /* 딤 오버레이 */
-    .bg-dim { position: absolute; inset: 0; background: rgba(0,0,0,0.45); z-index: 1; }
+    .bg-dim { position: absolute; inset: 0; background: var(--color-dim); z-index: 1; }
 
     /* 바텀 시트 */
     .sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; background: var(--color-bg-white); border-radius: var(--radius-sheet-top) var(--radius-sheet-top) 0 0; }
 
     /* 시트 헤더 */
-    .sheet-header { height: 75px; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--page-margin); }
+    .sheet-header { height: var(--sheet-header-h); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--page-margin); }
     .sheet-title { font-size: var(--font-heading1); font-weight: var(--weight-medium); color: var(--color-text-default); }
     .sheet-close { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
@@ -43,14 +43,14 @@
     .all-row { display: flex; align-items: center; gap: var(--space-sm); }
     .all-label-wrap { display: flex; align-items: flex-start; gap: 5px; }
     .all-label { font-size: var(--font-body2); font-weight: var(--weight-regular); color: var(--color-text-default); }
-    .req-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-error); flex-shrink: 0; margin-top: 2px; }
+    .req-dot { width: 6px; height: 6px; border-radius: var(--radius-circle); background: var(--color-error); flex-shrink: 0; margin-top: 2px; }
 
     /* ── 체크박스 공통 ── */
     .chk { position: relative; cursor: pointer; flex-shrink: 0; }
 
     /* M사이즈 (19×19, radius 4px) — Figma: btn/checkbox m */
     .chk-m { width: 19px; height: 19px; }
-    .chk-m .chk-box { position: absolute; inset: 0; border-radius: 4px; }
+    .chk-m .chk-box { position: absolute; inset: 0; border-radius: var(--radius-tag); }
     .chk-m.off .chk-box { background: transparent; border: 1px solid var(--color-border-checkbox); }
     .chk-m.on  .chk-box { background: var(--color-primary); border: none; }
     /* Figma: Line1 at inset[51.58%,56.15%,32.63%,26.32%] rotate-42 / Line2 at inset[36.84%,25.59%,32.55%,43.86%] rotate-135 */
@@ -65,7 +65,7 @@
 
     /* S사이즈 (16×16, radius 3px) — Figma: btn/checkbox s */
     .chk-s { width: 16px; height: 16px; }
-    .chk-s .chk-box { position: absolute; inset: 0; border-radius: 3px; }
+    .chk-s .chk-box { position: absolute; inset: 0; border-radius: var(--radius-checkbox-s); }
     .chk-s.off .chk-box { background: transparent; border: 1px solid var(--color-border-checkbox); }
     .chk-s.on  .chk-box { background: var(--color-primary); border: none; }
     .chk-s .chk-mark {
@@ -90,15 +90,15 @@
     .btn-disabled { background: var(--color-bg-disabled); color: var(--color-text-placeholder); cursor: default; }
 
     /* 약관 상세 시트 */
-    .detail-dim   { position: absolute; inset: 0; background: rgba(0,0,0,0.45); z-index: 3; }
+    .detail-dim   { position: absolute; inset: 0; background: var(--color-dim); z-index: 3; }
     .detail-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; background: var(--color-bg-white); border-radius: var(--radius-sheet-top) var(--radius-sheet-top) 0 0; display: flex; flex-direction: column; max-height: 80vh; }
-    .detail-header { height: 75px; flex-shrink: 0; display: flex; align-items: center; padding: 0 var(--page-margin); position: relative; }
+    .detail-header { height: var(--sheet-header-h); flex-shrink: 0; display: flex; align-items: center; padding: 0 var(--page-margin); position: relative; }
     .detail-title { position: absolute; left: 50%; transform: translateX(-50%); font-size: var(--font-heading1); font-weight: var(--weight-medium); color: var(--color-text-default); white-space: nowrap; }
     .detail-x { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-left: auto; }
     .detail-body { flex: 1; min-height: 0; overflow-y: auto; padding: 0 var(--page-margin) var(--page-margin); }
     .detail-body::-webkit-scrollbar { width: 4px; }
-    .detail-body::-webkit-scrollbar-thumb { background: var(--color-border-default); border-radius: 2px; }
-    .detail-placeholder { font-size: var(--font-body2); color: var(--color-text-placeholder); line-height: var(--lh-body2); letter-spacing: -0.56px; }
+    .detail-body::-webkit-scrollbar-thumb { background: var(--color-border-default); border-radius: var(--radius-badge); }
+    .detail-placeholder { font-size: var(--font-body2); color: var(--color-text-placeholder); line-height: var(--lh-body2); letter-spacing: var(--tracking-tight); }
     .detail-bottom { flex-shrink: 0; padding: 0 var(--page-margin) var(--page-margin); }
   </style>
 </head>

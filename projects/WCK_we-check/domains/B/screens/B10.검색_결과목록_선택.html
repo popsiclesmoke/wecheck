@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -22,10 +22,10 @@
     .statusbar svg { display: block; }
     .statusbar .time { font-size: var(--font-body2); font-weight: var(--weight-semibold); color: var(--color-text-default); }
     .statusbar .indicators { display: flex; align-items: center; gap: var(--space-xs); }
-    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: 2px; }
+    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: var(--radius-badge); }
     .sig-bar { width: 17px; height: 11px; clip-path: polygon(0 70%,20% 70%,20% 100%,0 100%,0 70%,30% 45%,50% 45%,50% 100%,30% 100%,60% 25%,80% 25%,80% 100%,90% 0,100% 0,100% 100%); }
     .wifi { width: 16px; height: 11px; }
-    .batt { width: 22px; height: 11px; border-radius: 2px; }
+    .batt { width: 22px; height: 11px; border-radius: var(--radius-badge); }
 
     /* Header — WeCheck × (뒤로가기 없음) */
     .header { height: var(--header-height); flex-shrink: 0; display: flex; align-items: center; padding: 0 var(--page-margin); background: var(--color-bg-white); position: relative; }
@@ -34,10 +34,10 @@
 
     /* 스텝 영역 (고정, 스크롤 안됨) */
     .step-area { flex-shrink: 0; padding: var(--space-page-top) var(--page-margin) var(--space-xxl); display: flex; flex-direction: column; gap: var(--space-xxl); }
-    .step-row { display: flex; align-items: center; gap: 15px; }
-    .step-icon { position: relative; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-row { display: flex; align-items: center; gap: var(--space-step-gap); }
+    .step-icon { position: relative; width: var(--step-icon-size); height: var(--step-icon-size); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .step-icon i { position: absolute; inset: 0; display: block; }
-    .step-num { position: relative; z-index: 1; font-size: 10px; font-weight: var(--weight-regular); color: var(--color-text-default); line-height: 1; letter-spacing: -0.3px; }
+    .step-num { position: relative; z-index: 1; font-size: var(--font-micro); font-weight: var(--weight-regular); color: var(--color-text-default); line-height: 1; letter-spacing: -0.3px; }
     .step-title { font-size: var(--font-heading1); font-weight: var(--weight-medium); line-height: var(--lh-heading1); letter-spacing: -0.76px; color: var(--color-text-default); }
     .step-desc { font-size: var(--font-body2); font-weight: var(--weight-regular); line-height: var(--lh-body2); letter-spacing: -0.56px; color: var(--color-text-default); }
 
@@ -54,7 +54,7 @@
       display: flex; flex-direction: column;
     }
     .result-card.selected { border: 2px solid var(--client-blue); padding: 19px 15px; /* 2px border → 1px 보상 */ }
-    .card-inner { display: flex; align-items: center; gap: 12px; }
+    .card-inner { display: flex; align-items: center; gap: var(--space-card); }
 
     /* 라디오 버튼 */
     .radio {
@@ -66,11 +66,11 @@
     .result-card.selected .radio::after { content:''; width: 8px; height: 8px; border-radius: var(--radius-circle); background: var(--client-blue); }
 
     /* 카드 텍스트 */
-    .card-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
-    .card-name { font-size: var(--font-heading4); font-weight: var(--weight-medium); line-height: 20px; letter-spacing: -0.6px; color: var(--color-text-default); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .card-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-md); }
+    .card-name { font-size: var(--font-heading4); font-weight: var(--weight-medium); line-height: var(--lh-body2); letter-spacing: -0.6px; color: var(--color-text-default); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .card-account { display: flex; align-items: center; gap: var(--space-xs); overflow: hidden; }
     .account-badge { flex-shrink: 0; background: var(--client-blue-light); padding: 4px var(--space-xs); border-radius: var(--radius-tag); font-size: 11px; font-weight: var(--weight-regular); line-height: 14px; letter-spacing: -0.44px; color: var(--client-blue); white-space: nowrap; }
-    .account-num { font-size: 13px; font-weight: var(--weight-regular); line-height: 18px; letter-spacing: -0.52px; color: var(--color-text-default); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+    .account-num { font-size: var(--font-heading6); font-weight: var(--weight-regular); line-height: var(--lh-caption2); letter-spacing: -0.52px; color: var(--color-text-default); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 
     /* Bottom */
     .bottom { flex-shrink: 0; padding: 0 var(--page-margin) var(--page-margin); }

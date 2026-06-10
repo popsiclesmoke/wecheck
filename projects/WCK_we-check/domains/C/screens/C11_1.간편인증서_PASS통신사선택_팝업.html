@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -18,16 +18,16 @@
     .statusbar svg { display: block; }
     .statusbar .time { font-size: var(--font-body2); font-weight: var(--weight-semibold); color: var(--color-text-default); }
     .statusbar .indicators { display: flex; align-items: center; gap: var(--space-xs); }
-    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: 2px; }
+    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: var(--radius-badge); }
     .sig-bar { width: 17px; height: 11px; clip-path: polygon(0 70%,20% 70%,20% 100%,0 100%,0 70%,30% 45%,50% 45%,50% 100%,30% 100%,60% 25%,80% 25%,80% 100%,90% 0,100% 0,100% 100%); }
     .wifi { width: 16px; height: 11px; }
-    .batt { width: 22px; height: 11px; border-radius: 2px; }
+    .batt { width: 22px; height: 11px; border-radius: var(--radius-badge); }
     .header { height: var(--header-height); display: flex; align-items: center; padding: 0 var(--page-margin); position: relative; }
     .logo { position: absolute; left: 50%; transform: translateX(-50%); }
     .h-btn { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
 
     /* 딤 — 전체 화면 (header/statusbar 포함) */
-    .overlay { position: absolute; inset: 0; z-index: 10; background: rgba(0,0,0,0.45); }
+    .overlay { position: absolute; inset: 0; z-index: 10; background: var(--color-dim); }
 
     /* 바텀 시트 — 딤 위 */
     .bottom-sheet {
@@ -37,14 +37,14 @@
     }
 
     /* 시트 헤더 */
-    .bs-header { height: 75px; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--page-margin); }
+    .bs-header { height: var(--sheet-header-h); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--page-margin); }
     .bs-title { font-size: var(--font-heading1); font-weight: var(--weight-medium); color: var(--color-text-default); letter-spacing: -0.76px; }
 
     /* 바디 */
     .bs-body { padding: 0 var(--page-margin) var(--space-xxl); display: flex; flex-direction: column; gap: var(--space-xl); }
 
     /* 통신사 카드 */
-    .telecom-row { display: flex; gap: 10px; }
+    .telecom-row { display: flex; gap: var(--space-md); }
     .telecom-card {
       flex: 1; height: 90px; border: 1px solid var(--color-border-default);
       border-radius: var(--radius-default); background: var(--color-bg-white);
@@ -53,8 +53,8 @@
     }
     .telecom-card:active { opacity: 0.8; }
     .telecom-card.selected { border: 2px solid var(--color-primary); }
-    .telecom-name { font-size: var(--font-heading4); font-weight: var(--weight-medium); color: var(--color-text-default); line-height: 22px; letter-spacing: -0.64px; text-align: center; }
-    .telecom-sub { font-size: var(--font-body2); font-weight: var(--weight-regular); color: var(--color-text-default); line-height: 20px; letter-spacing: -0.56px; }
+    .telecom-name { font-size: var(--font-heading4); font-weight: var(--weight-medium); color: var(--color-text-default); line-height: var(--lh-heading4); letter-spacing: -0.64px; text-align: center; }
+    .telecom-sub { font-size: var(--font-body2); font-weight: var(--weight-regular); color: var(--color-text-default); line-height: var(--lh-body2); letter-spacing: -0.56px; }
 
     /* 버튼 */
     .btn { width: 100%; height: var(--button-height); border-radius: var(--radius-default); border: none; cursor: pointer; font-size: var(--font-heading4); font-weight: var(--weight-medium); display: flex; align-items: center; justify-content: center; letter-spacing: var(--tracking-tight); font-family: inherit; }

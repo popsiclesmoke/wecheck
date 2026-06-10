@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -17,10 +17,10 @@
     .statusbar svg { display: block; }
     .statusbar .time { font-size: var(--font-body2); font-weight: var(--weight-semibold); color: var(--color-text-default); }
     .statusbar .indicators { display: flex; align-items: center; gap: var(--space-xs); }
-    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: 2px; }
+    .statusbar .indicators span { display: inline-block; background: var(--color-text-default); border-radius: var(--radius-badge); }
     .sig-bar { width: 17px; height: 11px; clip-path: polygon(0 70%,20% 70%,20% 100%,0 100%,0 70%,30% 45%,50% 45%,50% 100%,30% 100%,60% 25%,80% 25%,80% 100%,90% 0,100% 0,100% 100%); }
     .wifi { width: 16px; height: 11px; }
-    .batt { width: 22px; height: 11px; border-radius: 2px; }
+    .batt { width: 22px; height: 11px; border-radius: var(--radius-badge); }
 
     /* Header — [←] [WeCheck] [X] */
     .header { height: var(--header-height); flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--page-margin); background: var(--color-bg-white); position: relative; }
@@ -32,7 +32,7 @@
 
     /* Page title */
     .page-title { padding: var(--space-page-top) var(--page-margin) 40px; }
-    .title-text { font-size: var(--font-display1); font-weight: var(--weight-medium); line-height: 30px; letter-spacing: -0.88px; }
+    .title-text { font-size: var(--font-display1); font-weight: var(--weight-medium); line-height: var(--lh-display2); letter-spacing: var(--tracking-tight); }
     .title-text .blue { color: var(--color-primary); }
 
     /* Divider — 20px 여백 안쪽에서만 */
@@ -40,25 +40,22 @@
 
     /* Institution list */
     .cert-list { list-style: none; padding-top: 4px; }
-    .cert-item { display: flex; align-items: center; gap: 14px; min-height: 62px; padding: 11px 0; margin: 0 var(--page-margin); cursor: pointer; }
+    .cert-item { display: flex; align-items: center; gap: var(--space-lg); min-height: 62px; padding: 11px 0; margin: 0 var(--page-margin); cursor: pointer; }
     .cert-item:active { opacity: 0.7; }
 
     /* Icon variants */
-    .inst-icon { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--color-border-default); background: var(--color-bg-white); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
-    .inst-icon img { width: 100%; height: 100%; object-fit: contain; }
-    .inst-icon-overlay { width: 40px; height: 40px; position: relative; flex-shrink: 0; }
-    .inst-icon-overlay .bg { position: absolute; inset: 0; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-    .inst-icon-overlay .ic { position: absolute; width: 23px; height: 23px; top: 8px; left: 9px; object-fit: contain; }
+    .inst-icon { width: 40px; height: 40px; border-radius: var(--radius-circle); border: 1px solid var(--color-border-default); background: var(--color-bg-white); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+    .inst-icon img { display: block; }
 
-    .inst-info { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
-    .inst-name { font-size: 10px; font-weight: var(--weight-regular); color: var(--color-text-disabled); line-height: 10px; letter-spacing: -0.4px; }
-    .cert-name-txt { font-size: var(--font-body2); font-weight: var(--weight-regular); color: var(--color-text-default); line-height: var(--lh-body2); letter-spacing: -0.56px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .inst-info { display: flex; flex-direction: column; gap: var(--space-xs); flex: 1; min-width: 0; }
+    .inst-name { font-size: var(--font-micro); font-weight: var(--weight-regular); color: var(--color-text-disabled); line-height: 10px; letter-spacing: var(--tracking-tight); }
+    .cert-name-txt { font-size: var(--font-body2); font-weight: var(--weight-regular); color: var(--color-text-default); line-height: var(--lh-body2); letter-spacing: var(--tracking-tight); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
     .chevron-wrap { display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.2s ease; }
 
     /* Dropdown (대법원 하위 목록) */
     .dropdown { display: none; background: var(--color-bg-tab); border-top: 1px solid var(--color-border-default); border-bottom: 1px solid var(--color-border-default); padding: var(--space-md) 0 var(--space-md) 54px; margin: 0 var(--page-margin); }
     .dropdown.open { display: block; }
-    .dropdown-item { height: 30px; display: flex; align-items: center; font-size: var(--font-heading6); font-weight: var(--weight-regular); color: var(--color-text-default); letter-spacing: -0.52px; cursor: pointer; }
+    .dropdown-item { height: 30px; display: flex; align-items: center; font-size: var(--font-heading6); font-weight: var(--weight-regular); color: var(--color-text-default); letter-spacing: var(--tracking-tight); cursor: pointer; }
     .dropdown-item:active { opacity: 0.6; }
 
     /* Bottom */
@@ -99,7 +96,7 @@
         <!-- 1. 질병관리청 -->
         <li class="cert-item">
           <div class="inst-icon">
-            <img src="https://www.figma.com/api/mcp/asset/8fa905af-f987-4459-a49c-8028346a4924" alt="질병관리청">
+            <img src="../../../design/ci%20png/질병관리청.png" width="24" height="24" alt="질병관리청">
           </div>
           <div class="inst-info">
             <span class="inst-name">질병관리청</span>
@@ -109,7 +106,7 @@
         <!-- 2. 대법원 (드롭다운) -->
         <li class="cert-item" id="item2" onclick="toggleDropdown()">
           <div class="inst-icon">
-            <img src="https://www.figma.com/api/mcp/asset/d7bbcd29-bd5c-4fff-92aa-aaa2d22bfd2f" alt="대법원">
+            <img src="../../../design/ci%20png/대법원.png" width="34" height="31" alt="대법원">
           </div>
           <div class="inst-info">
             <span class="inst-name">대법원</span>
@@ -128,9 +125,8 @@
       <ul class="cert-list">
         <!-- 3. 국민건강보험공단 -->
         <li class="cert-item" style="border-bottom: none;">
-          <div class="inst-icon-overlay">
-            <img class="bg" src="https://www.figma.com/api/mcp/asset/d3f49b4d-e03f-46ab-9899-85cc2c9d38cf" alt="">
-            <img class="ic" src="https://www.figma.com/api/mcp/asset/f5ad3353-d71a-4974-b0a3-467d87eade85" alt="국민건강보험공단">
+          <div class="inst-icon">
+            <img src="../../../design/ci%20png/국민건강보험.png" width="23" height="23" alt="국민건강보험공단">
           </div>
           <div class="inst-info">
             <span class="inst-name">국민건강보험공단</span>
